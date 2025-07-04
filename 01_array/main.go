@@ -1,13 +1,18 @@
 package main
 
 import (
-	"github.com/WolfieLeader/data-structures-algorithms/01_array/arrays"
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/sorting"
 )
 
 // Array is a continuous block of memory that stores elements of the same type.
 
 func main() {
-	arrays.StaticArrayExample()
-	arrays.DynamicArrayExample()
-	arrays.MultiDimensionalArrayExample()
+	// arrays.StaticArrayExample()
+	// arrays.DynamicArrayExample()
+	// arrays.MultiDimensionalArrayExample()
+
+	arr := []int{100, 64, 34, 25, 12, 22, 11, 90}
+
+	// fmt.Println(sorting.BubbleSort(arr))
+	sorting.SelectionSort(arr)
 }
