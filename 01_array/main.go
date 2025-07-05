@@ -11,8 +11,9 @@ func main() {
 	// arrays.DynamicArrayExample()
 	// arrays.MultiDimensionalArrayExample()
 
-	arr := []int{100, 64, 34, 25, 12, 22, 11, 90}
+	arr := []int{0, 100, 64, 34, 25, 12, 22, 11, 90, 301}
 
-	// fmt.Println(sorting.BubbleSort(arr))
-	sorting.SelectionSort(arr)
+	// sorting.BubbleSort(arr)
+	// sorting.SelectionSort(arr)
+	sorting.InsertionSort(arr)
 }

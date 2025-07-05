@@ -1,31 +1,27 @@
 package sorting
 
-import "fmt"
+// BubbleSort compares and swaps adjacent elements until the array is sorted
+func BubbleSort(array []int) []int {
+	printName("Bubble Sort", array)
 
-func BubbleSort(arr []int) []int {
-	fmt.Println("Bubble Sort:")
-	fmt.Printf("Initial array: %v\n", arr)
-
-	for i := range len(arr) - 1 {
-		// Track if a swap was made in this iteration
+	// n-1 passes are enough, each pass places one value in its final spot
+	for i := range len(array) - 1 {
 		swapped := false
 
-		// Last i elements are already sorted, so we can skip them
-		for j := range (len(arr) - 1) - i {
-			if arr[j] > arr[j+1] {
-				arr[j], arr[j+1] = arr[j+1], arr[j]
+		// "bubble up" the largest value to the end of the unsorted part
+		for j := range len(array) - 1 - i {
+			if array[j] > array[j+1] {
+				array[j], array[j+1] = array[j+1], array[j]
 				swapped = true
 			}
 		}
 
-		// If no swaps were made, the array is sorted
 		if !swapped {
 			break
 		}
-
-		fmt.Printf("Iteration %d: %v\n", i+1, arr)
+		printIteration(i, array)
 	}
 
-	fmt.Printf("Sorted array: %v\n", arr)
-	return arr
+	printFinal(array)
+	return array
 }

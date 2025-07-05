@@ -1,27 +1,24 @@
 package sorting
 
-import "fmt"
+// SelectionSort repeatedly finds the smallest value and moves it to the front
+func SelectionSort(array []int) []int {
+	printName("Selection Sort", array)
+	// Only need n-1 passes; the last element will already be sorted
+	for i := range len(array) - 1 {
+		min := i
 
-func SelectionSort(arr []int) []int {
-	fmt.Println("Selection Sort:")
-	fmt.Printf("Initial array: %v\n", arr)
-
-	// The reason it's len(arr)-1 is because the last element will already be in place after the previous iterations.
-	for i := range len(arr) - 1 {
-		minIndex := i
-
-		// The reason we start from i + 1 is because all elements before i are already sorted.
-		for j := i + 1; j < len(arr); j++ {
-			if arr[j] < arr[minIndex] {
-				minIndex = j
+		// "Select" the smallest value in the unsorted part
+		for j := i + 1; j < len(array); j++ {
+			if array[j] < array[min] {
+				min = j
 			}
 		}
 
-		// Swap the found minimum element with the first element of the unsorted part
-		arr[i], arr[minIndex] = arr[minIndex], arr[i]
-		fmt.Printf("Iteration %d: %v\n", i+1, arr)
+		// Swap the selected value with the current position
+		array[i], array[min] = array[min], array[i]
+		printIteration(i, array)
 	}
-	fmt.Printf("Sorted array: %v\n", arr)
 
-	return arr
+	printFinal(array)
+	return array
 }
