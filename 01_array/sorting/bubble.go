@@ -1,7 +1,9 @@
 package sorting
 
 // BubbleSort compares and swaps adjacent elements until the array is sorted
-func BubbleSort(array []int) []int {
+func BubbleSort(arr []int) []int {
+	array := copyArray(arr)
+	
 	printName("Bubble Sort", array)
 
 	// n-1 passes are enough, each pass places one value in its final spot

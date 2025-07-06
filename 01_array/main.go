@@ -15,5 +15,6 @@ func main() {
 
 	// sorting.BubbleSort(arr)
 	// sorting.SelectionSort(arr)
-	sorting.InsertionSort(arr)
+	// sorting.InsertionSort(arr)
+	sorting.QuickSort(arr)
 }

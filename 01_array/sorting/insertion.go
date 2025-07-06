@@ -2,7 +2,9 @@ package sorting
 
 // InsertionSort builds a sorted array one item at a time by inserting
 // each element into its correct position within the sorted portion.
-func InsertionSort(array []int) []int {
+func InsertionSort(arr []int) []int {
+	array := copyArray(arr)
+	
 	printName("Insertion Sort", array)
 
 	// Start from the second element, the first is already "sorted"
