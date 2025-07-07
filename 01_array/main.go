@@ -11,11 +11,13 @@ func main() {
 	// arrays.DynamicArrayExample()
 	// arrays.MultiDimensionalArrayExample()
 
-	arr := []int{0, 100, 64, 34, 25, 12, 22, 11, 90, 301}
+	arr := []int{0, 100, 64, 34, 25,25, 12, 22, 11, 90,25, 301}
 
 	// sorting.BubbleSort(arr)
 	// sorting.SelectionSort(arr)
 	// sorting.InsertionSort(arr)
-	sorting.QuickSort(arr,sorting.Lomuto)
-	sorting.QuickSort(arr,sorting.Hoare)
+	// sorting.QuickSort(arr,sorting.Lomuto)
+	// sorting.QuickSort(arr,sorting.Hoare)
+	// sorting.QuickSort(arr,sorting.Dutch)
+	sorting.CountingSort(arr)
 }
