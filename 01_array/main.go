@@ -16,5 +16,6 @@ func main() {
 	// sorting.BubbleSort(arr)
 	// sorting.SelectionSort(arr)
 	// sorting.InsertionSort(arr)
-	sorting.QuickSort(arr)
+	sorting.QuickSort(arr,sorting.Lomuto)
+	sorting.QuickSort(arr,sorting.Hoare)
 }
