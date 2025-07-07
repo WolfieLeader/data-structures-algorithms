@@ -2,6 +2,7 @@ package sorting
 
 // InsertionSort builds a sorted array one item at a time by inserting
 // each element into its correct position within the sorted portion.
+// This algorithm is commonly used for small datasets or as part of more complex algorithms.
 func InsertionSort(arr []int) []int {
 	array := copyArray(arr)
 	

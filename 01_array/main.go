@@ -19,5 +19,7 @@ func main() {
 	// sorting.QuickSort(arr,sorting.Lomuto)
 	// sorting.QuickSort(arr,sorting.Hoare)
 	// sorting.QuickSort(arr,sorting.Dutch)
-	sorting.CountingSort(arr)
+	// sorting.CountingSort(arr)
+	// sorting.RadixSort(arr)
+	sorting.MergeSort(arr)
 }
