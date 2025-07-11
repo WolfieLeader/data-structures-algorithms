@@ -1,9 +1,10 @@
 package sorting
 
 func CombSort(arr []int) Array {
-	array := copyArray(arr)
-
-	printName("Comb Sort", array)
+	array, skip := initSort("Comb Sort", arr)
+	if skip {
+		return array
+	}
 
 	gap := len(array)
 	shrunk := true

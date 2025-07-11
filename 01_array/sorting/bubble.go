@@ -2,9 +2,10 @@ package sorting
 
 // BubbleSort compares and swaps adjacent elements until the array is sorted
 func BubbleSort(arr []int) Array {
-	array := copyArray(arr)
-
-	printName("Bubble Sort", array)
+	array, skip := initSort("Bubble Sort", arr)
+	if skip {
+		return array
+	}
 
 	// n-1 passes are enough, each pass places one value in its final spot
 	for i := range len(array) - 1 {

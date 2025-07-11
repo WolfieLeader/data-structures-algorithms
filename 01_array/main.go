@@ -9,7 +9,7 @@ func main() {
 	// arrays.DynamicArrayExample()
 	// arrays.MultiDimensionalArrayExample()
 
-	arr := []int{0, 100, 64, 34, 25, 25, 12, 22, 11, 90, 25, 301}
+	arr := []int{0, 100, 64, 34, 25, 25, 12, 22, 11, 90, 25, 301, 299, 4, 3, 2, 23}
 
 	// sorting.BubbleSort(arr)
 	// sorting.SelectionSort(arr)
@@ -17,11 +17,14 @@ func main() {
 	// sorting.GnomeSort(arr)
 	// sorting.CocktailSort(arr)
 	// sorting.CombSort(arr)
+	// sorting.ShellSort(arr)
 	// sorting.MergeSort(arr)
 	// sorting.QuickSort(arr, sorting.Lomuto)
 	// sorting.QuickSort(arr,sorting.Hoare)
 	// sorting.QuickSort(arr,sorting.Dutch)
-	sorting.HeapSort(arr)
+	// sorting.HeapSort(arr)
 	// sorting.CountingSort(arr)
+	// sorting.PigeonholeSort(arr)
 	// sorting.RadixSort(arr)
+	sorting.BucketSort(arr)
 }

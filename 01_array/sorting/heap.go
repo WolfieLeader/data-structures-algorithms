@@ -1,9 +1,10 @@
 package sorting
 
 func HeapSort(arr []int) Array {
-	array := copyArray(arr)
-
-	printName("Heap Sort", array)
+	array, skip := initSort("Heap Sort", arr)
+	if skip {
+		return array
+	}
 
 	// Build the max heap
 	for i := len(array)/2 - 1; i >= 0; i-- {

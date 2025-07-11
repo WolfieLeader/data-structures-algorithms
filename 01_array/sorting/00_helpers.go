@@ -20,3 +20,13 @@ func (a Array) swap(i, j int) {
 	}
 	a[i], a[j] = a[j], a[i]
 }
+
+func initSort(name string, arr []int) (Array, bool) {
+	if len(arr) <= 1 {
+		return arr, true
+	}
+
+	array := copyArray(arr)
+	printName(name, array)
+	return array, false
+}

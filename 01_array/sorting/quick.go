@@ -7,6 +7,9 @@ const (
 )
 
 func QuickSort(arr []int, algorithm int) Array {
+	if len(arr) <= 1 {
+		return arr
+	}
 	array := copyArray(arr)
 
 	switch algorithm {

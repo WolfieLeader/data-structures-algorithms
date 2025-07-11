@@ -1,14 +1,14 @@
 package sorting
 
 func MergeSort(arr []int) Array {
-	array := copyArray(arr)
-
-	printName("Merge Sort", array)
+	array, skip := initSort("Merge Sort", arr)
+	if skip {
+		return array
+	}
 
 	array = mergeSort(array)
 
 	printFinal(array)
-
 	return array
 }
 

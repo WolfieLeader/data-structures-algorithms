@@ -1,12 +1,10 @@
 package sorting
 
-// InsertionSort builds a sorted array one item at a time by inserting
-// each element into its correct position within the sorted portion.
-// This algorithm is commonly used for small datasets or as part of more complex algorithms.
 func InsertionSort(arr []int) Array {
-	array := copyArray(arr)
-
-	printName("Insertion Sort", array)
+	array, skip := initSort("Insertion Sort", arr)
+	if skip {
+		return array
+	}
 
 	// Start from the second element, the first is already "sorted"
 	for i := 1; i < len(array); i++ {

@@ -2,33 +2,33 @@ package sorting
 
 func dutchQuickSort(array Array, low, high int) {
 	if low >= 0 && low < high {
-		lt, gt := dutchPartition(array, low, high)
+		lesser, greater := dutchPartition(array, low, high)
 
 		// Recursively sort the left(smaller) and right(bigger) sub-arrays and not the equal sub-array
-		dutchQuickSort(array, low, lt-1)
-		dutchQuickSort(array, gt+1, high)
+		dutchQuickSort(array, low, lesser-1)
+		dutchQuickSort(array, greater+1, high)
 	}
 }
 
 func dutchPartition(array Array, low, high int) (int, int) {
-	pivot := array[(low+high)/2] // Choose the middle element as pivot
-	lt, eq, gt := low, low, high // Lesser, equal and greater index
+	pivot := array[(low+high)/2]             // Choose the middle element as pivot
+	lesser, equal, greater := low, low, high // Lesser, equal and greater index
 
-	for eq <= gt {
-		if array[eq] < pivot {
+	for equal <= greater {
+		if array[equal] < pivot {
 			// Swap lesser element with current element
-			array.swap(eq, lt)
-			lt++
-			eq++
-		} else if array[eq] > pivot {
+			array.swap(equal, lesser)
+			lesser++
+			equal++
+		} else if array[equal] > pivot {
 			// Swap greater element with current element
-			array.swap(eq, gt)
-			gt--
+			array.swap(equal, greater)
+			greater--
 		} else {
 			// If equal, just move to the next element
-			eq++
+			equal++
 		}
 	}
 
-	return lt, gt
+	return lesser, greater
 }

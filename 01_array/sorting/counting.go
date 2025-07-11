@@ -1,30 +1,29 @@
 package sorting
 
 func CountingSort(arr []int) Array {
-	printName("Counting Sort", arr)
-
-	if len(arr) == 0 {
-		return arr
+	array, skip := initSort("Counting Sort", arr)
+	if skip {
+		return array
 	}
 
 	// Find the max value in the array
-	maxVal := arr[0]
-	for _, val := range arr {
-		if val > maxVal {
-			maxVal = val
+	max := array[0]
+	for _, value := range array {
+		if value > max {
+			max = value
 		}
 	}
 
 	// Create a count array of size maxVal + 1
-	count := make([]int, maxVal+1)
+	count := make([]int, max+1)
 
 	// Count occurrences of each number
-	for _, val := range arr {
-		count[val]++
+	for _, value := range array {
+		count[value]++
 	}
 
 	// Reconstruct the sorted array
-	sorted := make([]int, 0, len(arr))
+	sorted := make([]int, 0, len(array))
 	for num, freq := range count {
 		for range freq {
 			sorted = append(sorted, num)
@@ -32,6 +31,5 @@ func CountingSort(arr []int) Array {
 	}
 
 	printFinal(sorted)
-
 	return sorted
 }

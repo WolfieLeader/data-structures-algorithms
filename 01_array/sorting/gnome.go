@@ -1,12 +1,12 @@
 package sorting
 
 func GnomeSort(arr []int) Array {
-	array := copyArray(arr)
+	array, skip := initSort("Gnome Sort", arr)
+	if skip {
+		return array
+	}
 
-	printName("Gnome Sort", array)
-
-	i := 0
-	for i < len(array) {
+	for i := 0; i < len(array); {
 		if i == 0 || array[i] >= array[i-1] {
 			i++ // Move forward if in order or at the start
 		} else {

@@ -1,19 +1,16 @@
 package sorting
 
 func RadixSort(arr []int) Array {
-	if len(arr) == 0 {
-		return arr
+	array, skip := initSort("Radix Sort", arr)
+	if skip {
+		return array
 	}
-
-	array := copyArray(arr)
-
-	printName("Radix Sort", array)
 
 	// Find the maximum number to know the number of digits
 	maxVal := array[0]
-	for _, val := range array {
-		if val > maxVal {
-			maxVal = val
+	for _, value := range array {
+		if value > maxVal {
+			maxVal = value
 		}
 	}
 
@@ -32,8 +29,8 @@ func countingSortByDigit(array Array, exp int) {
 	output := make([]int, len(array))
 
 	// Count occurrences of each digit
-	for _, val := range array {
-		digit := (val / exp) % 10
+	for _, value := range array {
+		digit := (value / exp) % 10
 		count[digit]++
 	}
 

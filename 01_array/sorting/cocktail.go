@@ -1,9 +1,10 @@
 package sorting
 
 func CocktailSort(arr []int) Array {
-	array := copyArray(arr)
-
-	printName("Cocktail Sort", array)
+	array, skip := initSort("Cocktail Sort", arr)
+	if skip {
+		return array
+	}
 
 	swapped := true
 	start := 0
