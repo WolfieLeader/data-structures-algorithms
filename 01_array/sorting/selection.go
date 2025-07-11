@@ -1,11 +1,11 @@
 package sorting
 
 // SelectionSort repeatedly finds the smallest value and moves it to the front
-func SelectionSort(arr []int) []int {
+func SelectionSort(arr []int) Array {
 	array := copyArray(arr)
 
 	printName("Selection Sort", array)
-	
+
 	// Only need n-1 passes; the last element will already be sorted
 	for i := range len(array) - 1 {
 		min := i
@@ -17,8 +17,7 @@ func SelectionSort(arr []int) []int {
 			}
 		}
 
-		// Swap the selected value with the current position
-		array[i], array[min] = array[min], array[i]
+		array.swap(i, min)
 		printIteration(i, array)
 	}
 

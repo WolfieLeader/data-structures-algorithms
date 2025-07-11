@@ -1,6 +1,6 @@
 package sorting
 
-func hoareQuickSort(array []int, low, high int) {
+func hoareQuickSort(array Array, low, high int) {
 	if low < high {
 		// Partition the array
 		pivot := hoarePartition(array, low, high)
@@ -11,7 +11,7 @@ func hoareQuickSort(array []int, low, high int) {
 	}
 }
 
-func hoarePartition(array []int, low, high int) int {
+func hoarePartition(array Array, low, high int) int {
 	pivot := array[low]
 	i := low - 1
 	j := high + 1
@@ -39,7 +39,6 @@ func hoarePartition(array []int, low, high int) int {
 			return j
 		}
 
-		// Swap elements at i and j
-		array[i], array[j] = array[j], array[i]
+		array.swap(i, j)
 	}
 }

@@ -1,6 +1,6 @@
 package sorting
 
-func lomutoQuickSort(array []int, low, high int) {
+func lomutoQuickSort(array Array, low, high int) {
 	if low < high {
 
 		// Partition the array
@@ -12,7 +12,7 @@ func lomutoQuickSort(array []int, low, high int) {
 	}
 }
 
-func lomutoPartition(array []int, low, high int) int {
+func lomutoPartition(array Array, low, high int) int {
 	medianOfThree(array, low, high)
 
 	pivot := array[high] // Choose the last element as pivot
@@ -22,17 +22,16 @@ func lomutoPartition(array []int, low, high int) int {
 		if array[j] < pivot {
 			i++
 
-			// Swap the current element with the element at i
-			array[i], array[j] = array[j], array[i]
+			array.swap(i, j)
 		}
 	}
 
 	// Place the pivot at the correct position, since it stayed at the end
-	array[i+1], array[high] = array[high], array[i+1]
+	array.swap(i+1, high)
 	return i + 1
 }
 
-func medianOfThree(array []int, low, high int) {
+func medianOfThree(array Array, low, high int) {
 	if low >= high {
 		return
 	}
@@ -41,16 +40,16 @@ func medianOfThree(array []int, low, high int) {
 
 	// Swap if low is greater than mid
 	if array[low] > array[mid] {
-		array[low], array[mid] = array[mid], array[low]
+		array.swap(low, mid)
 	}
 
 	// Swap if low is greater than high
 	if array[low] > array[high] {
-		array[low], array[high] = array[high], array[low]
+		array.swap(low, high)
 	}
 
 	// Swap if high is greater than mid, ensuring the pivot(high) is the median
 	if array[mid] < array[high] {
-		array[mid], array[high] = array[high], array[mid]
+		array.swap(mid, high)
 	}
 }

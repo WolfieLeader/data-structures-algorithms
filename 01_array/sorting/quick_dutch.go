@@ -1,6 +1,6 @@
 package sorting
 
-func dutchQuickSort(array []int, low, high int) {
+func dutchQuickSort(array Array, low, high int) {
 	if low >= 0 && low < high {
 		lt, gt := dutchPartition(array, low, high)
 
@@ -10,19 +10,19 @@ func dutchQuickSort(array []int, low, high int) {
 	}
 }
 
-func dutchPartition(array []int, low, high int) (int, int) {
+func dutchPartition(array Array, low, high int) (int, int) {
 	pivot := array[(low+high)/2] // Choose the middle element as pivot
 	lt, eq, gt := low, low, high // Lesser, equal and greater index
 
 	for eq <= gt {
 		if array[eq] < pivot {
 			// Swap lesser element with current element
-			array[lt], array[eq] = array[eq], array[lt]
+			array.swap(eq, lt)
 			lt++
 			eq++
 		} else if array[eq] > pivot {
 			// Swap greater element with current element
-			array[eq], array[gt] = array[gt], array[eq]
+			array.swap(eq, gt)
 			gt--
 		} else {
 			// If equal, just move to the next element

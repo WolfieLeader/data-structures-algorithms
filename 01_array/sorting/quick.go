@@ -6,7 +6,7 @@ const (
 	Dutch
 )
 
-func QuickSort(arr []int, algorithm int) []int {
+func QuickSort(arr []int, algorithm int) Array {
 	array := copyArray(arr)
 
 	switch algorithm {

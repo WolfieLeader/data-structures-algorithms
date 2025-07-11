@@ -1,6 +1,6 @@
 package sorting
 
-func CountingSort(arr []int) []int {
+func CountingSort(arr []int) Array {
 	printName("Counting Sort", arr)
 
 	if len(arr) == 0 {

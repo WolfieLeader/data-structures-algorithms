@@ -1,14 +1,13 @@
 package sorting
 
-func CocktailSort(arr []int) []int {
+func CocktailSort(arr []int) Array {
 	array := copyArray(arr)
 
 	printName("Cocktail Sort", array)
 
-	n := len(array)
 	swapped := true
 	start := 0
-	end := n - 1
+	end := len(array) - 1
 
 	for swapped {
 		swapped = false
@@ -17,12 +16,13 @@ func CocktailSort(arr []int) []int {
 		for i := start; i < end; i++ {
 			// Normal bubble sort logic
 			if array[i] > array[i+1] {
-				array[i], array[i+1] = array[i+1], array[i]
+				array.swap(i, i+1)
 				swapped = true
 			}
 			printIteration(i, array)
 		}
 
+		// If no elements were swapped, the array is sorted
 		if !swapped {
 			break
 		}
@@ -33,7 +33,7 @@ func CocktailSort(arr []int) []int {
 		// Backward pass
 		for i := end - 1; i >= start; i-- {
 			if array[i] > array[i+1] {
-				array[i], array[i+1] = array[i+1], array[i]
+				array.swap(i, i+1)
 				swapped = true
 			}
 			printIteration(i, array)

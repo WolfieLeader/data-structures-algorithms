@@ -1,6 +1,6 @@
 package sorting
 
-func MergeSort(arr []int) []int {
+func MergeSort(arr []int) Array {
 	array := copyArray(arr)
 
 	printName("Merge Sort", array)
@@ -12,7 +12,7 @@ func MergeSort(arr []int) []int {
 	return array
 }
 
-func mergeSort(array []int) []int {
+func mergeSort(array Array) Array {
 	if len(array) <= 1 {
 		return array
 	}
@@ -24,7 +24,7 @@ func mergeSort(array []int) []int {
 	return merge(left, right)
 }
 
-func merge(left, right []int) []int {
+func merge(left, right Array) Array {
 	result := make([]int, 0, len(left)+len(right))
 	i, j := 0, 0
 

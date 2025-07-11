@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/WolfieLeader/data-structures-algorithms/01_array/sorting"
-)
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/sorting"
 
 // Array is a continuous block of memory that stores elements of the same type.
 
@@ -17,11 +15,13 @@ func main() {
 	// sorting.SelectionSort(arr)
 	// sorting.InsertionSort(arr)
 	// sorting.GnomeSort(arr)
-	sorting.CocktailSort(arr)
-	// sorting.QuickSort(arr,sorting.Lomuto)
+	// sorting.CocktailSort(arr)
+	// sorting.CombSort(arr)
+	// sorting.MergeSort(arr)
+	// sorting.QuickSort(arr, sorting.Lomuto)
 	// sorting.QuickSort(arr,sorting.Hoare)
 	// sorting.QuickSort(arr,sorting.Dutch)
+	sorting.HeapSort(arr)
 	// sorting.CountingSort(arr)
 	// sorting.RadixSort(arr)
-	// sorting.MergeSort(arr)
 }

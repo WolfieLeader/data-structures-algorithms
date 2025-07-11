@@ -1,6 +1,6 @@
 package sorting
 
-func RadixSort(arr []int) []int {
+func RadixSort(arr []int) Array {
 	if len(arr) == 0 {
 		return arr
 	}
@@ -26,7 +26,7 @@ func RadixSort(arr []int) []int {
 	return array
 }
 
-func countingSortByDigit(array []int, exp int) {
+func countingSortByDigit(array Array, exp int) {
 	// Create a count array for digits 0-9
 	count := make([]int, 10)
 	output := make([]int, len(array))
