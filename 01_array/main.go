@@ -24,7 +24,6 @@ func main() {
 	// sorting.QuickSort(arr,sorting.Dutch)
 	// sorting.HeapSort(arr)
 	// sorting.CountingSort(arr)
-	// sorting.PigeonholeSort(arr)
 	// sorting.RadixSort(arr)
 	sorting.BucketSort(arr)
 }
