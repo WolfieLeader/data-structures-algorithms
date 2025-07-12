@@ -2,27 +2,83 @@ package array_types
 
 import "fmt"
 
-func StaticArrayExample() {
-	fmt.Println("\nStatic Array Example:")
+const SIZE = 5
 
-	//Static staticArr of size 5
-	var staticArr [5]int
+type StaticArray [SIZE]int
 
-	// Initialize the static array with values
-	staticArr = [...]int{1, 2, 3, 4, 5}
-
-	// Assign a value at index X (O(1) time complexity)
-	staticArr[4] = 1
-
-	// Traverse the static array (O(n) time complexity)
-	for i := range staticArr {
-		fmt.Printf("[%d]:%d, ", i, staticArr[i])
+func NewStaticArray(values ...int) StaticArray {
+	var staticArray StaticArray
+	if len(values) > SIZE {
+		values = values[:SIZE] // Limit to SIZE elements
 	}
+	copy(staticArray[:], values)
+	return staticArray
+}
 
-	// Delete an element at index X (O(1) time complexity)
-	// Note: In Go, we cannot delete an element from a static array, we use the zero value
-	staticArr[1] = 0
+func (array *StaticArray) Replace(values ...int) {
+	if len(values) > SIZE {
+		values = values[:SIZE] // Limit to SIZE elements
+	}
+	copy(array[:], values)
+}
 
-	// Print the static array after deletion
-	fmt.Println("\nStatic Array after deletion:", staticArr)
+func (array StaticArray) Get(index int) (int, error) {
+	if index < 0 || index >= len(array) {
+		return 0, fmt.Errorf("index out of bounds: %d", index)
+	}
+	return array[index], nil
+}
+
+func (array *StaticArray) Set(index, value int) error {
+	if index < 0 || index >= len(array) {
+		return fmt.Errorf("index out of bounds: %d", index)
+	}
+	(*array)[index] = value
+	return nil
+}
+
+func (array StaticArray) Length() int {
+	return len(array)
+}
+
+func (array StaticArray) Traverse() {
+	for i, value := range array {
+		fmt.Printf("[%d]:%d, ", i, value)
+	}
+	fmt.Println()
+}
+
+func (array *StaticArray) Clear() {
+	*array = StaticArray{}
+}
+
+func (array StaticArray) Copy() StaticArray {
+	var copyArray StaticArray
+	copy(copyArray[:], array[:])
+	return copyArray
+}
+
+func (array StaticArray) IndexOf(value int) int {
+	for i, v := range array {
+		if v == value {
+			return i
+		}
+	}
+	return -1
+}
+
+func (array *StaticArray) Swap(i, j int) error {
+	if i < 0 || i >= len(array) || j < 0 || j >= len(array) {
+		return fmt.Errorf("index out of bounds: %d or %d", i, j)
+	}
+	array[i], array[j] = array[j], array[i]
+	return nil
+}
+
+func (array StaticArray) Reverse() StaticArray {
+	reversed := array.Copy()
+	for left, right := 0, len(reversed)-1; left < right; left, right = left+1, right-1 {
+		reversed.Swap(left, right)
+	}
+	return reversed
 }
