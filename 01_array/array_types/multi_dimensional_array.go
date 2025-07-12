@@ -76,7 +76,7 @@ func (array *TwoDimensionalArray) Set(row, col, value int) error {
 func (array *TwoDimensionalArray) Traverse() {
 	for i := 0; i < array.Rows; i++ {
 		for j := 0; j < array.Cols; j++ {
-			fmt.Printf("[%d][%d]:%d ", i, j, array.Data[i][j])
+			fmt.Printf("([%d][%d]:%d) ", i, j, array.Data[i][j])
 		}
 		fmt.Println()
 	}

@@ -3,16 +3,25 @@ package main
 import (
 	"fmt"
 
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/array_types"
 	"github.com/WolfieLeader/data-structures-algorithms/01_array/searching"
 	"github.com/WolfieLeader/data-structures-algorithms/01_array/sorting"
 )
 
 func main() {
-	// arrays.StaticArrayExample()
-	// arrays.DynamicArrayExample()
-	// arrays.MultiDimensionalArrayExample()
+	// twoDimensionalArrayExample()
 	// searchingExample()
 	// sortingExample()
+}
+
+func twoDimensionalArrayExample() {
+	twoDArray, err := array_types.NewTwoDimensionalArray(3, 3, []int{1, 2, 3}, []int{4})
+	if err != nil {
+		fmt.Println("Error creating two-dimensional array:", err)
+		return
+	}
+
+	twoDArray.Traverse()
 }
 
 func searchingExample() {
