@@ -4,10 +4,25 @@ import "fmt"
 
 const SIZE = 5
 
-type StaticArray [SIZE]int
+type staticArray [SIZE]int
 
-func NewStaticArray(values ...int) StaticArray {
-	var staticArray StaticArray
+type StaticArray interface {
+	Replace(values ...int)
+	Get(index int) (int, error)
+	Set(index, value int) error
+	Length() int
+	Traverse()
+	Clear()
+	Copy() staticArray
+	IndexOf(value int) int
+	Swap(i, j int) error
+	Reverse() staticArray
+}
+
+var _ StaticArray = (*staticArray)(nil)
+
+func NewStaticArray(values ...int) staticArray {
+	var staticArray staticArray
 	if len(values) > SIZE {
 		values = values[:SIZE] // Limit to SIZE elements
 	}
@@ -15,21 +30,21 @@ func NewStaticArray(values ...int) StaticArray {
 	return staticArray
 }
 
-func (array *StaticArray) Replace(values ...int) {
+func (array *staticArray) Replace(values ...int) {
 	if len(values) > SIZE {
 		values = values[:SIZE] // Limit to SIZE elements
 	}
 	copy(array[:], values)
 }
 
-func (array StaticArray) Get(index int) (int, error) {
+func (array staticArray) Get(index int) (int, error) {
 	if index < 0 || index >= len(array) {
 		return 0, fmt.Errorf("index out of bounds: %d", index)
 	}
 	return array[index], nil
 }
 
-func (array *StaticArray) Set(index, value int) error {
+func (array *staticArray) Set(index, value int) error {
 	if index < 0 || index >= len(array) {
 		return fmt.Errorf("index out of bounds: %d", index)
 	}
@@ -37,28 +52,28 @@ func (array *StaticArray) Set(index, value int) error {
 	return nil
 }
 
-func (array StaticArray) Length() int {
+func (array staticArray) Length() int {
 	return len(array)
 }
 
-func (array StaticArray) Traverse() {
+func (array staticArray) Traverse() {
 	for i, value := range array {
 		fmt.Printf("[%d]:%d, ", i, value)
 	}
 	fmt.Println()
 }
 
-func (array *StaticArray) Clear() {
-	*array = StaticArray{}
+func (array *staticArray) Clear() {
+	*array = staticArray{}
 }
 
-func (array StaticArray) Copy() StaticArray {
-	var copyArray StaticArray
+func (array staticArray) Copy() staticArray {
+	var copyArray staticArray
 	copy(copyArray[:], array[:])
 	return copyArray
 }
 
-func (array StaticArray) IndexOf(value int) int {
+func (array staticArray) IndexOf(value int) int {
 	for i, v := range array {
 		if v == value {
 			return i
@@ -67,7 +82,7 @@ func (array StaticArray) IndexOf(value int) int {
 	return -1
 }
 
-func (array *StaticArray) Swap(i, j int) error {
+func (array *staticArray) Swap(i, j int) error {
 	if i < 0 || i >= len(array) || j < 0 || j >= len(array) {
 		return fmt.Errorf("index out of bounds: %d or %d", i, j)
 	}
@@ -75,7 +90,7 @@ func (array *StaticArray) Swap(i, j int) error {
 	return nil
 }
 
-func (array StaticArray) Reverse() StaticArray {
+func (array staticArray) Reverse() staticArray {
 	reversed := array.Copy()
 	for left, right := 0, len(reversed)-1; left < right; left, right = left+1, right-1 {
 		reversed.Swap(left, right)

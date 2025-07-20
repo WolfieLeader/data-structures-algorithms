@@ -5,24 +5,45 @@ import (
 	"fmt"
 )
 
-type DynamicArray []int
+type dynamicArray []int
 
-func NewDynamicArray(values ...int) DynamicArray {
-	return append(DynamicArray{}, values...)
+type DynamicArray interface {
+	Replace(values ...int)
+	Get(index int) (int, error)
+	Set(index, value int) error
+	Insert(index, value int) error
+	Append(value ...int)
+	Prepend(value ...int)
+	Delete(index int) error
+	Length() int
+	Capacity() int
+	Traverse()
+	Clear()
+	Copy() dynamicArray
+	Slice(start, end int) (dynamicArray, error)
+	IndexOf(value int) int
+	Swap(i, j int) error
+	Reverse() dynamicArray
 }
 
-func (array *DynamicArray) Replace(values ...int) {
+var _ DynamicArray = (*dynamicArray)(nil)
+
+func NewDynamicArray(values ...int) dynamicArray {
+	return append(dynamicArray{}, values...)
+}
+
+func (array *dynamicArray) Replace(values ...int) {
 	*array = append((*array)[:0], values...)
 }
 
-func (array DynamicArray) Get(index int) (int, error) {
+func (array dynamicArray) Get(index int) (int, error) {
 	if index < 0 || index >= len(array) {
 		return 0, errors.New("index out of bounds")
 	}
 	return array[index], nil
 }
 
-func (array *DynamicArray) Set(index, value int) error {
+func (array *dynamicArray) Set(index, value int) error {
 	if index < 0 || index >= len(*array) {
 		return errors.New("index out of bounds")
 	}
@@ -31,7 +52,7 @@ func (array *DynamicArray) Set(index, value int) error {
 	return nil
 }
 
-func (array *DynamicArray) Insert(index, value int) error {
+func (array *dynamicArray) Insert(index, value int) error {
 	if index < 0 || index > len(*array) {
 		return errors.New("index out of bounds")
 	}
@@ -42,11 +63,15 @@ func (array *DynamicArray) Insert(index, value int) error {
 	return nil
 }
 
-func (array *DynamicArray) Append(value ...int) {
+func (array *dynamicArray) Append(value ...int) {
 	*array = append(*array, value...)
 }
 
-func (array *DynamicArray) Delete(index int) error {
+func (array *dynamicArray) Prepend(value ...int) {
+	*array = append(value, *array...)
+}
+
+func (array *dynamicArray) Delete(index int) error {
 	if index < 0 || index >= len(*array) {
 		return errors.New("index out of bounds")
 	}
@@ -54,41 +79,41 @@ func (array *DynamicArray) Delete(index int) error {
 	return nil
 }
 
-func (array DynamicArray) Length() int {
+func (array dynamicArray) Length() int {
 	return len(array)
 }
 
-func (array DynamicArray) Capacity() int {
+func (array dynamicArray) Capacity() int {
 	return cap(array)
 }
 
-func (array DynamicArray) Traverse() {
+func (array dynamicArray) Traverse() {
 	for i, value := range array {
 		fmt.Printf("[%d]:%d, ", i, value)
 	}
 	fmt.Println()
 }
 
-func (array *DynamicArray) Clear() {
-	*array = DynamicArray{}
+func (array *dynamicArray) Clear() {
+	*array = dynamicArray{}
 }
 
-func (array DynamicArray) Copy() DynamicArray {
-	newArray := make(DynamicArray, len(array))
+func (array dynamicArray) Copy() dynamicArray {
+	newArray := make(dynamicArray, len(array))
 	copy(newArray, array)
 	return newArray
 }
 
-func (array DynamicArray) Slice(start, end int) (DynamicArray, error) {
+func (array dynamicArray) Slice(start, end int) (dynamicArray, error) {
 	if start < 0 || end > len(array) || start >= end {
 		return nil, errors.New("invalid slice range")
 	}
-	slicedData := make(DynamicArray, end-start)
+	slicedData := make(dynamicArray, end-start)
 	copy(slicedData, array[start:end])
 	return slicedData, nil
 }
 
-func (array DynamicArray) IndexOf(value int) int {
+func (array dynamicArray) IndexOf(value int) int {
 	for i, v := range array {
 		if v == value {
 			return i
@@ -97,7 +122,7 @@ func (array DynamicArray) IndexOf(value int) int {
 	return -1
 }
 
-func (array *DynamicArray) Swap(i, j int) error {
+func (array *dynamicArray) Swap(i, j int) error {
 	if i < 0 || i >= len(*array) || j < 0 || j >= len(*array) {
 		return errors.New("index out of bounds")
 	}
@@ -106,10 +131,10 @@ func (array *DynamicArray) Swap(i, j int) error {
 	return nil
 }
 
-func (array DynamicArray) Reverse() DynamicArray {
+func (array dynamicArray) Reverse() dynamicArray {
 	reversed := array.Copy()
 	for left, right := 0, len(reversed)-1; left < right; left, right = left+1, right-1 {
-		reversed.Swap(left, right)
+		reversed[left], reversed[right] = reversed[right], reversed[left]
 	}
 	return reversed
 }
