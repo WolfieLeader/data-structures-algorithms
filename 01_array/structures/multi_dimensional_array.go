@@ -1,4 +1,4 @@
-package array_types
+package structures
 
 import (
 	"errors"

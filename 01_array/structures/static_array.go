@@ -1,4 +1,4 @@
-package array_types
+package structures
 
 import "fmt"
 
@@ -17,6 +17,9 @@ type StaticArray interface {
 	IndexOf(value int) int
 	Swap(i, j int) error
 	Reverse() staticArray
+	IsSorted() bool
+	LinearSearch(value int) int
+	BinarySearch(value int) int
 }
 
 var _ StaticArray = (*staticArray)(nil)
@@ -96,4 +99,41 @@ func (array staticArray) Reverse() staticArray {
 		reversed.Swap(left, right)
 	}
 	return reversed
+}
+
+func (array staticArray) IsSorted() bool {
+	for i := 1; i < len(array); i++ {
+		if array[i] < array[i-1] {
+			return false
+		}
+	}
+	return true
+}
+
+func (array staticArray) LinearSearch(value int) int {
+	for i, v := range array {
+		if v == value {
+			return i
+		}
+	}
+	return -1
+}
+
+func (array staticArray) BinarySearch(value int) int {
+	if !array.IsSorted() {
+		return -1 // Binary search requires sorted array
+	}
+	
+	left, right := 0, len(array)-1
+	for left <= right {
+		mid := (left + right) / 2
+		if array[mid] == value {
+			return mid
+		} else if array[mid] < value {
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+	return -1
 }
