@@ -1,11 +1,9 @@
-package structures
+package dynamic
 
 import (
 	"errors"
 	"fmt"
 )
-
-type dynamicArray []int
 
 type DynamicArray interface {
 	Replace(values ...int)
@@ -14,7 +12,7 @@ type DynamicArray interface {
 	Insert(index, value int) error
 	Append(value ...int)
 	Prepend(value ...int)
-	Delete(index int) error
+	Delete(index int) (int, error)
 	Length() int
 	Capacity() int
 	Traverse()
@@ -30,10 +28,6 @@ type DynamicArray interface {
 }
 
 var _ DynamicArray = (*dynamicArray)(nil)
-
-func NewDynamicArray(values ...int) dynamicArray {
-	return append(dynamicArray{}, values...)
-}
 
 func (array *dynamicArray) Replace(values ...int) {
 	*array = append((*array)[:0], values...)
@@ -74,12 +68,14 @@ func (array *dynamicArray) Prepend(value ...int) {
 	*array = append(value, *array...)
 }
 
-func (array *dynamicArray) Delete(index int) error {
+func (array *dynamicArray) Delete(index int) (int, error) {
 	if index < 0 || index >= len(*array) {
-		return errors.New("index out of bounds")
+		return 0, errors.New("index out of bounds")
 	}
+
+	value := (*array)[index]
 	*array = append((*array)[:index], (*array)[index+1:]...)
-	return nil
+	return value, nil
 }
 
 func (array dynamicArray) Length() int {
@@ -149,32 +145,4 @@ func (array dynamicArray) IsSorted() bool {
 		}
 	}
 	return true
-}
-
-func (array dynamicArray) LinearSearch(value int) int {
-	for i, v := range array {
-		if v == value {
-			return i
-		}
-	}
-	return -1
-}
-
-func (array dynamicArray) BinarySearch(value int) int {
-	if !array.IsSorted() {
-		return -1 // Binary search requires sorted array
-	}
-
-	left, right := 0, len(array)-1
-	for left <= right {
-		mid := (left + right) / 2
-		if array[mid] == value {
-			return mid
-		} else if array[mid] < value {
-			left = mid + 1
-		} else {
-			right = mid - 1
-		}
-	}
-	return -1
 }
