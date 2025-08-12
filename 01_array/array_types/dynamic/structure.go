@@ -1,7 +1,9 @@
 package dynamic
 
-type dynamicArray []int
+import "cmp"
 
-func NewDynamicArray(values ...int) dynamicArray {
-	return append(dynamicArray{}, values...)
+type DynamicArrayType[T cmp.Ordered] []T
+
+func New[T cmp.Ordered](values ...T) DynamicArrayType[T] {
+	return append(DynamicArrayType[T]{}, values...)
 }

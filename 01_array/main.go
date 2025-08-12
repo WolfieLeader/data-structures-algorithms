@@ -4,18 +4,18 @@ import (
 	"fmt"
 
 	"github.com/WolfieLeader/data-structures-algorithms/01_array/array_types/dynamic"
-	"github.com/WolfieLeader/data-structures-algorithms/01_array/array_types/multi"
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/array_types/matrix"
 	"github.com/WolfieLeader/data-structures-algorithms/01_array/sorting"
 )
 
 func main() {
-	// twoDimensionalArrayExample()
-	// searchingExample()
-	// sortingExample()
+	matrixExample()
+	searchingExample()
+	sortingExample()
 }
 
-func twoDimensionalArrayExample() {
-	twoDArray, err := multi.New2DArray(3, 3, []int{1, 2, 3}, []int{4})
+func matrixExample() {
+	twoDArray, err := matrix.New(3, 3, []int{1, 2, 3}, []int{4})
 	if err != nil {
 		fmt.Println("Error creating two-dimensional array:", err)
 		return
@@ -25,17 +25,17 @@ func twoDimensionalArrayExample() {
 }
 
 func searchingExample() {
-	unsortedArray := dynamic.NewDynamicArray(1, 23, 5, 7, 9, 11, 13, 15, 17, 19, 21, 3, 25, 27, 29, 31)
+	unsortedArray := dynamic.New(1, 23, 5, 7, 9, 11, 13, 15, 17, 19, 21, 3, 25, 27, 29, 31)
 	fmt.Printf("Searching for 23 in %v, result: %d\n", unsortedArray, unsortedArray.LinearSearch(23))
 	fmt.Printf("Searching for 71 in %v, result: %d\n", unsortedArray, unsortedArray.LinearSearch(71))
 
-	sortedArray := dynamic.NewDynamicArray(3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31)
+	sortedArray := dynamic.New(3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31)
 	fmt.Printf("Searching for 15 in %v, result: %d\n", sortedArray, sortedArray.LinearSearch(15))
 	fmt.Printf("Searching for 2 in %v, result: %d\n", sortedArray, sortedArray.LinearSearch(2))
 }
 
 func sortingExample() {
-	arr := dynamic.NewDynamicArray(0, 100, 64, 34, 25, 25, 12, 22, 11, 90, 25, 301, 299, 4, 3, 2, 23)
+	arr := dynamic.New(0, 100, 64, 34, 25, 25, 12, 22, 11, 90, 25, 301, 299, 4, 3, 2, 23)
 
 	sorting.BubbleSort(arr)
 	// sorting.SelectionSort(arr)

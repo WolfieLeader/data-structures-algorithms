@@ -1,6 +1,8 @@
 package sorting
 
-func hoareQuickSort(array Array, low, high int) {
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func hoareQuickSort(array helpers.Array, low, high int) {
 	if low < high {
 		// Partition the array
 		pivot := hoarePartition(array, low, high)
@@ -11,34 +13,34 @@ func hoareQuickSort(array Array, low, high int) {
 	}
 }
 
-func hoarePartition(array Array, low, high int) int {
+func hoarePartition(array helpers.Array, low, high int) int {
 	pivot := array[low]
-	i := low - 1
-	j := high + 1
+	index1 := low - 1
+	index2 := high + 1
 
 	for {
 
 		// Move i right until we find element >= pivot
 		for {
-			i++
-			if array[i] >= pivot {
+			index1++
+			if array[index1] >= pivot {
 				break
 			}
 		}
 
 		// Move j left until we find element <= pivot
 		for {
-			j--
-			if array[j] <= pivot {
+			index2--
+			if array[index2] <= pivot {
 				break
 			}
 		}
 
 		// If pointers cross, return j
-		if i >= j {
-			return j
+		if index1 >= index2 {
+			return index2
 		}
 
-		array.swap(i, j)
+		array.Swap(index1, index2)
 	}
 }

@@ -1,46 +1,49 @@
 package sorting
 
-func MergeSort(arr []int) Array {
-	array, skip := initSort("Merge Sort", arr)
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func MergeSort(arr []int) helpers.Array {
+	array, _, skip := helpers.CopyArr(arr, "Merge Sort")
 	if skip {
 		return array
 	}
 
 	array = mergeSort(array)
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }
 
-func mergeSort(array Array) Array {
-	if len(array) <= 1 {
+func mergeSort(array helpers.Array) helpers.Array {
+	length := len(array)
+	if length <= 1 {
 		return array
 	}
 
-	mid := len(array) / 2
+	mid := length / 2
 	left := mergeSort(array[:mid])
 	right := mergeSort(array[mid:])
 
 	return merge(left, right)
 }
 
-func merge(left, right Array) Array {
+func merge(left, right helpers.Array) helpers.Array {
 	result := make([]int, 0, len(left)+len(right))
-	i, j := 0, 0
+	index1, index2 := 0, 0
 
-	for i < len(left) && j < len(right) {
-		if left[i] <= right[j] {
-			result = append(result, left[i])
-			i++
+	for index1 < len(left) && index2 < len(right) {
+		if left[index1] <= right[index2] {
+			result = append(result, left[index1])
+			index1++
 		} else {
-			result = append(result, right[j])
-			j++
+			result = append(result, right[index2])
+			index2++
 		}
 	}
 
 	// Append any remaining elements
-	result = append(result, left[i:]...)
-	result = append(result, right[j:]...)
+	result = append(result, left[index1:]...)
+	result = append(result, right[index2:]...)
 
 	return result
 }

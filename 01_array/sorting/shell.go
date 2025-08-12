@@ -1,27 +1,33 @@
 package sorting
 
-func ShellSort(arr []int) Array {
-	array, skip := initSort("Shell Sort", arr)
+import (
+	"cmp"
+
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+)
+
+func ShellSort(arr []int) helpers.Array {
+	array, length, skip := helpers.CopyArr(arr, "Shell Sort")
 	if skip {
 		return array
 	}
 
 	// Start with a large gap and reduce it
-	for gap := len(array) / 2; gap > 0; gap /= 2 {
-		for i := gap; i < len(array); i++ {
+	for gap := length / 2; gap > 0; gap /= 2 {
+		for i := gap; i < length; i++ {
 			temp := array[i]
 			j := i
 
 			// Shift elements to the right until the correct position is found
-			for j >= gap && array[j-gap] > temp {
+			for j >= gap && cmp.Less(temp, array[j-gap]) {
 				array[j] = array[j-gap]
 				j -= gap
 			}
 			array[j] = temp
-			printIteration(i, array)
+			helpers.PrintIteration(i, array)
 		}
 	}
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }

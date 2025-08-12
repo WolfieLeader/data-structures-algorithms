@@ -1,44 +1,47 @@
 package sorting
 
-func HeapSort(arr []int) Array {
-	array, skip := initSort("Heap Sort", arr)
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func HeapSort(arr []int) helpers.Array {
+	array, length, skip := helpers.CopyArr(arr, "Heap Sort")
 	if skip {
 		return array
 	}
 
 	// Build the max heap
-	for i := len(array)/2 - 1; i >= 0; i-- {
-		heapify(array, len(array), i)
+	for index := (length / 2) - 1; index >= 0; index-- {
+		heapify(array, length, index)
 	}
 
 	// Extract elements from the heap one by one
-	for i := len(array) - 1; i > 0; i-- {
-		array.swap(0, i)     // Move current root to end
+	for i := length - 1; i > 0; i-- {
+		array.Swap(0, i)     // Move current root to end
 		heapify(array, i, 0) // Call heapify on the reduced heap
 	}
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }
 
-func heapify(array Array, size int, root int) {
-	largest := root // Initialize largest as root
-	left := 2*root + 1
-	right := 2*root + 2
+//TODO
+func heapify(array helpers.Array, size int, root int) {
+	max := root // Initialize max as root
+	l := 2*root + 1
+	r := 2*root + 2
 
 	// If left child is larger than root
-	if left < size && array[left] > array[largest] {
-		largest = left
+	if l < size && array[l] > array[max] {
+		max = l
 	}
 
-	// If right child is larger than largest so far
-	if right < size && array[right] > array[largest] {
-		largest = right
+	// If right child is larger than max so far
+	if r < size && array[r] > array[max] {
+		max = r
 	}
 
-	// If largest is not root
-	if largest != root {
-		array.swap(root, largest)     // Swap root with largest
-		heapify(array, size, largest) // Recursively heapify the affected sub-tree
+	// If max is not root
+	if max != root {
+		array.Swap(root, max)     // Swap root with max
+		heapify(array, size, max) // Recursively heapify the affected sub-tree
 	}
 }

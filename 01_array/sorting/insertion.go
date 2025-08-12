@@ -1,27 +1,33 @@
 package sorting
 
-func InsertionSort(arr []int) Array {
-	array, skip := initSort("Insertion Sort", arr)
+import (
+	"cmp"
+
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+)
+
+func InsertionSort(arr []int) helpers.Array {
+	array, length, skip := helpers.CopyArr(arr, "Insertion Sort")
 	if skip {
 		return array
 	}
 
 	// Start from the second element, the first is already "sorted"
-	for i := 1; i < len(array); i++ {
-		insert := i
-		current := array[i]
+	for index := 1; index < length; index++ {
+		insert := index
+		current := array[index]
 
 		// Shift larger elements to the right to make space for the current value
-		for j := i - 1; j >= 0 && (array[j] > current); j-- {
-			array[j+1] = array[j] // Shift larger elements to the right
-			insert = j            // Update the insert index to the current position
+		for pass := index - 1; pass >= 0 && cmp.Less(current, array[pass]); pass-- {
+			array[pass+1] = array[pass] // Shift larger elements to the right
+			insert = pass               // Update the insert index to the current position
 		}
 
 		// Insert the current value at its correct position
 		array[insert] = current
-		printIteration(i-1, array)
+		helpers.PrintIteration(index-1, array)
 	}
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }

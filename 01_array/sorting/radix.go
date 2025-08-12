@@ -1,7 +1,9 @@
 package sorting
 
-func RadixSort(arr []int) Array {
-	array, skip := initSort("Radix Sort", arr)
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func RadixSort(arr []int) helpers.Array {
+	array, _, skip := helpers.CopyArr(arr, "Radix Sort")
 	if skip {
 		return array
 	}
@@ -19,11 +21,11 @@ func RadixSort(arr []int) Array {
 		countingSortByDigit(array, exp)
 	}
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }
 
-func countingSortByDigit(array Array, exp int) {
+func countingSortByDigit(array helpers.Array, exp int) {
 	// Create a count array for digits 0-9
 	count := make([]int, 10)
 	output := make([]int, len(array))

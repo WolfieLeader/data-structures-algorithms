@@ -1,6 +1,8 @@
 package sorting
 
-func dutchQuickSort(array Array, low, high int) {
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func dutchQuickSort(array helpers.Array, low, high int) {
 	if low >= 0 && low < high {
 		lesser, greater := dutchPartition(array, low, high)
 
@@ -10,19 +12,19 @@ func dutchQuickSort(array Array, low, high int) {
 	}
 }
 
-func dutchPartition(array Array, low, high int) (int, int) {
+func dutchPartition(array helpers.Array, low, high int) (int, int) {
 	pivot := array[(low+high)/2]             // Choose the middle element as pivot
 	lesser, equal, greater := low, low, high // Lesser, equal and greater index
 
 	for equal <= greater {
 		if array[equal] < pivot {
 			// Swap lesser element with current element
-			array.swap(equal, lesser)
+			array.Swap(equal, lesser)
 			lesser++
 			equal++
 		} else if array[equal] > pivot {
 			// Swap greater element with current element
-			array.swap(equal, greater)
+			array.Swap(equal, greater)
 			greater--
 		} else {
 			// If equal, just move to the next element

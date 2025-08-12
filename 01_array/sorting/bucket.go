@@ -1,56 +1,52 @@
 package sorting
 
-func BucketSort(arr []int) Array {
-	array, skip := initSort("Bucket Sort", arr)
+import (
+	"cmp"
+
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+)
+
+func BucketSort(arr []int) helpers.Array {
+	array, length, skip := helpers.CopyArr(arr, "Bucket Sort")
 	if skip {
 		return array
 	}
 
-	max := findMax(array)
+	max := helpers.FindMaxValue(array)
 	if max == 0 {
-		printFinal(array)
+		helpers.PrintFinal(array)
 		return array
 	}
 
-	numBuckets := len(array)
-	buckets := make([][]int, numBuckets)
+	buckets := make([][]int, length)
 
 	// Distribute values into buckets
 	for _, value := range array {
-		index := value * (numBuckets - 1) / max
+		index := value * (length - 1) / max //TODO
 		buckets[index] = append(buckets[index], value)
 	}
 
 	// Sort each bucket with insertion sort
-	sorted := make([]int, 0, len(array))
+	sorted := make([]int, 0, length)
+
 	for _, bucket := range buckets {
 		if len(bucket) > 0 {
 			sorted = append(sorted, insertionSort(bucket)...)
 		}
 	}
 
-	printFinal(sorted)
+	helpers.PrintFinal(sorted)
 	return sorted
 }
 
-func findMax(arr []int) int {
-	max := arr[0]
-	for _, v := range arr {
-		if v > max {
-			max = v
-		}
-	}
-	return max
-}
+func insertionSort(array helpers.Array) helpers.Array {
+	for index := 1; index < len(array); index++ {
+		insert := index
+		current := array[index]
 
-func insertionSort(array Array) Array {
-	for i := 1; i < len(array); i++ {
-		insert := i
-		current := array[i]
-
-		for j := i - 1; j >= 0 && (array[j] > current); j-- {
-			array[j+1] = array[j]
-			insert = j
+		for pass := index - 1; pass >= 0 && cmp.Less(current, array[pass]); pass-- {
+			array[pass+1] = array[pass]
+			insert = pass
 		}
 
 		array[insert] = current

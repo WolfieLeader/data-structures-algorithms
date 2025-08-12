@@ -1,6 +1,8 @@
 package sorting
 
-func lomutoQuickSort(array Array, low, high int) {
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func lomutoQuickSort(array helpers.Array, low, high int) {
 	if low < high {
 
 		// Partition the array
@@ -12,7 +14,7 @@ func lomutoQuickSort(array Array, low, high int) {
 	}
 }
 
-func lomutoPartition(array Array, low, high int) int {
+func lomutoPartition(array helpers.Array, low, high int) int {
 	medianOfThree(array, low, high)
 
 	pivot := array[high] // Choose the last element as pivot
@@ -22,16 +24,16 @@ func lomutoPartition(array Array, low, high int) int {
 		if array[j] < pivot {
 			i++
 
-			array.swap(i, j)
+			array.Swap(i, j)
 		}
 	}
 
 	// Place the pivot at the correct position, since it stayed at the end
-	array.swap(i+1, high)
+	array.Swap(i+1, high)
 	return i + 1
 }
 
-func medianOfThree(array Array, low, high int) {
+func medianOfThree(array helpers.Array, low, high int) {
 	if low >= high {
 		return
 	}
@@ -40,16 +42,16 @@ func medianOfThree(array Array, low, high int) {
 
 	// Swap if low is greater than mid
 	if array[low] > array[mid] {
-		array.swap(low, mid)
+		array.Swap(low, mid)
 	}
 
 	// Swap if low is greater than high
 	if array[low] > array[high] {
-		array.swap(low, high)
+		array.Swap(low, high)
 	}
 
 	// Swap if high is greater than mid, ensuring the pivot(high) is the median
 	if array[mid] < array[high] {
-		array.swap(mid, high)
+		array.Swap(mid, high)
 	}
 }

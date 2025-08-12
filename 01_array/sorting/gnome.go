@@ -1,21 +1,23 @@
 package sorting
 
-func GnomeSort(arr []int) Array {
-	array, skip := initSort("Gnome Sort", arr)
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func GnomeSort(arr []int) helpers.Array {
+	array, length, skip := helpers.CopyArr(arr, "Gnome Sort")
 	if skip {
 		return array
 	}
 
-	for i := 0; i < len(array); {
-		if i == 0 || array[i] >= array[i-1] {
-			i++ // Move forward if in order or at the start
+	for index := 0; index < length; {
+		if index == 0 || array[index] >= array[index-1] {
+			index++ // Move forward if in order or at the start
 		} else {
-			array.swap(i, i-1)
-			i-- // Step back to check the previous element
+			array.Swap(index, index-1)
+			index-- // Step back to check the previous element
 		}
-		printIteration(i, array)
+		helpers.PrintIteration(index, array)
 	}
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }

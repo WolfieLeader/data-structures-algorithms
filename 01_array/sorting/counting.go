@@ -1,20 +1,14 @@
 package sorting
 
-func CountingSort(arr []int) Array {
-	array, skip := initSort("Counting Sort", arr)
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func CountingSort(arr []int) helpers.Array {
+	array, length, skip := helpers.CopyArr(arr, "Counting Sort")
 	if skip {
 		return array
 	}
 
-	// Find the max value in the array
-	max := array[0]
-	for _, value := range array {
-		if value > max {
-			max = value
-		}
-	}
-
-	// Create a count array of size maxVal + 1
+	max := helpers.FindMaxValue(array)
 	count := make([]int, max+1)
 
 	// Count occurrences of each number
@@ -23,13 +17,14 @@ func CountingSort(arr []int) Array {
 	}
 
 	// Reconstruct the sorted array
-	sorted := make([]int, 0, len(array))
+	sorted := make([]int, 0, length)
+
 	for num, freq := range count {
 		for range freq {
 			sorted = append(sorted, num)
 		}
 	}
 
-	printFinal(sorted)
+	helpers.PrintFinal(sorted)
 	return sorted
 }

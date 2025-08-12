@@ -1,12 +1,14 @@
 package sorting
 
-func CombSort(arr []int) Array {
-	array, skip := initSort("Comb Sort", arr)
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
+func CombSort(arr []int) helpers.Array {
+	array, length, skip := helpers.CopyArr(arr, "Comb Sort")
 	if skip {
 		return array
 	}
 
-	gap := len(array)
+	gap := length
 	shrunk := true
 
 	for shrunk || gap > 1 {
@@ -15,15 +17,15 @@ func CombSort(arr []int) Array {
 			shrunk = false
 		}
 
-		for i := 0; i+gap < len(array); i++ {
-			if array[i] > array[i+gap] {
-				array.swap(i, i+gap)
+		for index := 0; index+gap < length; index++ {
+			if array[index] > array[index+gap] {
+				array.Swap(index, index+gap)
 				shrunk = true
 			}
-			printIteration(i, array)
+			helpers.PrintIteration(index, array)
 		}
 	}
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }

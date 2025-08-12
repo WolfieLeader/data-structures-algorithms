@@ -1,29 +1,33 @@
 package static
 
-func (array staticArray) LinearSearch(value int) int {
+import "cmp"
+
+func (array StaticArrayType[T]) LinearSearch(value T) int {
 	for i, v := range array {
-		if v == value {
+		if cmp.Compare(v, value) == 0 {
 			return i
 		}
 	}
 	return -1
 }
 
-func (array staticArray) BinarySearch(value int) int {
+func (array StaticArrayType[T]) BinarySearch(value T) int {
 	if !array.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
 
-	left, right := 0, len(array)-1
-	for left <= right {
-		mid := (left + right) / 2
-		if array[mid] == value {
+	for l, r := 0, len(array)-1; l <= r; {
+		mid := (l + r) / 2
+
+		switch cmp.Compare(array[mid], value) {
+		case 0:
 			return mid
-		} else if array[mid] < value {
-			left = mid + 1
-		} else {
-			right = mid - 1
+		case -1:
+			l = mid + 1
+		case 1:
+			r = mid - 1
 		}
 	}
+
 	return -1
 }

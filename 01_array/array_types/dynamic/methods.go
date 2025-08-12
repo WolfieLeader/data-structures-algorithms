@@ -1,46 +1,47 @@
 package dynamic
 
 import (
+	"cmp"
 	"errors"
 	"fmt"
 )
 
-type DynamicArray interface {
-	Replace(values ...int)
-	Get(index int) (int, error)
-	Set(index, value int) error
-	Insert(index, value int) error
-	Append(value ...int)
-	Prepend(value ...int)
-	Delete(index int) (int, error)
+type DynamicArray[T cmp.Ordered] interface {
+	Replace(values ...T)
+	Get(index int) (T, error)
+	Set(index int, value T) error
+	Insert(index int, value T) error
+	Append(value ...T)
+	Prepend(value ...T)
+	Delete(index int) (T, error)
 	Length() int
 	Capacity() int
 	Traverse()
 	Clear()
-	Copy() dynamicArray
-	Slice(start, end int) (dynamicArray, error)
-	IndexOf(value int) int
+	Copy() DynamicArrayType[T]
+	Slice(start, end int) (DynamicArrayType[T], error)
+	IndexOf(value T) int
 	Swap(i, j int) error
-	Reverse() dynamicArray
+	Reverse() DynamicArrayType[T]
 	IsSorted() bool
-	LinearSearch(value int) int
-	BinarySearch(value int) int
+	LinearSearch(value T) int
+	BinarySearch(value T) int
 }
 
-var _ DynamicArray = (*dynamicArray)(nil)
+var _ DynamicArray[int] = (*DynamicArrayType[int])(nil)
 
-func (array *dynamicArray) Replace(values ...int) {
+func (array *DynamicArrayType[T]) Replace(values ...T) {
 	*array = append((*array)[:0], values...)
 }
 
-func (array dynamicArray) Get(index int) (int, error) {
+func (array DynamicArrayType[T]) Get(index int) (T, error) {
 	if index < 0 || index >= len(array) {
-		return 0, errors.New("index out of bounds")
+		return *new(T), errors.New("index out of bounds")
 	}
 	return array[index], nil
 }
 
-func (array *dynamicArray) Set(index, value int) error {
+func (array *DynamicArrayType[T]) Set(index int, value T) error {
 	if index < 0 || index >= len(*array) {
 		return errors.New("index out of bounds")
 	}
@@ -49,28 +50,29 @@ func (array *dynamicArray) Set(index, value int) error {
 	return nil
 }
 
-func (array *dynamicArray) Insert(index, value int) error {
+func (array *DynamicArrayType[T]) Insert(index int, value T) error {
 	if index < 0 || index > len(*array) {
 		return errors.New("index out of bounds")
 	}
-	*array = append(*array, 0)                 // grow by 1
+
+	*array = append(*array, *new(T))           // grow by 1
 	copy((*array)[index+1:], (*array)[index:]) // shift right
 	(*array)[index] = value
 
 	return nil
 }
 
-func (array *dynamicArray) Append(value ...int) {
+func (array *DynamicArrayType[T]) Append(value ...T) {
 	*array = append(*array, value...)
 }
 
-func (array *dynamicArray) Prepend(value ...int) {
+func (array *DynamicArrayType[T]) Prepend(value ...T) {
 	*array = append(value, *array...)
 }
 
-func (array *dynamicArray) Delete(index int) (int, error) {
+func (array *DynamicArrayType[T]) Delete(index int) (T, error) {
 	if index < 0 || index >= len(*array) {
-		return 0, errors.New("index out of bounds")
+		return *new(T), errors.New("index out of bounds")
 	}
 
 	value := (*array)[index]
@@ -78,50 +80,50 @@ func (array *dynamicArray) Delete(index int) (int, error) {
 	return value, nil
 }
 
-func (array dynamicArray) Length() int {
+func (array DynamicArrayType[T]) Length() int {
 	return len(array)
 }
 
-func (array dynamicArray) Capacity() int {
+func (array DynamicArrayType[T]) Capacity() int {
 	return cap(array)
 }
 
-func (array dynamicArray) Traverse() {
+func (array DynamicArrayType[T]) Traverse() {
 	for i, value := range array {
-		fmt.Printf("[%d]:%d, ", i, value)
+		fmt.Printf("[%d]:%v, ", i, value)
 	}
 	fmt.Println()
 }
 
-func (array *dynamicArray) Clear() {
-	*array = dynamicArray{}
+func (array *DynamicArrayType[T]) Clear() {
+	*array = DynamicArrayType[T]{}
 }
 
-func (array dynamicArray) Copy() dynamicArray {
-	newArray := make(dynamicArray, len(array))
+func (array DynamicArrayType[T]) Copy() DynamicArrayType[T] {
+	newArray := make(DynamicArrayType[T], len(array))
 	copy(newArray, array)
 	return newArray
 }
 
-func (array dynamicArray) Slice(start, end int) (dynamicArray, error) {
+func (array DynamicArrayType[T]) Slice(start, end int) (DynamicArrayType[T], error) {
 	if start < 0 || end > len(array) || start >= end {
 		return nil, errors.New("invalid slice range")
 	}
-	slicedData := make(dynamicArray, end-start)
+	slicedData := make(DynamicArrayType[T], end-start)
 	copy(slicedData, array[start:end])
 	return slicedData, nil
 }
 
-func (array dynamicArray) IndexOf(value int) int {
+func (array DynamicArrayType[T]) IndexOf(value T) int {
 	for i, v := range array {
-		if v == value {
+		if cmp.Compare(v, value) == 0 {
 			return i
 		}
 	}
 	return -1
 }
 
-func (array *dynamicArray) Swap(i, j int) error {
+func (array *DynamicArrayType[T]) Swap(i, j int) error {
 	if i < 0 || i >= len(*array) || j < 0 || j >= len(*array) {
 		return errors.New("index out of bounds")
 	}
@@ -130,17 +132,17 @@ func (array *dynamicArray) Swap(i, j int) error {
 	return nil
 }
 
-func (array dynamicArray) Reverse() dynamicArray {
+func (array DynamicArrayType[T]) Reverse() DynamicArrayType[T] {
 	reversed := array.Copy()
-	for left, right := 0, len(reversed)-1; left < right; left, right = left+1, right-1 {
-		reversed[left], reversed[right] = reversed[right], reversed[left]
+	for l, r := 0, len(reversed)-1; l < r; l, r = l+1, r-1 {
+		reversed[l], reversed[r] = reversed[r], reversed[l]
 	}
 	return reversed
 }
 
-func (array dynamicArray) IsSorted() bool {
+func (array DynamicArrayType[T]) IsSorted() bool {
 	for i := 1; i < len(array); i++ {
-		if array[i] < array[i-1] {
+		if cmp.Less(array[i], array[i-1]) {
 			return false
 		}
 	}

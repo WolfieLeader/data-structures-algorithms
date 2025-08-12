@@ -1,31 +1,33 @@
 package sorting
 
+import "github.com/WolfieLeader/data-structures-algorithms/01_array/helpers"
+
 const (
 	Lomuto = iota
 	Hoare
 	Dutch
 )
 
-func QuickSort(arr []int, algorithm int) Array {
-	if len(arr) <= 1 {
-		return arr
+func QuickSort(arr []int, algorithm int) helpers.Array {
+	array, _, skip := helpers.CopyArr(arr, "Quick Sort")
+	if skip {
+		return array
 	}
-	array := copyArray(arr)
 
 	switch algorithm {
 	case Lomuto:
-		printName("Lomuto Quick Sort", array)
+		helpers.PrintName("Lomuto Quick Sort", array)
 		lomutoQuickSort(array, 0, len(array)-1)
 	case Hoare:
-		printName("Hoare Quick Sort", array)
+		helpers.PrintName("Hoare Quick Sort", array)
 		hoareQuickSort(array, 0, len(array)-1)
 	case Dutch:
-		printName("Dutch Quick Sort", array)
+		helpers.PrintName("Dutch Quick Sort", array)
 		dutchQuickSort(array, 0, len(array)-1)
 	default:
 		panic("Unknown quick sort algorithm")
 	}
 
-	printFinal(array)
+	helpers.PrintFinal(array)
 	return array
 }
