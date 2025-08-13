@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/WolfieLeader/data-structures-algorithms/01_array/array_types/dynamic"
-	"github.com/WolfieLeader/data-structures-algorithms/01_array/array_types/matrix"
 	"github.com/WolfieLeader/data-structures-algorithms/01_array/sorting"
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/structures/dynamic"
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/structures/matrix"
 )
 
 func main() {

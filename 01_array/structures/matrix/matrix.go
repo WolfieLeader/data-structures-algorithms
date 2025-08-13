@@ -6,20 +6,20 @@ import (
 	"fmt"
 )
 
-type MatrixArrayType[T cmp.Ordered] struct {
+type Matrix[T cmp.Ordered] struct {
 	data [][]T
 	rows int
 	cols int
 }
 
-func New[T cmp.Ordered](rows, cols int, values ...[]T) (MatrixArrayType[T], error) {
+func New[T cmp.Ordered](rows, cols int, values ...[]T) (Matrix[T], error) {
 	if len(values) > rows {
-		return MatrixArrayType[T]{}, errors.New("too many rows provided")
+		return Matrix[T]{}, errors.New("too many rows provided")
 	}
 
 	for i, row := range values {
 		if len(row) > cols {
-			return MatrixArrayType[T]{}, fmt.Errorf("row %d exceeds specified column count", i)
+			return Matrix[T]{}, fmt.Errorf("row %d exceeds specified column count", i)
 		}
 	}
 
@@ -32,5 +32,5 @@ func New[T cmp.Ordered](rows, cols int, values ...[]T) (MatrixArrayType[T], erro
 		data[i] = row
 	}
 
-	return MatrixArrayType[T]{data: data, rows: rows, cols: cols}, nil
+	return Matrix[T]{data: data, rows: rows, cols: cols}, nil
 }

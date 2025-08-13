@@ -1,8 +1,8 @@
-package dynamic
+package static
 
 import "cmp"
 
-func (array DynamicArrayType[T]) LinearSearch(value T) int {
+func (array Static[T]) LinearSearch(value T) int {
 	for i, v := range array {
 		if cmp.Compare(v, value) == 0 {
 			return i
@@ -11,7 +11,7 @@ func (array DynamicArrayType[T]) LinearSearch(value T) int {
 	return -1
 }
 
-func (array DynamicArrayType[T]) BinarySearch(value T) int {
+func (array Static[T]) BinarySearch(value T) int {
 	if !array.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}

@@ -13,15 +13,15 @@ type MatrixArray[T cmp.Ordered] interface {
 	Traverse()
 	Length() int
 	Clear()
-	Copy() MatrixArrayType[T]
+	Copy() Matrix[T]
 	IndexOf(value T) (int, int)
 	Swap(index1, index2 [2]int) error
 	Fill(value T)
 }
 
-var _ MatrixArray[int] = (*MatrixArrayType[int])(nil)
+var _ MatrixArray[int] = (*Matrix[int])(nil)
 
-func (array *MatrixArrayType[T]) Replace(values ...[]T) error {
+func (array *Matrix[T]) Replace(values ...[]T) error {
 	if len(values) > array.rows {
 		return errors.New("too many rows provided")
 	}
@@ -45,14 +45,14 @@ func (array *MatrixArrayType[T]) Replace(values ...[]T) error {
 	return nil
 }
 
-func (array *MatrixArrayType[T]) Get(row int, col int) (T, error) {
+func (array *Matrix[T]) Get(row int, col int) (T, error) {
 	if row < 0 || row >= array.rows || col < 0 || col >= array.cols {
 		return *new(T), errors.New("index out of bounds")
 	}
 	return array.data[row][col], nil
 }
 
-func (array *MatrixArrayType[T]) Set(row int, col int, value T) error {
+func (array *Matrix[T]) Set(row int, col int, value T) error {
 	if row < 0 || row >= array.rows || col < 0 || col >= array.cols {
 		return errors.New("index out of bounds")
 	}
@@ -61,7 +61,7 @@ func (array *MatrixArrayType[T]) Set(row int, col int, value T) error {
 	return nil
 }
 
-func (array *MatrixArrayType[T]) Traverse() {
+func (array *Matrix[T]) Traverse() {
 	for i := range array.rows {
 		for j := range array.cols {
 			fmt.Printf("([%d][%d]:%v) ", i, j, array.data[i][j])
@@ -70,11 +70,11 @@ func (array *MatrixArrayType[T]) Traverse() {
 	}
 }
 
-func (array *MatrixArrayType[T]) Length() int {
+func (array *Matrix[T]) Length() int {
 	return array.rows * array.cols
 }
 
-func (array *MatrixArrayType[T]) Clear() {
+func (array *Matrix[T]) Clear() {
 	for i := range array.data {
 		for j := range array.data[i] {
 			array.data[i][j] = *new(T)
@@ -82,16 +82,16 @@ func (array *MatrixArrayType[T]) Clear() {
 	}
 }
 
-func (array *MatrixArrayType[T]) Copy() MatrixArrayType[T] {
+func (array *Matrix[T]) Copy() Matrix[T] {
 	newData := make([][]T, array.rows)
 	for i := range array.rows {
 		newData[i] = make([]T, array.cols)
 		copy(newData[i], array.data[i])
 	}
-	return MatrixArrayType[T]{data: newData, rows: array.rows, cols: array.cols}
+	return Matrix[T]{data: newData, rows: array.rows, cols: array.cols}
 }
 
-func (array *MatrixArrayType[T]) IndexOf(value T) (int, int) {
+func (array *Matrix[T]) IndexOf(value T) (int, int) {
 	for i := range array.rows {
 		for j := range array.cols {
 			if cmp.Compare(array.data[i][j], value) == 0 {
@@ -102,7 +102,7 @@ func (array *MatrixArrayType[T]) IndexOf(value T) (int, int) {
 	return -1, -1
 }
 
-func (array *MatrixArrayType[T]) Swap(index1, index2 [2]int) error {
+func (array *Matrix[T]) Swap(index1, index2 [2]int) error {
 	i1, j1 := index1[0], index1[1]
 	i2, j2 := index2[0], index2[1]
 
@@ -115,7 +115,7 @@ func (array *MatrixArrayType[T]) Swap(index1, index2 [2]int) error {
 	return nil
 }
 
-func (array *MatrixArrayType[T]) Fill(value T) {
+func (array *Matrix[T]) Fill(value T) {
 	for i := range array.rows {
 		for j := range array.cols {
 			array.data[i][j] = value
