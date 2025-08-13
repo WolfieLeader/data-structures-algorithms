@@ -2,9 +2,14 @@ package sort
 
 import "cmp"
 
-type array[T cmp.Ordered] []T
+type Ordered = cmp.Ordered
+type array[T Ordered] []T
 
-func copyArray[T cmp.Ordered](arr []T) (array[T], int) {
+func less[T Ordered](a, b T) bool {
+	return cmp.Less(a, b)
+}
+
+func copyArray[T Ordered](arr []T) (array[T], int) {
 	length := len(arr)
 	out := make(array[T], length)
 	copy(out, arr)
