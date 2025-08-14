@@ -18,7 +18,7 @@ func merge[T Ordered](left []T, right []T) []T {
 
 	i, j := 0, 0
 	for i < leftLen && j < rightLen {
-		if less(right[j], left[i]) {
+		if is(left[i], greaterThan, right[j]) {
 			out = append(out, right[j])
 			j++
 		} else {

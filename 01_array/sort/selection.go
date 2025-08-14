@@ -6,15 +6,15 @@ func Selection[T Ordered](arr []T) []T {
 		return array
 	}
 
-	for index := 0; index < length-1; index++ {
-		minIdx := index
+	for pass := 0; pass < length-1; pass++ {
+		minIdx := pass
 
-		for j := index + 1; j < length; j++ {
-			if less(array[j], array[minIdx]) {
-				minIdx = j
+		for i := pass + 1; i < length; i++ {
+			if is(array[i], lessThan, array[minIdx]) {
+				minIdx = i
 			}
 		}
-		array.swap(index, minIdx)
+		array.swap(pass, minIdx)
 	}
 
 	return array

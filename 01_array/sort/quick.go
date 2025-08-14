@@ -12,7 +12,7 @@ func Quick[T Ordered](arr []T) []T {
 	return array
 }
 
-func lomutoQuickSort[T Ordered](array array[T], low int, high int) {
+func lomutoQuickSort[T Ordered](array arrayType[T], low int, high int) {
 	if low >= high {
 		return
 	}
@@ -21,14 +21,14 @@ func lomutoQuickSort[T Ordered](array array[T], low int, high int) {
 	lomutoQuickSort(array, pivot+1, high)
 }
 
-func lomutoPartition[T Ordered](array array[T], low int, high int) int {
+func lomutoPartition[T Ordered](array arrayType[T], low int, high int) int {
 	median := medianOfThree(array, low, high)
 	array.swap(median, high)
 	pivotVal := array[high]
 
 	index := low
 	for j := low; j < high; j++ {
-		if less(array[j], pivotVal) {
+		if is(array[j], lessThan, pivotVal) {
 			array.swap(index, j)
 			index++
 		}
@@ -50,7 +50,7 @@ func QuickHoare[T Ordered](arr []T) []T {
 	return array
 }
 
-func hoareQuickSort[T Ordered](array array[T], low int, high int) {
+func hoareQuickSort[T Ordered](array arrayType[T], low int, high int) {
 	if low >= high {
 		return
 	}
@@ -60,7 +60,7 @@ func hoareQuickSort[T Ordered](array array[T], low int, high int) {
 	hoareQuickSort(array, pivot+1, high)
 }
 
-func hoarePartition[T Ordered](array array[T], low int, high int) int {
+func hoarePartition[T Ordered](array arrayType[T], low int, high int) int {
 	median := medianOfThree(array, low, high)
 	pivotVal := array[median]
 
@@ -68,14 +68,14 @@ func hoarePartition[T Ordered](array array[T], low int, high int) int {
 	for {
 		for {
 			left++
-			if less(array[left], pivotVal) == false {
-				break // stop on array[left] >= pivotVal
+			if is(array[left], greaterOrEqualTo, pivotVal) {
+				break
 			}
 		}
 		for {
 			right--
-			if less(pivotVal, array[right]) == false {
-				break // stop on array[right] <= pivotVal
+			if is(array[right], lessOrEqualTo, pivotVal) {
+				break
 			}
 		}
 		if left >= right {
@@ -97,7 +97,7 @@ func Quick3Way[T Ordered](arr []T) []T {
 	return array
 }
 
-func threeWayQuickSort[T Ordered](array array[T], low int, high int) {
+func threeWayQuickSort[T Ordered](array arrayType[T], low int, high int) {
 	if low >= high {
 		return
 	}
@@ -107,18 +107,18 @@ func threeWayQuickSort[T Ordered](array array[T], low int, high int) {
 	threeWayQuickSort(array, greater+1, high)
 }
 
-func threeWayPartition[T Ordered](array array[T], low int, high int) (int, int) {
+func threeWayPartition[T Ordered](array arrayType[T], low int, high int) (int, int) {
 	median := medianOfThree(array, low, high)
 	pivotVal := array[median]
 
 	lesser, equal, greater := low, low, high
 	for equal <= greater {
 		switch {
-		case less(array[equal], pivotVal):
+		case is(array[equal], lessThan, pivotVal):
 			array.swap(lesser, equal)
 			lesser++
 			equal++
-		case less(pivotVal, array[equal]):
+		case is(array[equal], greaterThan, pivotVal):
 			array.swap(equal, greater)
 			greater--
 		default:
@@ -131,15 +131,15 @@ func threeWayPartition[T Ordered](array array[T], low int, high int) (int, int) 
 
 // ------ Shared Utilities ------
 
-func medianOfThree[T Ordered](array array[T], low, high int) int {
+func medianOfThree[T Ordered](array arrayType[T], low, high int) int {
 	mid := low + (high-low)/2
-	if less(array[mid], array[low]) {
+	if is(array[mid], lessThan, array[low]) {
 		low, mid = mid, low
 	}
-	if less(array[high], array[low]) {
+	if is(array[high], lessThan, array[low]) {
 		low, high = high, low
 	}
-	if less(array[high], array[mid]) {
+	if is(array[high], lessThan, array[mid]) {
 		mid, high = high, mid
 	}
 	return mid // returns the median index without swapping

@@ -8,15 +8,15 @@ func Shell[T Ordered](arr []T) []T {
 
 	gap := length / 2
 	for gap > 0 {
-		for i := gap; i < length; i++ {
-			temp := array[i]
-			j := i
+		for pass := gap; pass < length; pass++ {
+			temp := array[pass]
+			i := pass
 
-			for j >= gap && less(temp, array[j-gap]) {
-				array[j] = array[j-gap]
-				j -= gap
+			for i >= gap && is(temp, lessThan, array[i-gap]) {
+				array[i] = array[i-gap]
+				i -= gap
 			}
-			array[j] = temp
+			array[i] = temp
 		}
 		gap /= 2
 	}

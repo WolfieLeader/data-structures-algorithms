@@ -6,13 +6,13 @@ func Gnome[T Ordered](arr []T) []T {
 		return array
 	}
 
-	index := 1
-	for index < length {
-		if !less(array[index], array[index-1]) {
-			index++
+	i := 1
+	for i < length {
+		if i == 0 || is(array[i], greaterOrEqualTo, array[i-1]) {
+			i++
 		} else {
-			array.swap(index, index-1)
-			index--
+			array.swap(i, i-1)
+			i--
 		}
 	}
 

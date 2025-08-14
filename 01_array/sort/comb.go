@@ -14,7 +14,7 @@ func Comb[T Ordered](arr []T) []T {
 
 		swapped = false
 		for i := 0; i+gap < length; i++ {
-			if less(array[i+gap], array[i]) {
+			if is(array[i], greaterThan, array[i+gap]) {
 				array.swap(i+gap, i)
 				swapped = true
 			}

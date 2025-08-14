@@ -6,12 +6,12 @@ func Bubble[T Ordered](arr []T) []T {
 		return array
 	}
 
-	for index := 0; index < length-1; index++ {
+	for pass := 0; pass < length-1; pass++ {
 		swapped := false
 
-		for j := 0; j < length-1-index; j++ {
-			if less(array[j+1], array[j]) {
-				array.swap(j+1, j)
+		for i := 0; i < length-1-pass; i++ {
+			if is(array[i], greaterThan, array[i+1]) {
+				array.swap(i+1, i)
 				swapped = true
 			}
 		}

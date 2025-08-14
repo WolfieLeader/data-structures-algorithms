@@ -13,7 +13,7 @@ func Cocktail[T Ordered](arr []T) []T {
 
 		// left -> right
 		for i := left; i < right; i++ {
-			if less(array[i+1], array[i]) {
+			if is(array[i], greaterThan, array[i+1]) {
 				array.swap(i+1, i)
 				swapped = true
 				lastRight = i
@@ -28,7 +28,7 @@ func Cocktail[T Ordered](arr []T) []T {
 		swapped = false
 		lastLeft := right
 		for j := right; j > left; j-- {
-			if less(array[j], array[j-1]) {
+			if is(array[j], lessThan, array[j-1]) {
 				array.swap(j, j-1)
 				swapped = true
 				lastLeft = j

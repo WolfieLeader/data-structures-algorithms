@@ -6,16 +6,16 @@ func Insertion[T Ordered](arr []T) []T {
 		return array
 	}
 
-	for index := 1; index < length; index++ {
-		value := array[index]
-		j := index - 1
+	for pass := 1; pass < length; pass++ {
+		value := array[pass]
+		i := pass - 1
 
-		for j >= 0 && less(value, array[j]) {
-			array[j+1] = array[j]
-			j--
+		for i >= 0 && is(array[i], greaterThan, value) {
+			array[i+1] = array[i]
+			i--
 		}
 
-		array[j+1] = value
+		array[i+1] = value
 	}
 	return array
 }
