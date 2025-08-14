@@ -51,4 +51,5 @@ func sortingExample() {
 	fmt.Println(sort.Shell(arr), "- Shell Sort")
 	fmt.Println(sort.Gnome(arr), "- Gnome Sort")
 	fmt.Println(sort.Comb(arr), "- Comb Sort")
+	fmt.Println(sort.Heap(arr), "- Heap Sort")
 }
