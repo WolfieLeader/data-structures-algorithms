@@ -3,14 +3,14 @@ package main
 import (
 	"fmt"
 
-	"github.com/WolfieLeader/data-structures-algorithms/01_array/sorting"
+	"github.com/WolfieLeader/data-structures-algorithms/01_array/sort"
 	"github.com/WolfieLeader/data-structures-algorithms/01_array/structures/dynamic"
 	"github.com/WolfieLeader/data-structures-algorithms/01_array/structures/matrix"
 )
 
 func main() {
-	matrixExample()
-	searchingExample()
+	// matrixExample()
+	// searchingExample()
 	sortingExample()
 }
 
@@ -35,21 +35,20 @@ func searchingExample() {
 }
 
 func sortingExample() {
-	arr := dynamic.New(0, 100, 64, 34, 25, 25, 12, 22, 11, 90, 25, 301, 299, 4, 3, 2, 23)
+	arr := []int{0, 64, 32, 50, 50, -5, 11, 90, 25, 15000, 200, 4, 3, 50, 2, -30, 23, 0, -1, 1, 50}
 
-	sorting.BubbleSort(arr)
-	// sorting.SelectionSort(arr)
-	// sorting.InsertionSort(arr)
-	// sorting.GnomeSort(arr)
-	// sorting.CocktailSort(arr)
-	// sorting.CombSort(arr)
-	// sorting.ShellSort(arr)
-	// sorting.MergeSort(arr)
-	// sorting.QuickSort(arr, sorting.Lomuto)
-	// sorting.QuickSort(arr,sorting.Hoare)
-	// sorting.QuickSort(arr,sorting.Dutch)
-	// sorting.HeapSort(arr)
-	// sorting.CountingSort(arr)
-	// sorting.RadixSort(arr)
-	// sorting.BucketSort(arr)
+	fmt.Println(sort.Bubble(arr), "- Bubble Sort")
+	fmt.Println(sort.Selection(arr), "- Selection Sort")
+	fmt.Println(sort.Insertion(arr), "- Insertion Sort")
+	fmt.Println(sort.Merge(arr), "- Merge Sort")
+	fmt.Println(sort.Quick(arr), "- Quick Sort")
+	fmt.Println(sort.QuickHoare(arr), "- Quick Hoare Sort")
+	fmt.Println(sort.Quick3Way(arr), "- Quick 3-Way Sort")
+	fmt.Println(sort.Bucket(arr), "- Bucket Sort")
+	fmt.Println(sort.Counting(arr), "- Counting Sort")
+	fmt.Println(sort.Radix(arr), "- Radix Sort")
+	fmt.Println(sort.Cocktail(arr), "- Cocktail Sort")
+	fmt.Println(sort.Shell(arr), "- Shell Sort")
+	fmt.Println(sort.Gnome(arr), "- Gnome Sort")
+	fmt.Println(sort.Comb(arr), "- Comb Sort")
 }

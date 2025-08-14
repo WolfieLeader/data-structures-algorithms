@@ -26,16 +26,16 @@ func lomutoPartition[T Ordered](array arrayType[T], low int, high int) int {
 	array.swap(median, high)
 	pivotVal := array[high]
 
-	index := low
+	i := low
 	for j := low; j < high; j++ {
 		if is(array[j], LessThan, pivotVal) {
-			array.swap(index, j)
-			index++
+			array.swap(i, j)
+			i++
 		}
 	}
 
-	array.swap(index, high)
-	return index
+	array.swap(i, high)
+	return i
 }
 
 // ------ Hoare Partition ------
