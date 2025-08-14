@@ -62,3 +62,16 @@ func copyArray[T Ordered](arr []T) (arrayType[T], int) {
 func (array *arrayType[T]) swap(i, j int) {
 	(*array)[i], (*array)[j] = (*array)[j], (*array)[i]
 }
+
+func (array arrayType[T]) findMinMax() (minVal T, maxVal T) {
+	minVal, maxVal = array[0], array[0]
+	for _, value := range array {
+		if is(value, LessThan, minVal) {
+			minVal = value
+		}
+		if is(value, GreaterThan, maxVal) {
+			maxVal = value
+		}
+	}
+	return minVal, maxVal
+}

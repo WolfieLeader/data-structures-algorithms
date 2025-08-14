@@ -6,14 +6,9 @@ func Counting[T Integers](arr []T) []T {
 		return array
 	}
 
-	minVal, maxVal := array[0], array[0]
-	for _, value := range array {
-		if is(value, LessThan, minVal) {
-			minVal = value
-		}
-		if is(value, GreaterThan, maxVal) {
-			maxVal = value
-		}
+	minVal, maxVal := array.findMinMax()
+	if is(minVal, EqualTo, maxVal) {
+		return array
 	}
 
 	rangeSize := int(maxVal-minVal) + 1
