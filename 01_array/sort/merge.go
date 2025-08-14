@@ -14,20 +14,20 @@ func Merge[T Ordered](arr []T) []T {
 
 func merge[T Ordered](left []T, right []T) []T {
 	leftLen, rightLen := len(left), len(right)
-	out := make([]T, 0, leftLen+rightLen)
+	array := make([]T, 0, leftLen+rightLen)
 
 	i, j := 0, 0
 	for i < leftLen && j < rightLen {
-		if is(left[i], greaterThan, right[j]) {
-			out = append(out, right[j])
+		if is(left[i], GreaterThan, right[j]) {
+			array = append(array, right[j])
 			j++
 		} else {
-			out = append(out, left[i])
+			array = append(array, left[i])
 			i++
 		}
 	}
 
-	out = append(out, left[i:]...)
-	out = append(out, right[j:]...)
-	return out
+	array = append(array, left[i:]...)
+	array = append(array, right[j:]...)
+	return array
 }

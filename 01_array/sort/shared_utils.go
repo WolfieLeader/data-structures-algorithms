@@ -8,24 +8,24 @@ type arrayType[T Ordered] []T
 type operator uint8
 
 const (
-	lessThan operator = iota
-	greaterThan
-	lessOrEqualTo
-	greaterOrEqualTo
-	equalTo
+	LessThan operator = iota
+	GreaterThan
+	LessOrEqualTo
+	GreaterOrEqualTo
+	EqualTo
 )
 
 func is[T Ordered](x T, op operator, y T) bool {
 	switch op {
-	case lessThan:
+	case LessThan:
 		return cmp.Less(x, y)
-	case greaterThan:
+	case GreaterThan:
 		return cmp.Less(y, x)
-	case lessOrEqualTo:
+	case LessOrEqualTo:
 		return !cmp.Less(y, x)
-	case greaterOrEqualTo:
+	case GreaterOrEqualTo:
 		return !cmp.Less(x, y)
-	case equalTo:
+	case EqualTo:
 		return !cmp.Less(x, y) && !cmp.Less(y, x)
 	default:
 		panic("Invalid operator")

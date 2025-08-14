@@ -10,7 +10,7 @@ func Bubble[T Ordered](arr []T) []T {
 		swapped := false
 
 		for i := 0; i < length-1-pass; i++ {
-			if is(array[i], greaterThan, array[i+1]) {
+			if is(array[i], GreaterThan, array[i+1]) {
 				array.swap(i+1, i)
 				swapped = true
 			}

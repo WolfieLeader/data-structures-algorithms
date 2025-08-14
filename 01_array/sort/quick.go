@@ -28,7 +28,7 @@ func lomutoPartition[T Ordered](array arrayType[T], low int, high int) int {
 
 	index := low
 	for j := low; j < high; j++ {
-		if is(array[j], lessThan, pivotVal) {
+		if is(array[j], LessThan, pivotVal) {
 			array.swap(index, j)
 			index++
 		}
@@ -68,13 +68,13 @@ func hoarePartition[T Ordered](array arrayType[T], low int, high int) int {
 	for {
 		for {
 			left++
-			if is(array[left], greaterOrEqualTo, pivotVal) {
+			if is(array[left], GreaterOrEqualTo, pivotVal) {
 				break
 			}
 		}
 		for {
 			right--
-			if is(array[right], lessOrEqualTo, pivotVal) {
+			if is(array[right], LessOrEqualTo, pivotVal) {
 				break
 			}
 		}
@@ -114,11 +114,11 @@ func threeWayPartition[T Ordered](array arrayType[T], low int, high int) (int, i
 	lesser, equal, greater := low, low, high
 	for equal <= greater {
 		switch {
-		case is(array[equal], lessThan, pivotVal):
+		case is(array[equal], LessThan, pivotVal):
 			array.swap(lesser, equal)
 			lesser++
 			equal++
-		case is(array[equal], greaterThan, pivotVal):
+		case is(array[equal], GreaterThan, pivotVal):
 			array.swap(equal, greater)
 			greater--
 		default:
@@ -133,13 +133,13 @@ func threeWayPartition[T Ordered](array arrayType[T], low int, high int) (int, i
 
 func medianOfThree[T Ordered](array arrayType[T], low, high int) int {
 	mid := low + (high-low)/2
-	if is(array[mid], lessThan, array[low]) {
+	if is(array[mid], LessThan, array[low]) {
 		low, mid = mid, low
 	}
-	if is(array[high], lessThan, array[low]) {
+	if is(array[high], LessThan, array[low]) {
 		low, high = high, low
 	}
-	if is(array[high], lessThan, array[mid]) {
+	if is(array[high], LessThan, array[mid]) {
 		mid, high = high, mid
 	}
 	return mid // returns the median index without swapping

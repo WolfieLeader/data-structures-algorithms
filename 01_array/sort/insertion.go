@@ -10,7 +10,7 @@ func Insertion[T Ordered](arr []T) []T {
 		value := array[pass]
 		i := pass - 1
 
-		for i >= 0 && is(array[i], greaterThan, value) {
+		for i >= 0 && is(array[i], GreaterThan, value) {
 			array[i+1] = array[i]
 			i--
 		}

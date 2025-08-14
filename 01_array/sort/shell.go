@@ -12,7 +12,7 @@ func Shell[T Ordered](arr []T) []T {
 			temp := array[pass]
 			i := pass
 
-			for i >= gap && is(temp, lessThan, array[i-gap]) {
+			for i >= gap && is(temp, LessThan, array[i-gap]) {
 				array[i] = array[i-gap]
 				i -= gap
 			}

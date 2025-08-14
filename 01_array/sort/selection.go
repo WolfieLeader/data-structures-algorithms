@@ -10,7 +10,7 @@ func Selection[T Ordered](arr []T) []T {
 		minIdx := pass
 
 		for i := pass + 1; i < length; i++ {
-			if is(array[i], lessThan, array[minIdx]) {
+			if is(array[i], LessThan, array[minIdx]) {
 				minIdx = i
 			}
 		}
