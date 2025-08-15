@@ -2,27 +2,67 @@ package matrix
 
 import (
 	"cmp"
-	"errors"
 	"fmt"
 )
 
-func (array *Matrix[T]) Replace(values ...[]T) error {
-	if len(values) > array.rows {
-		return errors.New("too many rows provided")
+func (a matrixArray[T]) Get(row int, col int) (T, error) {
+	if row < 0 || row >= a.rows || col < 0 || col >= a.cols {
+		var zeroValue T
+		return zeroValue, fmt.Errorf("index out of bounds: row %d, col %d", row, col)
+	}
+	return a.data[row][col], nil
+}
+
+func (a matrixArray[T]) GetRow(row int) []T {
+	if row < 0 || row >= a.rows {
+		return nil
+	}
+
+	out := make([]T, a.cols)
+	copy(out, a.data[row])
+	return out
+}
+
+func (a matrixArray[T]) GetCol(col int) []T {
+	if col < 0 || col >= a.cols {
+		return nil
+	}
+
+	out := make([]T, a.rows)
+	for i := 0; i < a.rows; i++ {
+		out[i] = a.data[i][col]
+	}
+	return out
+}
+
+func (a *matrixArray[T]) Set(row int, col int, value T) error {
+	if row < 0 || row >= (*a).rows || col < 0 || col >= (*a).cols {
+		return fmt.Errorf("index out of bounds: row %d, col %d", row, col)
+	}
+
+	(*a).data[row][col] = value
+	return nil
+}
+
+func (a *matrixArray[T]) Replace(values ...[]T) error {
+	if len(values) > (*a).rows {
+		return fmt.Errorf("too many rows provided, got %d, want %d", len(values), a.rows)
 	}
 
 	for i, row := range values {
-		if len(row) > array.cols {
-			return fmt.Errorf("row %d exceeds specified column count", i)
+		if len(row) > (*a).cols {
+			return fmt.Errorf("row %d exceeds specified column count, got %d, want %d", i, len(row), a.cols)
 		}
 	}
 
-	for i := 0; i < array.rows; i++ {
+	var zeroValue T
+
+	for i := 0; i < (*a).rows; i++ {
 		if i < len(values) {
-			copy(array.data[i], values[i])
+			copy((*a).data[i], values[i])
 		} else {
-			for j := range array.data[i] {
-				array.data[i][j] = *new(T)
+			for j := range (*a).data[i] {
+				(*a).data[i][j] = zeroValue
 			}
 		}
 	}
@@ -30,80 +70,92 @@ func (array *Matrix[T]) Replace(values ...[]T) error {
 	return nil
 }
 
-func (array *Matrix[T]) Get(row int, col int) (T, error) {
-	if row < 0 || row >= array.rows || col < 0 || col >= array.cols {
-		return *new(T), errors.New("index out of bounds")
-	}
-	return array.data[row][col], nil
-}
-
-func (array *Matrix[T]) Set(row int, col int, value T) error {
-	if row < 0 || row >= array.rows || col < 0 || col >= array.cols {
-		return errors.New("index out of bounds")
-	}
-
-	array.data[row][col] = value
-	return nil
-}
-
-func (array *Matrix[T]) Traverse() {
-	for i := range array.rows {
-		for j := range array.cols {
-			fmt.Printf("([%d][%d]:%v) ", i, j, array.data[i][j])
-		}
-		fmt.Println()
-	}
-}
-
-func (array *Matrix[T]) Length() int {
-	return array.rows * array.cols
-}
-
-func (array *Matrix[T]) Clear() {
-	for i := range array.data {
-		for j := range array.data[i] {
-			array.data[i][j] = *new(T)
+func (a *matrixArray[T]) Fill(value T) {
+	for i := 0; i < (*a).rows; i++ {
+		for j := 0; j < (*a).cols; j++ {
+			(*a).data[i][j] = value
 		}
 	}
 }
 
-func (array *Matrix[T]) Copy() Matrix[T] {
-	newData := make([][]T, array.rows)
-	for i := range array.rows {
-		newData[i] = make([]T, array.cols)
-		copy(newData[i], array.data[i])
-	}
-	return Matrix[T]{data: newData, rows: array.rows, cols: array.cols}
+func (a *matrixArray[T]) Clear() {
+	var zeroValue T
+	a.Fill(zeroValue)
 }
 
-func (array *Matrix[T]) IndexOf(value T) (int, int) {
-	for i := range array.rows {
-		for j := range array.cols {
-			if cmp.Compare(array.data[i][j], value) == 0 {
-				return i, j
+func (a matrixArray[T]) Rows() int {
+	return a.rows
+}
+
+func (a matrixArray[T]) Cols() int {
+	return a.cols
+}
+
+func (a matrixArray[T]) Dimensions() (int, int) {
+	return a.rows, a.cols
+}
+
+func (a matrixArray[T]) LinearSearch(value T) (int, int) {
+	for row := range a.rows {
+		for col := range a.cols {
+			if cmp.Compare(a.data[row][col], value) == 0 {
+				return row, col
 			}
 		}
 	}
 	return -1, -1
 }
 
-func (array *Matrix[T]) Swap(index1, index2 [2]int) error {
-	i1, j1 := index1[0], index1[1]
-	i2, j2 := index2[0], index2[1]
+func (a matrixArray[T]) Contains(value T) bool {
+	row, col := a.LinearSearch(value)
+	return row != -1 && col != -1
+}
 
-	if i1 < 0 || i1 >= array.rows || j1 < 0 || j1 >= array.cols ||
-		i2 < 0 || i2 >= array.rows || j2 < 0 || j2 >= array.cols {
-		return errors.New("index out of bounds")
+func (a matrixArray[T]) Traverse(fn func(row int, col int, value T) bool) {
+	for i := 0; i < a.rows; i++ {
+		for j := 0; j < a.cols; j++ {
+			if !fn(i, j, a.data[i][j]) {
+				return
+			}
+		}
+	}
+}
+
+func (a *matrixArray[T]) Swap(row1, col1, row2, col2 int) error {
+	if row1 < 0 || row1 >= (*a).rows || col1 < 0 || col1 >= (*a).cols ||
+		row2 < 0 || row2 >= (*a).rows || col2 < 0 || col2 >= (*a).cols {
+		return fmt.Errorf("index out of bounds: row1 %d, col1 %d, row2 %d, col2 %d", row1, col1, row2, col2)
 	}
 
-	array.data[i1][j1], array.data[i2][j2] = array.data[i2][j2], array.data[i1][j1]
+	(*a).data[row1][col1], (*a).data[row2][col2] = (*a).data[row2][col2], (*a).data[row1][col1]
 	return nil
 }
 
-func (array *Matrix[T]) Fill(value T) {
-	for i := range array.rows {
-		for j := range array.cols {
-			array.data[i][j] = value
-		}
+func (a *matrixArray[T]) SwapRow(row1, row2 int) error {
+	if row1 < 0 || row1 >= (*a).rows || row2 < 0 || row2 >= (*a).rows {
+		return fmt.Errorf("index out of bounds: row1 %d, row2 %d", row1, row2)
 	}
+
+	(*a).data[row1], (*a).data[row2] = (*a).data[row2], (*a).data[row1]
+	return nil
+}
+
+func (a *matrixArray[T]) SwapCol(col1, col2 int) error {
+	if col1 < 0 || col1 >= (*a).cols || col2 < 0 || col2 >= (*a).cols {
+		return fmt.Errorf("index out of bounds: col1 %d, col2 %d", col1, col2)
+	}
+
+	for i := 0; i < (*a).rows; i++ {
+		(*a).data[i][col1], (*a).data[i][col2] = (*a).data[i][col2], (*a).data[i][col1]
+	}
+	return nil
+}
+
+func (a matrixArray[T]) Copy() matrixArray[T] {
+	out := make([][]T, a.rows)
+	for i := range a.rows {
+		out[i] = make([]T, a.cols)
+		copy(out[i], a.data[i])
+	}
+	return matrixArray[T]{data: out, rows: a.rows, cols: a.cols}
 }

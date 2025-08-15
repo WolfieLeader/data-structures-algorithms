@@ -13,15 +13,15 @@ type MatrixArray[T cmp.Ordered] interface {
 
 	Rows() int
 	Cols() int
-	Dims() (int, int)
+	Dimensions() (int, int)
 	LinearSearch(value T) (int, int)
 	Contains(value T) bool
-	Traverse(func(row int, col int, value T) bool)
+	Traverse(fn func(row int, col int, value T) bool)
 	Swap(row1, col1, row2, col2 int) error
 	SwapRow(row1, row2 int) error
 	SwapCol(col1, col2 int) error
 
-	Copy() MatrixArray[T]
+	Copy() matrixArray[T]
 }
 
-var _ MatrixArray[int] = (*Matrix[int])(nil)
+var _ MatrixArray[int] = (*matrixArray[int])(nil)
