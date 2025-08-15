@@ -7,92 +7,113 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 )
 
-func (array *Static[T]) Replace(values ...T) {
+func (a Static[T]) Get(i int) (T, error) {
+	if i < 0 || i >= len(a) {
+		var zeroValue T
+		return zeroValue, fmt.Errorf("index out of bounds: %d", i)
+	}
+
+	return a[i], nil
+}
+
+func (a *Static[T]) Set(i int, value T) error {
+	if i < 0 || i >= len(*a) {
+		return fmt.Errorf("index out of bounds: %d", i)
+	}
+
+	(*a)[i] = value
+	return nil
+}
+
+func (a *Static[T]) Replace(values ...T) {
+	var zeroValue T
+	a.Fill(zeroValue)
+
 	if len(values) > SIZE {
 		values = values[:SIZE] // Limit to SIZE elements
 	}
-	copy((*array)[:], values)
+	copy((*a)[:], values)
 }
 
-func (array Static[T]) Get(index int) (T, error) {
-	if index < 0 || index >= len(array) {
-		return *new(T), fmt.Errorf("index out of bounds: %d", index)
+func (a *Static[T]) Fill(value T) {
+	for i := range *a {
+		(*a)[i] = value
 	}
-
-	return array[index], nil
 }
 
-func (array *Static[T]) Set(index int, value T) error {
-	if index < 0 || index >= len(array) {
-		return fmt.Errorf("index out of bounds: %d", index)
-	}
-
-	(*array)[index] = value
-	return nil
+func (a *Static[T]) Clear() {
+	*a = Static[T]{}
 }
 
-func (array Static[T]) Length() int {
-	return len(array)
+func (a Static[T]) Length() int {
+	return len(a)
 }
 
-func (array Static[T]) Traverse() {
-	for i, value := range array {
-		fmt.Printf("[%d]:%v, ", i, value)
-	}
-	fmt.Println()
-}
-
-func (array *Static[T]) Clear() {
-	*array = Static[T]{}
-}
-
-func (array Static[T]) Copy() Static[T] {
-	var copyArray Static[T]
-	copy(copyArray[:], array[:])
-	return copyArray
-}
-
-func (array Static[T]) IndexOf(value T) int {
-	for i, v := range array {
-		if cmp.Compare(v, value) == 0 {
-			return i
-		}
-	}
-	return -1
-}
-
-func (array *Static[T]) Swap(i, j int) error {
-	if i < 0 || i >= len(array) || j < 0 || j >= len(array) {
-		return fmt.Errorf("index out of bounds: %d or %d", i, j)
-	}
-	array[i], array[j] = array[j], array[i]
-	return nil
-}
-
-func (array Static[T]) Reverse() Static[T] {
-	reversed := array.Copy()
-	for l, r := 0, len(reversed)-1; l < r; l, r = l+1, r-1 {
-		reversed[l], reversed[r] = reversed[r], reversed[l]
-	}
-	return reversed
-}
-
-func (array Static[T]) IsSorted() bool {
-	for i := 1; i < len(array); i++ {
-		if cmp.Less(array[i], array[i-1]) {
+func (a Static[T]) IsSorted() bool {
+	for i := 1; i < len(a); i++ {
+		if cmp.Less(a[i], a[i-1]) {
 			return false
 		}
 	}
 	return true
 }
 
-func (array Static[T]) LinearSearch(value T) int {
-	return searching.LinearSearch(array[:], value)
+func (a Static[T]) LinearSearch(value T) int {
+	return searching.LinearSearch(a[:], value)
 }
 
-func (array Static[T]) BinarySearch(value T) int {
-	if !array.IsSorted() {
+func (a Static[T]) BinarySearch(value T) int {
+	if !a.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
-	return searching.BinarySearch(array[:], value)
+	return searching.BinarySearch(a[:], value)
+}
+
+func (a Static[T]) Contains(value T) bool {
+	return a.LinearSearch(value) != -1
+}
+
+func (a Static[T]) Traverse(fn func(i int, value T) bool) {
+	for index, value := range a {
+		if !fn(index, value) {
+			break
+		}
+	}
+}
+
+func (a *Static[T]) Swap(i, j int) error {
+	length := len(*a)
+	if i < 0 || i >= length || j < 0 || j >= length {
+		return fmt.Errorf("index out of bounds: %d or %d", i, j)
+	}
+
+	if i == j {
+		return nil
+	}
+
+	(*a)[i], (*a)[j] = (*a)[j], (*a)[i]
+	return nil
+}
+
+func (a Static[T]) ToSlice() []T {
+	out := make([]T, len(a))
+	copy(out, a[:])
+	return out
+}
+
+func (a Static[T]) Copy() Static[T] {
+	var out Static[T]
+	copy(out[:], a[:])
+	return out
+}
+
+func (a Static[T]) Reverse() Static[T] {
+	out := a.Copy()
+	left, right := 0, len(out)-1
+	for left < right {
+		out[left], out[right] = out[right], out[left]
+		left++
+		right--
+	}
+	return out
 }

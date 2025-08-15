@@ -1,7 +1,7 @@
 package singly
 
 type Node[T comparable] struct {
-	value T
+	Value T
 	next  *Node[T]
 }
 
