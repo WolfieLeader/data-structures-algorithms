@@ -18,8 +18,8 @@ type StaticArray[T cmp.Ordered] interface {
 	Swap(i, j int) error
 
 	ToSlice() []T
-	Copy() Static[T]
-	Reverse() Static[T]
+	Copy() staticArray[T]
+	Reverse() staticArray[T]
 }
 
-var _ StaticArray[int] = (*Static[int])(nil)
+var _ StaticArray[int] = (*staticArray[int])(nil)

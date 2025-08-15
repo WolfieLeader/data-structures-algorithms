@@ -2,8 +2,8 @@ package dynamic
 
 import "cmp"
 
-type Dynamic[T cmp.Ordered] []T
+type dynamicArray[T cmp.Ordered] []T
 
-func New[T cmp.Ordered](values ...T) Dynamic[T] {
-	return append(Dynamic[T]{}, values...)
+func New[T cmp.Ordered](values ...T) dynamicArray[T] {
+	return append(dynamicArray[T]{}, values...)
 }

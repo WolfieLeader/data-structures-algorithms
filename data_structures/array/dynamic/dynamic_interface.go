@@ -3,14 +3,15 @@ package dynamic
 import "cmp"
 
 type DynamicArray[T cmp.Ordered] interface {
-	Get(index int) (T, error)
-	Set(index int, value T) error
+	Get(i int) (T, error)
+	Set(i int, value T) error
 	Replace(values ...T)
-	Append(value ...T)
-	Prepend(value ...T)
-	Delete(index int) (T, error)
+	Append(values ...T)
+	Prepend(values ...T)
+	Insert(i int, value T) error
+	Delete(i int) (T, error)
+	Fill(value T)
 	Clear()
-	Insert(index int, value T) error
 
 	Length() int
 	Capacity() int
@@ -18,12 +19,12 @@ type DynamicArray[T cmp.Ordered] interface {
 	LinearSearch(value T) int
 	BinarySearch(value T) int
 	Contains(value T) bool
-	Traverse(func(index int, value T) bool)
+	Traverse(fn func(i int, value T) bool)
 	Swap(i, j int) error
 
-	Slice(start, end int) (DynamicArray[T], error)
-	Copy() DynamicArray[T]
-	Reverse() DynamicArray[T]
+	Slice(start, end int) (dynamicArray[T], error)
+	Copy() dynamicArray[T]
+	Reverse() dynamicArray[T]
 }
 
-var _ DynamicArray[int] = (*Dynamic[int])(nil)
+var _ DynamicArray[int] = (*dynamicArray[int])(nil)

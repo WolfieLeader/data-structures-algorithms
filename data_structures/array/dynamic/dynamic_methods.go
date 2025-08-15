@@ -2,138 +2,152 @@ package dynamic
 
 import (
 	"cmp"
-	"errors"
 	"fmt"
 
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 )
 
-func (array *Dynamic[T]) Replace(values ...T) {
-	*array = append((*array)[:0], values...)
-}
-
-func (array Dynamic[T]) Get(index int) (T, error) {
-	if index < 0 || index >= len(array) {
-		return *new(T), errors.New("index out of bounds")
+func (a dynamicArray[T]) Get(i int) (T, error) {
+	if i < 0 || i >= len(a) {
+		var zeroValue T
+		return zeroValue, fmt.Errorf("index out of bounds: %d", i)
 	}
-	return array[index], nil
+	return a[i], nil
 }
 
-func (array *Dynamic[T]) Set(index int, value T) error {
-	if index < 0 || index >= len(*array) {
-		return errors.New("index out of bounds")
+func (a *dynamicArray[T]) Set(i int, value T) error {
+	if i < 0 || i >= len(*a) {
+		return fmt.Errorf("index out of bounds: %d", i)
 	}
 	// No need for pointer but good practice to use pointer receiver for mutating methods
-	(*array)[index] = value
+	(*a)[i] = value
 	return nil
 }
 
-func (array *Dynamic[T]) Insert(index int, value T) error {
-	if index < 0 || index > len(*array) {
-		return errors.New("index out of bounds")
+func (a *dynamicArray[T]) Replace(values ...T) {
+	*a = append((*a)[:0], values...)
+}
+
+func (a *dynamicArray[T]) Append(values ...T) {
+	*a = append(*a, values...)
+}
+
+func (a *dynamicArray[T]) Prepend(values ...T) {
+	*a = append(values, *a...)
+}
+
+func (a *dynamicArray[T]) Insert(i int, value T) error {
+	if i < 0 || i > len(*a) {
+		return fmt.Errorf("index out of bounds: %d", i)
 	}
 
-	*array = append(*array, *new(T))           // grow by 1
-	copy((*array)[index+1:], (*array)[index:]) // shift right
-	(*array)[index] = value
+	var zeroValue T
+	*a = append(*a, zeroValue)
+	copy((*a)[i+1:], (*a)[i:])
+	(*a)[i] = value
 
 	return nil
 }
 
-func (array *Dynamic[T]) Append(value ...T) {
-	*array = append(*array, value...)
-}
-
-func (array *Dynamic[T]) Prepend(value ...T) {
-	*array = append(value, *array...)
-}
-
-func (array *Dynamic[T]) Delete(index int) (T, error) {
-	if index < 0 || index >= len(*array) {
-		return *new(T), errors.New("index out of bounds")
+func (a *dynamicArray[T]) Delete(i int) (T, error) {
+	if i < 0 || i >= len(*a) {
+		var zeroValue T
+		return zeroValue, fmt.Errorf("index out of bounds: %d", i)
 	}
 
-	value := (*array)[index]
-	*array = append((*array)[:index], (*array)[index+1:]...)
+	value := (*a)[i]
+	*a = append((*a)[:i], (*a)[i+1:]...)
 	return value, nil
 }
 
-func (array Dynamic[T]) Length() int {
-	return len(array)
-}
-
-func (array Dynamic[T]) Capacity() int {
-	return cap(array)
-}
-
-func (array Dynamic[T]) Traverse() {
-	for i, value := range array {
-		fmt.Printf("[%d]:%v, ", i, value)
+func (a *dynamicArray[T]) Fill(value T) {
+	for i := range *a {
+		(*a)[i] = value
 	}
-	fmt.Println()
 }
 
-func (array *Dynamic[T]) Clear() {
-	*array = Dynamic[T]{}
+func (a *dynamicArray[T]) Clear() {
+	*a = dynamicArray[T]{}
 }
 
-func (array Dynamic[T]) Copy() Dynamic[T] {
-	newArray := make(Dynamic[T], len(array))
-	copy(newArray, array)
-	return newArray
+func (a dynamicArray[T]) Length() int {
+	return len(a)
 }
 
-func (array Dynamic[T]) Slice(start, end int) (Dynamic[T], error) {
-	if start < 0 || end > len(array) || start >= end {
-		return nil, errors.New("invalid slice range")
-	}
-	slicedData := make(Dynamic[T], end-start)
-	copy(slicedData, array[start:end])
-	return slicedData, nil
+func (a dynamicArray[T]) Capacity() int {
+	return cap(a)
 }
 
-func (array Dynamic[T]) IndexOf(value T) int {
-	for i, v := range array {
-		if cmp.Compare(v, value) == 0 {
-			return i
-		}
-	}
-	return -1
-}
-
-func (array *Dynamic[T]) Swap(i, j int) error {
-	if i < 0 || i >= len(*array) || j < 0 || j >= len(*array) {
-		return errors.New("index out of bounds")
-	}
-	// No need for pointer receiver since a slice is a reference type to the underlying array but good practice
-	(*array)[i], (*array)[j] = (*array)[j], (*array)[i]
-	return nil
-}
-
-func (array Dynamic[T]) Reverse() Dynamic[T] {
-	reversed := array.Copy()
-	for l, r := 0, len(reversed)-1; l < r; l, r = l+1, r-1 {
-		reversed[l], reversed[r] = reversed[r], reversed[l]
-	}
-	return reversed
-}
-
-func (array Dynamic[T]) IsSorted() bool {
-	for i := 1; i < len(array); i++ {
-		if cmp.Less(array[i], array[i-1]) {
+func (a dynamicArray[T]) IsSorted() bool {
+	for i := 1; i < len(a); i++ {
+		if cmp.Less(a[i], a[i-1]) {
 			return false
 		}
 	}
 	return true
 }
 
-func (array Dynamic[T]) LinearSearch(value T) int {
-	return searching.LinearSearch(array, value)
+func (a dynamicArray[T]) LinearSearch(value T) int {
+	return searching.LinearSearch(a, value)
 }
 
-func (array Dynamic[T]) BinarySearch(value T) int {
-	if !array.IsSorted() {
+func (a dynamicArray[T]) BinarySearch(value T) int {
+	if !a.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
-	return searching.BinarySearch(array, value)
+	return searching.BinarySearch(a, value)
+}
+
+func (a dynamicArray[T]) Contains(value T) bool {
+	return searching.LinearSearch(a, value) != -1
+}
+
+func (a dynamicArray[T]) Traverse(fn func(i int, value T) bool) {
+	for i, value := range a {
+		if !fn(i, value) {
+			break
+		}
+	}
+}
+
+func (a *dynamicArray[T]) Swap(i, j int) error {
+	length := len(*a)
+	if i < 0 || i >= length || j < 0 || j >= length {
+		return fmt.Errorf("index out of bounds: %d, %d", i, j)
+	}
+
+	if i == j {
+		return nil
+	}
+
+	// No need for pointer receiver since a slice is a reference type to the underlying array but good practice
+	(*a)[i], (*a)[j] = (*a)[j], (*a)[i]
+	return nil
+}
+
+func (a dynamicArray[T]) Slice(start, end int) (dynamicArray[T], error) {
+	if start < 0 || end > len(a) || start >= end {
+		return nil, fmt.Errorf("invalid slice range: %d to %d", start, end)
+	}
+
+	out := make(dynamicArray[T], end-start)
+	copy(out, a[start:end])
+	return out, nil
+}
+
+func (a dynamicArray[T]) Copy() dynamicArray[T] {
+	out := make(dynamicArray[T], len(a))
+	copy(out, a)
+	return out
+}
+
+func (a dynamicArray[T]) Reverse() dynamicArray[T] {
+	out := a.Copy()
+	left, right := 0, len(out)-1
+	for left < right {
+		out[left], out[right] = out[right], out[left]
+		left++
+		right--
+	}
+	return out
 }
