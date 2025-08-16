@@ -1,16 +1,16 @@
 package static
 
 import (
-	"cmp"
 	"fmt"
 
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
+	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
 func (a staticArray[T]) Get(i int) (T, error) {
 	if i < 0 || i >= len(a) {
-		var zeroValue T
-		return zeroValue, fmt.Errorf("index out of bounds: %d", i)
+		var zero T
+		return zero, fmt.Errorf("index out of bounds: %d", i)
 	}
 
 	return a[i], nil
@@ -26,8 +26,8 @@ func (a *staticArray[T]) Set(i int, value T) error {
 }
 
 func (a *staticArray[T]) Replace(values ...T) {
-	var zeroValue T
-	a.Fill(zeroValue)
+	var zero T
+	a.Fill(zero)
 
 	if len(values) > SIZE {
 		values = values[:SIZE] // Limit to SIZE elements
@@ -51,7 +51,7 @@ func (a staticArray[T]) Length() int {
 
 func (a staticArray[T]) IsSorted() bool {
 	for i := 1; i < len(a); i++ {
-		if cmp.Less(a[i], a[i-1]) {
+		if utils.Is(a[i-1], utils.GreaterThan, a[i]) {
 			return false
 		}
 	}

@@ -7,8 +7,8 @@ import (
 
 func (a matrixArray[T]) Get(row int, col int) (T, error) {
 	if row < 0 || row >= a.rows || col < 0 || col >= a.cols {
-		var zeroValue T
-		return zeroValue, fmt.Errorf("index out of bounds: row %d, col %d", row, col)
+		var zero T
+		return zero, fmt.Errorf("index out of bounds: row %d, col %d", row, col)
 	}
 	return a.data[row][col], nil
 }
@@ -55,8 +55,8 @@ func (a *matrixArray[T]) Replace(values ...[]T) error {
 		}
 	}
 
-	var zeroValue T
-	a.Fill(zeroValue)
+	var zero T
+	a.Fill(zero)
 
 	for i := 0; i < len(values); i++ {
 		copy(a.data[i], values[i])
@@ -73,8 +73,8 @@ func (a *matrixArray[T]) Fill(value T) {
 }
 
 func (a *matrixArray[T]) Clear() {
-	var zeroValue T
-	a.Fill(zeroValue)
+	var zero T
+	a.Fill(zero)
 }
 
 func (a matrixArray[T]) Rows() int {

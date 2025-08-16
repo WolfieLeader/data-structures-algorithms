@@ -1,16 +1,16 @@
 package dynamic
 
 import (
-	"cmp"
 	"fmt"
 
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
+	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
 func (a dynamicArray[T]) Get(i int) (T, error) {
 	if i < 0 || i >= len(a) {
-		var zeroValue T
-		return zeroValue, fmt.Errorf("index out of bounds: %d", i)
+		var zero T
+		return zero, fmt.Errorf("index out of bounds: %d", i)
 	}
 	return a[i], nil
 }
@@ -41,8 +41,8 @@ func (a *dynamicArray[T]) Insert(i int, value T) error {
 		return fmt.Errorf("index out of bounds: %d", i)
 	}
 
-	var zeroValue T
-	*a = append(*a, zeroValue)
+	var zero T
+	*a = append(*a, zero)
 	copy((*a)[i+1:], (*a)[i:])
 	(*a)[i] = value
 
@@ -51,8 +51,8 @@ func (a *dynamicArray[T]) Insert(i int, value T) error {
 
 func (a *dynamicArray[T]) Delete(i int) (T, error) {
 	if i < 0 || i >= len(*a) {
-		var zeroValue T
-		return zeroValue, fmt.Errorf("index out of bounds: %d", i)
+		var zero T
+		return zero, fmt.Errorf("index out of bounds: %d", i)
 	}
 
 	value := (*a)[i]
@@ -80,7 +80,7 @@ func (a dynamicArray[T]) Capacity() int {
 
 func (a dynamicArray[T]) IsSorted() bool {
 	for i := 1; i < len(a); i++ {
-		if cmp.Less(a[i], a[i-1]) {
+		if utils.Is(a[i-1], utils.GreaterThan, a[i]) {
 			return false
 		}
 	}

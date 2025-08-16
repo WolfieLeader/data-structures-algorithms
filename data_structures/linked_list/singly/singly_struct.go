@@ -1,16 +1,18 @@
 package singly
 
-type Node[T comparable] struct {
+import "cmp"
+
+type Node[T cmp.Ordered] struct {
 	Value T
 	next  *Node[T]
 }
 
-type Singly[T comparable] struct {
+type singlyLinkedList[T cmp.Ordered] struct {
 	size int
 	head *Node[T]
 	tail *Node[T]
 }
 
-func New[T comparable]() *Singly[T] {
-	return &Singly[T]{}
+func New[T cmp.Ordered]() *singlyLinkedList[T] {
+	return &singlyLinkedList[T]{}
 }

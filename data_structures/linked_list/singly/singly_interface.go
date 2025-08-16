@@ -1,10 +1,12 @@
 package singly
 
-type SinglyLinkedList[T comparable] interface {
+import "cmp"
+
+type SinglyLinkedList[T cmp.Ordered] interface {
 	Size() int
 	IsEmpty() bool
 	Clear()
-	Copy() SinglyLinkedList[T]
+	Copy() *singlyLinkedList[T]
 
 	AddFirst(values ...T)
 	AddLast(values ...T)
@@ -13,26 +15,26 @@ type SinglyLinkedList[T comparable] interface {
 	RemoveFirst() (T, bool)
 	RemoveLast() (T, bool)
 
-	SetAt(position int, value T) bool
+	SetAt(i int, value T) bool
 	SetAtNode(node *Node[T], value T) bool
-	InsertAfter(position int, value T) bool
+	InsertAfter(i int, value T) bool
 	InsertAfterNode(node *Node[T], value T) bool
 
-	RemoveAt(position int) (T, bool)
-	RemoveAfter(position int) (T, bool)
+	RemoveAt(i int) (T, bool)
+	RemoveAfter(i int) (T, bool)
 	RemoveAtNode(node *Node[T]) (T, bool)
 	RemoveAfterNode(node *Node[T]) (T, bool)
-	RemoveValue(value T) (T, bool)
+	RemoveValue(value T) bool
 
-	Get(position int) (T, bool)
+	Get(i int) (T, bool)
 	GetAll() []T
-	LinearSearch(value T) (int, bool)
+	LinearSearch(value T) int
 	Contains(value T) bool
 
-	Traverse(func(position int, value T) bool)
-	Reverse() SinglyLinkedList[T]
+	Traverse(func(i int, value T) bool)
+	Reverse() *singlyLinkedList[T]
 	IsSorted() bool
 	Swap(i, j int) error
 }
 
-var _ SinglyLinkedList[int] = (*Singly[int])(nil)
+var _ SinglyLinkedList[int] = (*singlyLinkedList[int])(nil)
