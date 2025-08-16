@@ -133,14 +133,21 @@ func threeWayPartition[T Ordered](array arrayType[T], low int, high int) (int, i
 
 func medianOfThree[T Ordered](array arrayType[T], low, high int) int {
 	mid := low + (high-low)/2
+
+	// mid < low => swap mid <-> low
 	if is(array[mid], LessThan, array[low]) {
 		low, mid = mid, low
 	}
+
+	// high < low => swap high <-> low
 	if is(array[high], LessThan, array[low]) {
 		low, high = high, low
 	}
+
+	// mid < high => swap mid <-> high
 	if is(array[high], LessThan, array[mid]) {
 		mid, high = high, mid
 	}
+
 	return mid // returns the median index without swapping
 }
