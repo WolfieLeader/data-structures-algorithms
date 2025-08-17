@@ -13,13 +13,11 @@ func main() {
 }
 
 func matrixExample() {
-	twoDArray, err := matrix.New(3, 3, []int{1, 2, 3}, []int{4})
-	if err != nil {
-		fmt.Println("Error creating two-dimensional array:", err)
-		return
-	}
-
-	twoDArray.Traverse()
+	twoDArray := matrix.New[int](3, 3)
+	twoDArray.Traverse(func(i, j int, value int) bool {
+		fmt.Printf("Value at (%d, %d): %d\n", i, j, value)
+		return true
+	})
 }
 
 func searchingExample() {
