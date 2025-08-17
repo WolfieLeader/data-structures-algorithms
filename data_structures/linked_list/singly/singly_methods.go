@@ -11,7 +11,7 @@ func (list singly[T]) Size() int {
 }
 
 func (list singly[T]) IsEmpty() bool {
-	return list.head == nil
+	return list.head == nil || list.tail == nil
 }
 
 func (list *singly[T]) Clear() {
@@ -26,20 +26,22 @@ func (list singly[T]) Copy() *singly[T] {
 	}
 
 	out := New[T]()
-	curr := list.head
-	for curr != nil {
-		out.AddLast(curr.Value)
-		curr = curr.next
-	}
+	list.Traverse(func(i int, value T) bool {
+		out.AddLast(value)
+		return true
+	})
+
 	return out
 }
 
 func (list *singly[T]) AddFirst(values ...T) {
 	for _, value := range values {
-		n := &Node[T]{Value: value, next: list.head}
-		if list.head == nil {
+		n := newNode(value, list.head)
+
+		if list.IsEmpty() {
 			list.tail = n
 		}
+
 		list.head = n
 		list.size++
 	}
@@ -47,42 +49,44 @@ func (list *singly[T]) AddFirst(values ...T) {
 
 func (list *singly[T]) AddLast(values ...T) {
 	for _, value := range values {
-		n := &Node[T]{Value: value}
-		if list.tail == nil {
-			list.head = n
-		} else {
-			list.tail.next = n
+		n := newNode(value, nil)
+		if list.IsEmpty() {
+			list.head, list.tail = n, n
+			list.size++
+			continue
 		}
+		list.tail.next = n
 		list.tail = n
 		list.size++
 	}
 }
 
 func (list singly[T]) GetFirst() (T, bool) {
-	if list.head == nil {
-		var zero T
+	var zero T
+	if list.IsEmpty() {
 		return zero, false
 	}
 	return list.head.Value, true
 }
 
 func (list singly[T]) GetLast() (T, bool) {
-	if list.tail == nil {
-		var zero T
+	var zero T
+	if list.IsEmpty() {
 		return zero, false
 	}
 	return list.tail.Value, true
 }
 
 func (list *singly[T]) RemoveFirst() (T, bool) {
-	if list.head == nil {
-		var zero T
+	var zero T
+	if list.IsEmpty() {
 		return zero, false
 	}
 
 	value := list.head.Value
 	list.head = list.head.next
-	if list.head == nil {
+
+	if list.IsEmpty() {
 		list.tail = nil
 	}
 
@@ -91,15 +95,15 @@ func (list *singly[T]) RemoveFirst() (T, bool) {
 }
 
 func (list *singly[T]) RemoveLast() (T, bool) {
-	if list.tail == nil {
-		var zero T
+	var zero T
+	if list.IsEmpty() {
 		return zero, false
 	}
 
 	value := list.tail.Value
+
 	if list.head == list.tail {
-		list.head, list.tail = nil, nil
-		list.size = 0
+		list.Clear()
 		return value, true
 	}
 
@@ -167,7 +171,7 @@ func (list *singly[T]) InsertAfter(i int, value T) bool {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: curr.next}
+	n := newNode(value, curr.next)
 	curr.next = n
 
 	if n.next == nil {
@@ -192,7 +196,7 @@ func (list *singly[T]) InsertAfterNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: curr.next}
+	n := newNode(value, curr.next)
 	curr.next = n
 
 	if n.next == nil {
@@ -229,7 +233,7 @@ func (list *singly[T]) RemoveAt(i int) (T, bool) {
 	}
 
 	value := prev.next.Value
-	prev.next = (prev.next).next
+	prev.next = prev.next.next
 
 	list.size--
 	return value, true
@@ -253,7 +257,7 @@ func (list *singly[T]) RemoveAfter(i int) (T, bool) {
 	}
 
 	value := curr.next.Value
-	curr.next = (curr.next).next
+	curr.next = curr.next.next
 
 	if curr.next == nil {
 		list.tail = curr
@@ -265,7 +269,6 @@ func (list *singly[T]) RemoveAfter(i int) (T, bool) {
 
 func (list *singly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 	var zero T
-
 	if node == nil {
 		return zero, false
 	}
@@ -273,25 +276,21 @@ func (list *singly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 	if list.head == node {
 		return list.RemoveFirst()
 	}
-
 	if list.tail == node {
 		return list.RemoveLast()
 	}
 
-	curr := list.head
-	for curr != nil && curr.next != node {
-		curr = curr.next
+	prev := list.head
+	for prev != nil && prev.next != node {
+		prev = prev.next
 	}
 
-	if curr == nil {
+	if prev == nil || prev.next == nil {
 		return zero, false
 	}
 
-	value := curr.next.Value
-	curr.next = (curr.next).next
-	if curr.next == nil {
-		list.tail = curr // Already covered but keeping for clarity
-	}
+	value := prev.next.Value
+	prev.next = prev.next.next
 
 	list.size--
 	return value, true
@@ -314,7 +313,8 @@ func (list *singly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
 	}
 
 	value := curr.next.Value
-	curr.next = (curr.next).next
+	curr.next = curr.next.next
+
 	if curr.next == nil {
 		list.tail = curr
 	}
@@ -333,27 +333,26 @@ func (list *singly[T]) RemoveValue(value T) bool {
 		return found
 	}
 
-	curr := list.head
-	for curr != nil && curr.next != nil && curr.next.Value != value {
-		curr = curr.next
-	}
+	prev := list.head
+	for prev != nil && prev.next != nil {
+		if utils.Is(prev.next.Value, utils.EqualTo, value) {
+			prev.next = prev.next.next
 
-	if curr == nil || curr.next == nil {
-		return false
-	}
+			if prev.next == nil {
+				list.tail = prev
+			}
 
-	curr.next = (curr.next).next
-	if curr.next == nil {
-		list.tail = curr
-	}
+			list.size--
+			return true
+		}
 
-	list.size--
-	return true
+		prev = prev.next
+	}
+	return false
 }
 
 func (list singly[T]) Get(i int) (T, bool) {
 	var zero T
-
 	if i < 0 || i >= list.size {
 		return zero, false
 	}
@@ -373,11 +372,11 @@ func (list singly[T]) Get(i int) (T, bool) {
 
 func (list singly[T]) GetAll() []T {
 	out := make([]T, 0, list.size)
-	curr := list.head
-	for curr != nil {
-		out = append(out, curr.Value)
-		curr = curr.next
-	}
+
+	list.Traverse(func(i int, value T) bool {
+		out = append(out, value)
+		return true
+	})
 
 	return out
 }
@@ -385,16 +384,15 @@ func (list singly[T]) GetAll() []T {
 func (list singly[T]) Search(value T) int {
 	i := 0
 	curr := list.head
-	for curr != nil && curr.Value != value {
+	for curr != nil {
+		if utils.Is(curr.Value, utils.EqualTo, value) {
+			return i
+		}
+
 		curr = curr.next
 		i++
 	}
-
-	if curr == nil {
-		return -1
-	}
-
-	return i
+	return -1
 }
 
 func (list singly[T]) Contains(value T) bool {
@@ -403,12 +401,10 @@ func (list singly[T]) Contains(value T) bool {
 
 func (list singly[T]) Traverse(fn func(i int, value T) bool) {
 	i := 0
-	curr := list.head
-	for curr != nil {
+	for curr := list.head; curr != nil; curr = curr.next {
 		if !fn(i, curr.Value) {
 			break
 		}
-		curr = curr.next
 		i++
 	}
 }
@@ -425,6 +421,7 @@ func (list singly[T]) Reverse() *singly[T] {
 		prev = curr
 		curr = next
 	}
+	out.head, out.tail = out.tail, out.head
 	return out
 }
 
@@ -456,16 +453,13 @@ func (list *singly[T]) Swap(i, j int) error {
 		i, j = j, i
 	}
 
-	var prev1, n1, prev2, n2 *Node[T]
-
 	index := 0
-	curr := list.head
-	var prev *Node[T]
-
-	for curr != nil {
+	var prev, prev1, prev2, n1, n2 *Node[T]
+	for curr := list.head; curr != nil; curr = curr.next {
 		if index == i {
 			prev1, n1 = prev, curr
 		}
+
 		if index == j {
 			prev2, n2 = prev, curr
 			break
@@ -473,7 +467,6 @@ func (list *singly[T]) Swap(i, j int) error {
 
 		index++
 		prev = curr
-		curr = curr.next
 	}
 
 	if n1 == nil || n2 == nil {
@@ -487,7 +480,8 @@ func (list *singly[T]) Swap(i, j int) error {
 	}
 
 	if n1.next == n2 {
-		n1.next, n2.next = n2.next, n1
+		n1.next = n2.next
+		n2.next = n1
 
 		if n1.next == nil {
 			list.tail = n1
@@ -496,12 +490,7 @@ func (list *singly[T]) Swap(i, j int) error {
 		return nil
 	}
 
-	if prev2 == nil {
-		list.head = n1
-	} else {
-		prev2.next = n1
-	}
-
+	prev2.next = n1
 	n1.next, n2.next = n2.next, n1.next
 
 	if n1.next == nil {
