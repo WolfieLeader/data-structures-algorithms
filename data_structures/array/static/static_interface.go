@@ -11,15 +11,15 @@ type StaticArray[T cmp.Ordered] interface {
 
 	Length() int
 	IsSorted() bool
-	LinearSearch(value T) int
+	Search(value T) int
 	BinarySearch(value T) int
 	Contains(value T) bool
 	Traverse(fn func(i int, value T) bool)
 	Swap(i, j int) error
 
 	ToSlice() []T
-	Copy() staticArray[T]
-	Reverse() staticArray[T]
+	Copy() static[T]
+	Reverse() static[T]
 }
 
-var _ StaticArray[int] = (*staticArray[int])(nil)
+var _ StaticArray[int] = (*static[int])(nil)

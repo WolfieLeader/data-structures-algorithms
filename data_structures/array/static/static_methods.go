@@ -7,7 +7,7 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (a staticArray[T]) Get(i int) (T, error) {
+func (a static[T]) Get(i int) (T, error) {
 	if i < 0 || i >= len(a) {
 		var zero T
 		return zero, fmt.Errorf("index out of bounds: %d", i)
@@ -16,7 +16,7 @@ func (a staticArray[T]) Get(i int) (T, error) {
 	return a[i], nil
 }
 
-func (a *staticArray[T]) Set(i int, value T) error {
+func (a *static[T]) Set(i int, value T) error {
 	if i < 0 || i >= len(*a) {
 		return fmt.Errorf("index out of bounds: %d", i)
 	}
@@ -25,7 +25,7 @@ func (a *staticArray[T]) Set(i int, value T) error {
 	return nil
 }
 
-func (a *staticArray[T]) Replace(values ...T) {
+func (a *static[T]) Replace(values ...T) {
 	var zero T
 	a.Fill(zero)
 
@@ -35,21 +35,21 @@ func (a *staticArray[T]) Replace(values ...T) {
 	copy((*a)[:], values)
 }
 
-func (a *staticArray[T]) Fill(value T) {
+func (a *static[T]) Fill(value T) {
 	for i := range *a {
 		(*a)[i] = value
 	}
 }
 
-func (a *staticArray[T]) Clear() {
-	*a = staticArray[T]{}
+func (a *static[T]) Clear() {
+	*a = static[T]{}
 }
 
-func (a staticArray[T]) Length() int {
+func (a static[T]) Length() int {
 	return len(a)
 }
 
-func (a staticArray[T]) IsSorted() bool {
+func (a static[T]) IsSorted() bool {
 	for i := 1; i < len(a); i++ {
 		if utils.Is(a[i-1], utils.GreaterThan, a[i]) {
 			return false
@@ -58,22 +58,22 @@ func (a staticArray[T]) IsSorted() bool {
 	return true
 }
 
-func (a staticArray[T]) LinearSearch(value T) int {
+func (a static[T]) Search(value T) int {
 	return searching.LinearSearch(a[:], value)
 }
 
-func (a staticArray[T]) BinarySearch(value T) int {
+func (a static[T]) BinarySearch(value T) int {
 	if !a.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
 	return searching.BinarySearch(a[:], value)
 }
 
-func (a staticArray[T]) Contains(value T) bool {
-	return a.LinearSearch(value) != -1
+func (a static[T]) Contains(value T) bool {
+	return a.Search(value) != -1
 }
 
-func (a staticArray[T]) Traverse(fn func(i int, value T) bool) {
+func (a static[T]) Traverse(fn func(i int, value T) bool) {
 	for index, value := range a {
 		if !fn(index, value) {
 			break
@@ -81,7 +81,7 @@ func (a staticArray[T]) Traverse(fn func(i int, value T) bool) {
 	}
 }
 
-func (a *staticArray[T]) Swap(i, j int) error {
+func (a *static[T]) Swap(i, j int) error {
 	length := len(*a)
 	if i < 0 || i >= length || j < 0 || j >= length {
 		return fmt.Errorf("index out of bounds: %d or %d", i, j)
@@ -95,19 +95,19 @@ func (a *staticArray[T]) Swap(i, j int) error {
 	return nil
 }
 
-func (a staticArray[T]) ToSlice() []T {
+func (a static[T]) ToSlice() []T {
 	out := make([]T, len(a))
 	copy(out, a[:])
 	return out
 }
 
-func (a staticArray[T]) Copy() staticArray[T] {
-	var out staticArray[T]
+func (a static[T]) Copy() static[T] {
+	var out static[T]
 	copy(out[:], a[:])
 	return out
 }
 
-func (a staticArray[T]) Reverse() staticArray[T] {
+func (a static[T]) Reverse() static[T] {
 	out := a.Copy()
 	left, right := 0, len(out)-1
 	for left < right {
