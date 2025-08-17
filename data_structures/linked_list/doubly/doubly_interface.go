@@ -6,7 +6,7 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	Size() int
 	IsEmpty() bool
 	Clear()
-	Copy() *doublyLinkedList[T]
+	Copy() *doubly[T]
 
 	AddFirst(values ...T)
 	AddLast(values ...T)
@@ -28,13 +28,13 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 
 	Get(i int) (T, bool)
 	GetAll() []T
-	LinearSearch(value T) int
+	Search(value T) int
 	Contains(value T) bool
 
 	Traverse(func(i int, value T) bool)
-	Reverse() *doublyLinkedList[T]
+	Reverse() *doubly[T]
 	IsSorted() bool
 	Swap(i, j int) error
 }
 
-var _ DoublyLinkedList[int] = (*doublyLinkedList[int])(nil)
+var _ DoublyLinkedList[int] = (*doubly[int])(nil)

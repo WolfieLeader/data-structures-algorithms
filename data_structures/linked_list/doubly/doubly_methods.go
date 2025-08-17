@@ -1,4 +1,4 @@
-package singly
+package doubly
 
 import (
 	"fmt"
@@ -6,21 +6,21 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (list singly[T]) Size() int {
+func (list doubly[T]) Size() int {
 	return list.size
 }
 
-func (list singly[T]) IsEmpty() bool {
+func (list doubly[T]) IsEmpty() bool {
 	return list.head == nil
 }
 
-func (list *singly[T]) Clear() {
+func (list *doubly[T]) Clear() {
 	list.size = 0
 	list.head = nil
 	list.tail = nil
 }
 
-func (list singly[T]) Copy() *singly[T] {
+func (list doubly[T]) Copy() *doubly[T] {
 	if list.size == 0 {
 		return New[T]()
 	}
@@ -34,20 +34,22 @@ func (list singly[T]) Copy() *singly[T] {
 	return out
 }
 
-func (list *singly[T]) AddFirst(values ...T) {
+func (list *doubly[T]) AddFirst(values ...T) {
 	for _, value := range values {
 		n := &Node[T]{Value: value, next: list.head}
 		if list.head == nil {
 			list.tail = n
+		} else {
+			list.head.prev = n
 		}
 		list.head = n
 		list.size++
 	}
 }
 
-func (list *singly[T]) AddLast(values ...T) {
+func (list *doubly[T]) AddLast(values ...T) {
 	for _, value := range values {
-		n := &Node[T]{Value: value}
+		n := &Node[T]{Value: value, prev: list.tail}
 		if list.tail == nil {
 			list.head = n
 		} else {
@@ -58,7 +60,7 @@ func (list *singly[T]) AddLast(values ...T) {
 	}
 }
 
-func (list singly[T]) GetFirst() (T, bool) {
+func (list doubly[T]) GetFirst() (T, bool) {
 	if list.head == nil {
 		var zero T
 		return zero, false
@@ -66,7 +68,7 @@ func (list singly[T]) GetFirst() (T, bool) {
 	return list.head.Value, true
 }
 
-func (list singly[T]) GetLast() (T, bool) {
+func (list doubly[T]) GetLast() (T, bool) {
 	if list.tail == nil {
 		var zero T
 		return zero, false
@@ -74,7 +76,7 @@ func (list singly[T]) GetLast() (T, bool) {
 	return list.tail.Value, true
 }
 
-func (list *singly[T]) RemoveFirst() (T, bool) {
+func (list *doubly[T]) RemoveFirst() (T, bool) {
 	if list.head == nil {
 		var zero T
 		return zero, false
@@ -84,38 +86,33 @@ func (list *singly[T]) RemoveFirst() (T, bool) {
 	list.head = list.head.next
 	if list.head == nil {
 		list.tail = nil
+	} else {
+		list.head.prev = nil
 	}
 
 	list.size--
 	return value, true
 }
 
-func (list *singly[T]) RemoveLast() (T, bool) {
+func (list *doubly[T]) RemoveLast() (T, bool) {
 	if list.tail == nil {
 		var zero T
 		return zero, false
 	}
 
 	value := list.tail.Value
-	if list.head == list.tail {
-		list.head, list.tail = nil, nil
-		list.size = 0
-		return value, true
+	list.tail = list.tail.prev
+	if list.tail == nil {
+		list.head = nil
+	} else {
+		list.tail.next = nil
 	}
-
-	prev := list.head
-	for prev.next != list.tail {
-		prev = prev.next
-	}
-
-	prev.next = nil
-	list.tail = prev
 
 	list.size--
 	return value, true
 }
 
-func (list *singly[T]) SetAt(i int, value T) bool {
+func (list *doubly[T]) SetAt(i int, value T) bool {
 	if i < 0 || i >= list.size {
 		return false
 	}
@@ -134,7 +131,7 @@ func (list *singly[T]) SetAt(i int, value T) bool {
 	return true
 }
 
-func (list *singly[T]) SetAtNode(node *Node[T], value T) bool {
+func (list *doubly[T]) SetAtNode(node *Node[T], value T) bool {
 	if node == nil {
 		return false
 	}
@@ -152,7 +149,7 @@ func (list *singly[T]) SetAtNode(node *Node[T], value T) bool {
 	return true
 }
 
-func (list *singly[T]) InsertAfter(i int, value T) bool {
+func (list *doubly[T]) InsertAfter(i int, value T) bool {
 	if i < 0 || i >= list.size {
 		return false
 	}
@@ -167,18 +164,20 @@ func (list *singly[T]) InsertAfter(i int, value T) bool {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: curr.next}
+	n := &Node[T]{Value: value, prev: curr, next: curr.next}
 	curr.next = n
 
 	if n.next == nil {
 		list.tail = n
+	} else {
+		n.next.prev = n
 	}
 
 	list.size++
 	return true
 }
 
-func (list *singly[T]) InsertAfterNode(node *Node[T], value T) bool {
+func (list *doubly[T]) InsertAfterNode(node *Node[T], value T) bool {
 	if node == nil {
 		return false
 	}
@@ -192,18 +191,42 @@ func (list *singly[T]) InsertAfterNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: curr.next}
+	n := &Node[T]{Value: value, prev: curr, next: curr.next}
 	curr.next = n
 
 	if n.next == nil {
 		list.tail = n
+	} else {
+		n.next.prev = n
 	}
 
 	list.size++
 	return true
 }
 
-func (list *singly[T]) RemoveAt(i int) (T, bool) {
+func (list *doubly[T]) unlink(curr *Node[T]) (T, bool) {
+	if curr == nil || list.head == nil || list.tail == nil {
+		var zero T
+		return zero, false
+	}
+
+	if curr.prev == nil {
+		list.head = curr.next
+	} else {
+		curr.prev.next = curr.next
+	}
+
+	if curr.next == nil {
+		list.tail = curr.prev
+	} else {
+		curr.next.prev = curr.prev
+	}
+
+	list.size--
+	return curr.Value, true
+}
+
+func (list *doubly[T]) RemoveAt(i int) (T, bool) {
 	var zero T
 
 	if i < 0 || i >= list.size {
@@ -218,24 +241,20 @@ func (list *singly[T]) RemoveAt(i int) (T, bool) {
 		return list.RemoveLast()
 	}
 
-	prev := list.head
-	for prev != nil && i > 1 {
-		prev = prev.next
+	curr := list.head
+	for curr != nil && i > 0 {
+		curr = curr.next
 		i--
 	}
 
-	if prev == nil || prev.next == nil {
+	if curr == nil {
 		return zero, false
 	}
 
-	value := prev.next.Value
-	prev.next = (prev.next).next
-
-	list.size--
-	return value, true
+	return list.unlink(curr)
 }
 
-func (list *singly[T]) RemoveAfter(i int) (T, bool) {
+func (list *doubly[T]) RemoveAfter(i int) (T, bool) {
 	var zero T
 
 	if i < 0 || i >= list.size {
@@ -252,20 +271,11 @@ func (list *singly[T]) RemoveAfter(i int) (T, bool) {
 		return zero, false
 	}
 
-	value := curr.next.Value
-	curr.next = (curr.next).next
-
-	if curr.next == nil {
-		list.tail = curr
-	}
-
-	list.size--
-	return value, true
+	return list.unlink(curr.next)
 }
 
-func (list *singly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
+func (list *doubly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 	var zero T
-
 	if node == nil {
 		return zero, false
 	}
@@ -273,7 +283,6 @@ func (list *singly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 	if list.head == node {
 		return list.RemoveFirst()
 	}
-
 	if list.tail == node {
 		return list.RemoveLast()
 	}
@@ -283,21 +292,10 @@ func (list *singly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 		curr = curr.next
 	}
 
-	if curr == nil {
-		return zero, false
-	}
-
-	value := curr.next.Value
-	curr.next = (curr.next).next
-	if curr.next == nil {
-		list.tail = curr // Already covered but keeping for clarity
-	}
-
-	list.size--
-	return value, true
+	return list.unlink(node)
 }
 
-func (list *singly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
+func (list *doubly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
 	var zero T
 
 	if node == nil {
@@ -309,21 +307,14 @@ func (list *singly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
 		curr = curr.next
 	}
 
-	if curr == nil || curr.next == nil {
+	if curr == nil {
 		return zero, false
 	}
 
-	value := curr.next.Value
-	curr.next = (curr.next).next
-	if curr.next == nil {
-		list.tail = curr
-	}
-
-	list.size--
-	return value, true
+	return list.unlink(curr.next)
 }
 
-func (list *singly[T]) RemoveValue(value T) bool {
+func (list *doubly[T]) RemoveValue(value T) bool {
 	if list.head == nil {
 		return false
 	}
@@ -334,24 +325,17 @@ func (list *singly[T]) RemoveValue(value T) bool {
 	}
 
 	curr := list.head
-	for curr != nil && curr.next != nil && curr.next.Value != value {
+	for curr != nil {
+		if curr.Value == value {
+			list.unlink(curr)
+			return true
+		}
 		curr = curr.next
 	}
-
-	if curr == nil || curr.next == nil {
-		return false
-	}
-
-	curr.next = (curr.next).next
-	if curr.next == nil {
-		list.tail = curr
-	}
-
-	list.size--
-	return true
+	return false
 }
 
-func (list singly[T]) Get(i int) (T, bool) {
+func (list doubly[T]) Get(i int) (T, bool) {
 	var zero T
 
 	if i < 0 || i >= list.size {
@@ -371,7 +355,7 @@ func (list singly[T]) Get(i int) (T, bool) {
 	return curr.Value, true
 }
 
-func (list singly[T]) GetAll() []T {
+func (list doubly[T]) GetAll() []T {
 	out := make([]T, 0, list.size)
 	curr := list.head
 	for curr != nil {
@@ -382,7 +366,7 @@ func (list singly[T]) GetAll() []T {
 	return out
 }
 
-func (list singly[T]) Search(value T) int {
+func (list doubly[T]) Search(value T) int {
 	i := 0
 	curr := list.head
 	for curr != nil && curr.Value != value {
@@ -397,11 +381,11 @@ func (list singly[T]) Search(value T) int {
 	return i
 }
 
-func (list singly[T]) Contains(value T) bool {
+func (list doubly[T]) Contains(value T) bool {
 	return list.Search(value) != -1
 }
 
-func (list singly[T]) Traverse(fn func(i int, value T) bool) {
+func (list doubly[T]) Traverse(fn func(i int, value T) bool) {
 	i := 0
 	curr := list.head
 	for curr != nil {
@@ -413,22 +397,19 @@ func (list singly[T]) Traverse(fn func(i int, value T) bool) {
 	}
 }
 
-func (list singly[T]) Reverse() *singly[T] {
-	var prev, next *Node[T]
+func (list doubly[T]) Reverse() *doubly[T] {
 
 	out := list.Copy()
 	curr := out.head
 	for curr != nil {
-		next = curr.next
-		curr.next = prev
-
-		prev = curr
-		curr = next
+		curr.prev, curr.next = curr.next, curr.prev
+		curr = curr.prev
 	}
+	out.head, out.tail = out.tail, out.head
 	return out
 }
 
-func (list singly[T]) IsSorted() bool {
+func (list doubly[T]) IsSorted() bool {
 	if list.size <= 1 {
 		return true
 	}
@@ -443,7 +424,7 @@ func (list singly[T]) IsSorted() bool {
 	return true
 }
 
-func (list *singly[T]) Swap(i, j int) error {
+func (list *doubly[T]) Swap(i, j int) error {
 	if i < 0 || j < 0 || i >= list.size || j >= list.size {
 		return fmt.Errorf("index out of bounds: i=%d, j=%d", i, j)
 	}
@@ -456,23 +437,21 @@ func (list *singly[T]) Swap(i, j int) error {
 		i, j = j, i
 	}
 
-	var prev1, n1, prev2, n2 *Node[T]
+	var n1, n2 *Node[T]
 
 	index := 0
 	curr := list.head
-	var prev *Node[T]
 
 	for curr != nil {
 		if index == i {
-			prev1, n1 = prev, curr
+			n1 = curr
 		}
 		if index == j {
-			prev2, n2 = prev, curr
+			n2 = curr
 			break
 		}
 
 		index++
-		prev = curr
 		curr = curr.next
 	}
 
@@ -480,35 +459,55 @@ func (list *singly[T]) Swap(i, j int) error {
 		return fmt.Errorf("nodes not found at i=%d, j=%d", i, j)
 	}
 
-	if prev1 == nil {
-		list.head = n2
+	prev1, prev2 := n1.prev, n2.prev
+	next1, next2 := n1.next, n2.next
+
+	if next1 != n2 {
+		// reconnect neighbors to opposite nodes
+		if prev1 != nil {
+			prev1.next = n2
+		} else {
+			list.head = n2
+		}
+		if next1 != nil {
+			next1.prev = n2
+		}
+		if prev2 != nil {
+			prev2.next = n1
+		} else {
+			list.head = n1
+		}
+		if next2 != nil {
+			next2.prev = n1
+		}
+
+		// swap n1 <-> n2 links
+		n1.prev, n1.next, n2.prev, n2.next = prev2, next2, prev1, next1
 	} else {
-		prev1.next = n2
-	}
-
-	if n1.next == n2 {
-		n1.next, n2.next = n2.next, n1
-
-		if n1.next == nil {
+		// n1 <-> n2 are adjacent: prev1 -> n1 -> n2 -> nj
+		if prev1 != nil {
+			prev1.next = n2
+		} else {
+			list.head = n2
+		}
+		if next2 != nil {
+			next2.prev = n1
+		} else {
 			list.tail = n1
 		}
 
-		return nil
+		n2.prev = prev1
+		n1.next = next2
+		n2.next = n1
+		n1.prev = n2
 	}
 
-	if prev2 == nil {
-		list.head = n1
-	} else {
-		prev2.next = n1
-	}
-
-	n1.next, n2.next = n2.next, n1.next
-
+	// fix tail (for non-adjacent case we may need both checks)
 	if n1.next == nil {
 		list.tail = n1
-	} else if n2.next == nil {
+	}
+	if n2.next == nil {
 		list.tail = n2
 	}
-
 	return nil
 }
