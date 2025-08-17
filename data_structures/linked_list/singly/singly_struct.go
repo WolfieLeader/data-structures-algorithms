@@ -7,12 +7,12 @@ type Node[T cmp.Ordered] struct {
 	next  *Node[T]
 }
 
-type singlyLinkedList[T cmp.Ordered] struct {
+type singly[T cmp.Ordered] struct {
 	size int
 	head *Node[T]
 	tail *Node[T]
 }
 
-func New[T cmp.Ordered]() *singlyLinkedList[T] {
-	return &singlyLinkedList[T]{}
+func New[T cmp.Ordered]() *singly[T] {
+	return &singly[T]{}
 }
