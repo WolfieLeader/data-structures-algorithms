@@ -7,111 +7,111 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (a dynamicArray[T]) Get(i int) (T, error) {
-	if i < 0 || i >= len(a) {
+func (arr dynamic[T]) Get(i int) (T, error) {
+	if i < 0 || i >= len(arr) {
 		var zero T
 		return zero, fmt.Errorf("index out of bounds: %d", i)
 	}
-	return a[i], nil
+	return arr[i], nil
 }
 
-func (a *dynamicArray[T]) Set(i int, value T) error {
-	if i < 0 || i >= len(*a) {
+func (arr *dynamic[T]) Set(i int, value T) error {
+	if i < 0 || i >= len(*arr) {
 		return fmt.Errorf("index out of bounds: %d", i)
 	}
 	// No need for pointer but good practice to use pointer receiver for mutating methods
-	(*a)[i] = value
+	(*arr)[i] = value
 	return nil
 }
 
-func (a *dynamicArray[T]) Replace(values ...T) {
-	*a = append((*a)[:0], values...)
+func (arr *dynamic[T]) Replace(values ...T) {
+	*arr = append((*arr)[:0], values...)
 }
 
-func (a *dynamicArray[T]) Append(values ...T) {
-	*a = append(*a, values...)
+func (arr *dynamic[T]) Append(values ...T) {
+	*arr = append(*arr, values...)
 }
 
-func (a *dynamicArray[T]) Prepend(values ...T) {
-	*a = append(values, *a...)
+func (arr *dynamic[T]) Prepend(values ...T) {
+	*arr = append(values, *arr...)
 }
 
-func (a *dynamicArray[T]) Insert(i int, value T) error {
-	if i < 0 || i > len(*a) {
+func (arr *dynamic[T]) Insert(i int, value T) error {
+	if i < 0 || i > len(*arr) {
 		return fmt.Errorf("index out of bounds: %d", i)
 	}
 
 	var zero T
-	*a = append(*a, zero)
-	copy((*a)[i+1:], (*a)[i:])
-	(*a)[i] = value
+	*arr = append(*arr, zero)
+	copy((*arr)[i+1:], (*arr)[i:])
+	(*arr)[i] = value
 
 	return nil
 }
 
-func (a *dynamicArray[T]) Delete(i int) (T, error) {
-	if i < 0 || i >= len(*a) {
+func (arr *dynamic[T]) Delete(i int) (T, error) {
+	if i < 0 || i >= len(*arr) {
 		var zero T
 		return zero, fmt.Errorf("index out of bounds: %d", i)
 	}
 
-	value := (*a)[i]
-	*a = append((*a)[:i], (*a)[i+1:]...)
+	value := (*arr)[i]
+	*arr = append((*arr)[:i], (*arr)[i+1:]...)
 	return value, nil
 }
 
-func (a *dynamicArray[T]) Fill(value T) {
-	for i := range *a {
-		(*a)[i] = value
+func (arr *dynamic[T]) Fill(value T) {
+	for i := range *arr {
+		(*arr)[i] = value
 	}
 }
 
-func (a *dynamicArray[T]) Clear() {
-	*a = dynamicArray[T]{}
+func (arr *dynamic[T]) Clear() {
+	*arr = dynamic[T]{}
 }
 
-func (a dynamicArray[T]) Length() int {
-	return len(a)
+func (arr dynamic[T]) Length() int {
+	return len(arr)
 }
 
-func (a dynamicArray[T]) Capacity() int {
-	return cap(a)
+func (arr dynamic[T]) Capacity() int {
+	return cap(arr)
 }
 
-func (a dynamicArray[T]) IsSorted() bool {
-	for i := 1; i < len(a); i++ {
-		if utils.Is(a[i-1], utils.GreaterThan, a[i]) {
+func (arr dynamic[T]) IsSorted() bool {
+	for i := 1; i < len(arr); i++ {
+		if utils.Is(arr[i-1], utils.GreaterThan, arr[i]) {
 			return false
 		}
 	}
 	return true
 }
 
-func (a dynamicArray[T]) LinearSearch(value T) int {
-	return searching.LinearSearch(a, value)
+func (arr dynamic[T]) Search(value T) int {
+	return searching.LinearSearch(arr, value)
 }
 
-func (a dynamicArray[T]) BinarySearch(value T) int {
-	if !a.IsSorted() {
+func (arr dynamic[T]) BinarySearch(value T) int {
+	if !arr.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
-	return searching.BinarySearch(a, value)
+	return searching.BinarySearch(arr, value)
 }
 
-func (a dynamicArray[T]) Contains(value T) bool {
-	return searching.LinearSearch(a, value) != -1
+func (arr dynamic[T]) Contains(value T) bool {
+	return arr.Search(value) != -1
 }
 
-func (a dynamicArray[T]) Traverse(fn func(i int, value T) bool) {
-	for i, value := range a {
+func (arr dynamic[T]) Traverse(fn func(i int, value T) bool) {
+	for i, value := range arr {
 		if !fn(i, value) {
 			break
 		}
 	}
 }
 
-func (a *dynamicArray[T]) Swap(i, j int) error {
-	length := len(*a)
+func (arr *dynamic[T]) Swap(i, j int) error {
+	length := len(*arr)
 	if i < 0 || i >= length || j < 0 || j >= length {
 		return fmt.Errorf("index out of bounds: %d, %d", i, j)
 	}
@@ -121,28 +121,28 @@ func (a *dynamicArray[T]) Swap(i, j int) error {
 	}
 
 	// No need for pointer receiver since a slice is a reference type to the underlying array but good practice
-	(*a)[i], (*a)[j] = (*a)[j], (*a)[i]
+	(*arr)[i], (*arr)[j] = (*arr)[j], (*arr)[i]
 	return nil
 }
 
-func (a dynamicArray[T]) Slice(start, end int) (dynamicArray[T], error) {
-	if start < 0 || end > len(a) || start >= end {
+func (arr dynamic[T]) Slice(start, end int) (dynamic[T], error) {
+	if start < 0 || end > len(arr) || start >= end {
 		return nil, fmt.Errorf("invalid slice range: %d to %d", start, end)
 	}
 
-	out := make(dynamicArray[T], end-start)
-	copy(out, a[start:end])
+	out := make(dynamic[T], end-start)
+	copy(out, arr[start:end])
 	return out, nil
 }
 
-func (a dynamicArray[T]) Copy() dynamicArray[T] {
-	out := make(dynamicArray[T], len(a))
-	copy(out, a)
+func (arr dynamic[T]) Copy() dynamic[T] {
+	out := make(dynamic[T], len(arr))
+	copy(out, arr)
 	return out
 }
 
-func (a dynamicArray[T]) Reverse() dynamicArray[T] {
-	out := a.Copy()
+func (arr dynamic[T]) Reverse() dynamic[T] {
+	out := arr.Copy()
 	left, right := 0, len(out)-1
 	for left < right {
 		out[left], out[right] = out[right], out[left]

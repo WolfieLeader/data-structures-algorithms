@@ -16,15 +16,15 @@ type DynamicArray[T cmp.Ordered] interface {
 	Length() int
 	Capacity() int
 	IsSorted() bool
-	LinearSearch(value T) int
+	Search(value T) int
 	BinarySearch(value T) int
 	Contains(value T) bool
 	Traverse(fn func(i int, value T) bool)
 	Swap(i, j int) error
 
-	Slice(start, end int) (dynamicArray[T], error)
-	Copy() dynamicArray[T]
-	Reverse() dynamicArray[T]
+	Slice(start, end int) (dynamic[T], error)
+	Copy() dynamic[T]
+	Reverse() dynamic[T]
 }
 
-var _ DynamicArray[int] = (*dynamicArray[int])(nil)
+var _ DynamicArray[int] = (*dynamic[int])(nil)
