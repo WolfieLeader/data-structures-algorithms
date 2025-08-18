@@ -7,7 +7,7 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (arr dynamic[T]) Get(i int) (T, error) {
+func (arr Dynamic[T]) Get(i int) (T, error) {
 	if i < 0 || i >= len(arr) {
 		var zero T
 		return zero, fmt.Errorf("index out of bounds: %d", i)
@@ -15,7 +15,7 @@ func (arr dynamic[T]) Get(i int) (T, error) {
 	return arr[i], nil
 }
 
-func (arr *dynamic[T]) Set(i int, value T) error {
+func (arr *Dynamic[T]) Set(i int, value T) error {
 	if i < 0 || i >= len(*arr) {
 		return fmt.Errorf("index out of bounds: %d", i)
 	}
@@ -24,19 +24,19 @@ func (arr *dynamic[T]) Set(i int, value T) error {
 	return nil
 }
 
-func (arr *dynamic[T]) Replace(values ...T) {
+func (arr *Dynamic[T]) Replace(values ...T) {
 	*arr = append((*arr)[:0], values...)
 }
 
-func (arr *dynamic[T]) Append(values ...T) {
+func (arr *Dynamic[T]) Append(values ...T) {
 	*arr = append(*arr, values...)
 }
 
-func (arr *dynamic[T]) Prepend(values ...T) {
+func (arr *Dynamic[T]) Prepend(values ...T) {
 	*arr = append(values, *arr...)
 }
 
-func (arr *dynamic[T]) Insert(i int, value T) error {
+func (arr *Dynamic[T]) Insert(i int, value T) error {
 	if i < 0 || i > len(*arr) {
 		return fmt.Errorf("index out of bounds: %d", i)
 	}
@@ -49,7 +49,7 @@ func (arr *dynamic[T]) Insert(i int, value T) error {
 	return nil
 }
 
-func (arr *dynamic[T]) Delete(i int) (T, error) {
+func (arr *Dynamic[T]) Delete(i int) (T, error) {
 	if i < 0 || i >= len(*arr) {
 		var zero T
 		return zero, fmt.Errorf("index out of bounds: %d", i)
@@ -60,25 +60,25 @@ func (arr *dynamic[T]) Delete(i int) (T, error) {
 	return value, nil
 }
 
-func (arr *dynamic[T]) Fill(value T) {
+func (arr *Dynamic[T]) Fill(value T) {
 	for i := range *arr {
 		(*arr)[i] = value
 	}
 }
 
-func (arr *dynamic[T]) Clear() {
-	*arr = dynamic[T]{}
+func (arr *Dynamic[T]) Clear() {
+	*arr = Dynamic[T]{}
 }
 
-func (arr dynamic[T]) Length() int {
+func (arr Dynamic[T]) Length() int {
 	return len(arr)
 }
 
-func (arr dynamic[T]) Capacity() int {
+func (arr Dynamic[T]) Capacity() int {
 	return cap(arr)
 }
 
-func (arr dynamic[T]) IsSorted() bool {
+func (arr Dynamic[T]) IsSorted() bool {
 	for i := 1; i < len(arr); i++ {
 		if utils.Is(arr[i-1], utils.GreaterThan, arr[i]) {
 			return false
@@ -87,22 +87,22 @@ func (arr dynamic[T]) IsSorted() bool {
 	return true
 }
 
-func (arr dynamic[T]) Search(value T) int {
+func (arr Dynamic[T]) Search(value T) int {
 	return searching.LinearSearch(arr, value)
 }
 
-func (arr dynamic[T]) BinarySearch(value T) int {
+func (arr Dynamic[T]) BinarySearch(value T) int {
 	if !arr.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
 	return searching.BinarySearch(arr, value)
 }
 
-func (arr dynamic[T]) Contains(value T) bool {
+func (arr Dynamic[T]) Contains(value T) bool {
 	return arr.Search(value) != -1
 }
 
-func (arr dynamic[T]) Traverse(fn func(i int, value T) bool) {
+func (arr Dynamic[T]) Traverse(fn func(i int, value T) bool) {
 	for i, value := range arr {
 		if !fn(i, value) {
 			break
@@ -110,7 +110,7 @@ func (arr dynamic[T]) Traverse(fn func(i int, value T) bool) {
 	}
 }
 
-func (arr *dynamic[T]) Swap(i, j int) error {
+func (arr *Dynamic[T]) Swap(i, j int) error {
 	length := len(*arr)
 	if i < 0 || i >= length || j < 0 || j >= length {
 		return fmt.Errorf("index out of bounds: %d, %d", i, j)
@@ -125,23 +125,23 @@ func (arr *dynamic[T]) Swap(i, j int) error {
 	return nil
 }
 
-func (arr dynamic[T]) Slice(start, end int) (dynamic[T], error) {
+func (arr Dynamic[T]) Slice(start, end int) (Dynamic[T], error) {
 	if start < 0 || end > len(arr) || start >= end {
 		return nil, fmt.Errorf("invalid slice range: %d to %d", start, end)
 	}
 
-	out := make(dynamic[T], end-start)
+	out := make(Dynamic[T], end-start)
 	copy(out, arr[start:end])
 	return out, nil
 }
 
-func (arr dynamic[T]) Copy() dynamic[T] {
-	out := make(dynamic[T], len(arr))
+func (arr Dynamic[T]) Copy() Dynamic[T] {
+	out := make(Dynamic[T], len(arr))
 	copy(out, arr)
 	return out
 }
 
-func (arr dynamic[T]) Reverse() dynamic[T] {
+func (arr Dynamic[T]) Reverse() Dynamic[T] {
 	out := arr.Copy()
 	left, right := 0, len(out)-1
 	for left < right {

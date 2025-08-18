@@ -21,7 +21,7 @@ type MatrixArray[T cmp.Ordered] interface {
 	SwapRow(row1, row2 int) error
 	SwapCol(col1, col2 int) error
 
-	Copy() matrix[T]
+	Copy() Matrix[T]
 }
 
-var _ MatrixArray[int] = (*matrix[int])(nil)
+var _ MatrixArray[int] = (*Matrix[int])(nil)
