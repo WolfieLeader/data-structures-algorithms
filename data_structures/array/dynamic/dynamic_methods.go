@@ -1,27 +1,25 @@
 package dynamic
 
 import (
-	"fmt"
-
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (arr Dynamic[T]) Get(i int) (T, error) {
+func (arr Dynamic[T]) Get(i int) (T, bool) {
 	if i < 0 || i >= len(arr) {
 		var zero T
-		return zero, fmt.Errorf("index out of bounds: %d", i)
+		return zero, false
 	}
-	return arr[i], nil
+	return arr[i], true
 }
 
-func (arr *Dynamic[T]) Set(i int, value T) error {
+func (arr *Dynamic[T]) Set(i int, value T) bool {
 	if i < 0 || i >= len(*arr) {
-		return fmt.Errorf("index out of bounds: %d", i)
+		return false
 	}
 	// No need for pointer but good practice to use pointer receiver for mutating methods
 	(*arr)[i] = value
-	return nil
+	return true
 }
 
 func (arr *Dynamic[T]) Replace(values ...T) {
@@ -36,9 +34,9 @@ func (arr *Dynamic[T]) Prepend(values ...T) {
 	*arr = append(values, *arr...)
 }
 
-func (arr *Dynamic[T]) Insert(i int, value T) error {
+func (arr *Dynamic[T]) Insert(i int, value T) bool {
 	if i < 0 || i > len(*arr) {
-		return fmt.Errorf("index out of bounds: %d", i)
+		return false
 	}
 
 	var zero T
@@ -46,18 +44,18 @@ func (arr *Dynamic[T]) Insert(i int, value T) error {
 	copy((*arr)[i+1:], (*arr)[i:])
 	(*arr)[i] = value
 
-	return nil
+	return true
 }
 
-func (arr *Dynamic[T]) Delete(i int) (T, error) {
+func (arr *Dynamic[T]) Delete(i int) (T, bool) {
 	if i < 0 || i >= len(*arr) {
 		var zero T
-		return zero, fmt.Errorf("index out of bounds: %d", i)
+		return zero, false
 	}
 
 	value := (*arr)[i]
 	*arr = append((*arr)[:i], (*arr)[i+1:]...)
-	return value, nil
+	return value, true
 }
 
 func (arr *Dynamic[T]) Fill(value T) {
@@ -87,6 +85,10 @@ func (arr Dynamic[T]) IsSorted() bool {
 	return true
 }
 
+func (arr Dynamic[T]) IsEmpty() bool {
+	return len(arr) == 0
+}
+
 func (arr Dynamic[T]) Search(value T) int {
 	return searching.LinearSearch(arr, value)
 }
@@ -110,29 +112,29 @@ func (arr Dynamic[T]) Traverse(fn func(i int, value T) bool) {
 	}
 }
 
-func (arr *Dynamic[T]) Swap(i, j int) error {
+func (arr *Dynamic[T]) Swap(i, j int) bool {
 	length := len(*arr)
 	if i < 0 || i >= length || j < 0 || j >= length {
-		return fmt.Errorf("index out of bounds: %d, %d", i, j)
+		return false
 	}
 
 	if i == j {
-		return nil
+		return true
 	}
 
 	// No need for pointer receiver since a slice is a reference type to the underlying array but good practice
 	(*arr)[i], (*arr)[j] = (*arr)[j], (*arr)[i]
-	return nil
+	return true
 }
 
-func (arr Dynamic[T]) Slice(start, end int) (Dynamic[T], error) {
+func (arr Dynamic[T]) Slice(start, end int) (Dynamic[T], bool) {
 	if start < 0 || end > len(arr) || start >= end {
-		return nil, fmt.Errorf("invalid slice range: %d to %d", start, end)
+		return nil, false
 	}
 
 	out := make(Dynamic[T], end-start)
 	copy(out, arr[start:end])
-	return out, nil
+	return out, true
 }
 
 func (arr Dynamic[T]) Copy() Dynamic[T] {

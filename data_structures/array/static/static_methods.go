@@ -1,28 +1,26 @@
 package static
 
 import (
-	"fmt"
-
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (arr Static[T]) Get(i int) (T, error) {
+func (arr Static[T]) Get(i int) (T, bool) {
 	if i < 0 || i >= len(arr) {
 		var zero T
-		return zero, fmt.Errorf("index out of bounds: %d", i)
+		return zero, false
 	}
 
-	return arr[i], nil
+	return arr[i], true
 }
 
-func (arr *Static[T]) Set(i int, value T) error {
+func (arr *Static[T]) Set(i int, value T) bool {
 	if i < 0 || i >= len(*arr) {
-		return fmt.Errorf("index out of bounds: %d", i)
+		return false
 	}
 
 	(*arr)[i] = value
-	return nil
+	return true
 }
 
 func (arr *Static[T]) Replace(values ...T) {
@@ -58,6 +56,10 @@ func (arr Static[T]) IsSorted() bool {
 	return true
 }
 
+func (arr Static[T]) IsEmpty() bool {
+	return len(arr) == 0
+}
+
 func (arr Static[T]) Search(value T) int {
 	return searching.LinearSearch(arr[:], value)
 }
@@ -81,18 +83,18 @@ func (arr Static[T]) Traverse(fn func(i int, value T) bool) {
 	}
 }
 
-func (arr *Static[T]) Swap(i, j int) error {
+func (arr *Static[T]) Swap(i, j int) bool {
 	length := len(*arr)
 	if i < 0 || i >= length || j < 0 || j >= length {
-		return fmt.Errorf("index out of bounds: %d or %d", i, j)
+		return false
 	}
 
 	if i == j {
-		return nil
+		return true
 	}
 
 	(*arr)[i], (*arr)[j] = (*arr)[j], (*arr)[i]
-	return nil
+	return true
 }
 
 func (arr Static[T]) ToSlice() []T {
