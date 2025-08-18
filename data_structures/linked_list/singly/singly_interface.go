@@ -6,7 +6,7 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	Size() int
 	IsEmpty() bool
 	Clear()
-	Copy() *singly[T]
+	Copy() *Singly[T]
 
 	AddFirst(values ...T)
 	AddLast(values ...T)
@@ -32,9 +32,9 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	Contains(value T) bool
 
 	Traverse(func(i int, value T) bool)
-	Reverse() *singly[T]
+	Reverse() *Singly[T]
 	IsSorted() bool
 	Swap(i, j int) error
 }
 
-var _ SinglyLinkedList[int] = (*singly[int])(nil)
+var _ SinglyLinkedList[int] = (*Singly[int])(nil)

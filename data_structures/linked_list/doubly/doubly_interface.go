@@ -6,7 +6,7 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	Size() int
 	IsEmpty() bool
 	Clear()
-	Copy() *doubly[T]
+	Copy() *Doubly[T]
 
 	AddFirst(values ...T)
 	AddLast(values ...T)
@@ -32,9 +32,9 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	Contains(value T) bool
 
 	Traverse(func(i int, value T) bool)
-	Reverse() *doubly[T]
+	Reverse() *Doubly[T]
 	IsSorted() bool
 	Swap(i, j int) error
 }
 
-var _ DoublyLinkedList[int] = (*doubly[int])(nil)
+var _ DoublyLinkedList[int] = (*Doubly[int])(nil)
