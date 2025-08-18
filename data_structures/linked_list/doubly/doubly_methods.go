@@ -11,7 +11,7 @@ func (list doubly[T]) Size() int {
 }
 
 func (list doubly[T]) IsEmpty() bool {
-	return list.head == nil
+	return list.size == 0
 }
 
 func (list *doubly[T]) Clear() {
@@ -26,22 +26,23 @@ func (list doubly[T]) Copy() *doubly[T] {
 	}
 
 	out := New[T]()
-	curr := list.head
-	for curr != nil {
-		out.AddLast(curr.Value)
-		curr = curr.next
-	}
+	list.Traverse(func(i int, value T) bool {
+		out.AddLast(value)
+		return true
+	})
 	return out
 }
 
 func (list *doubly[T]) AddFirst(values ...T) {
 	for _, value := range values {
 		n := &Node[T]{Value: value, next: list.head}
+
 		if list.head == nil {
 			list.tail = n
 		} else {
 			list.head.prev = n
 		}
+
 		list.head = n
 		list.size++
 	}
@@ -50,40 +51,44 @@ func (list *doubly[T]) AddFirst(values ...T) {
 func (list *doubly[T]) AddLast(values ...T) {
 	for _, value := range values {
 		n := &Node[T]{Value: value, prev: list.tail}
+
 		if list.tail == nil {
-			list.head = n
-		} else {
-			list.tail.next = n
+			list.head, list.tail = n, n
+			list.size++
+			continue
 		}
+
+		list.tail.next = n
 		list.tail = n
 		list.size++
 	}
 }
 
 func (list doubly[T]) GetFirst() (T, bool) {
+	var zero T
 	if list.head == nil {
-		var zero T
 		return zero, false
 	}
 	return list.head.Value, true
 }
 
 func (list doubly[T]) GetLast() (T, bool) {
+	var zero T
 	if list.tail == nil {
-		var zero T
 		return zero, false
 	}
 	return list.tail.Value, true
 }
 
 func (list *doubly[T]) RemoveFirst() (T, bool) {
+	var zero T
 	if list.head == nil {
-		var zero T
 		return zero, false
 	}
 
 	value := list.head.Value
 	list.head = list.head.next
+
 	if list.head == nil {
 		list.tail = nil
 	} else {
@@ -95,13 +100,14 @@ func (list *doubly[T]) RemoveFirst() (T, bool) {
 }
 
 func (list *doubly[T]) RemoveLast() (T, bool) {
+	var zero T
 	if list.tail == nil {
-		var zero T
 		return zero, false
 	}
 
 	value := list.tail.Value
 	list.tail = list.tail.prev
+
 	if list.tail == nil {
 		list.head = nil
 	} else {
@@ -112,17 +118,31 @@ func (list *doubly[T]) RemoveLast() (T, bool) {
 	return value, true
 }
 
+func (list doubly[T]) shortestPath(i int) *Node[T] {
+	var curr *Node[T]
+	if i <= (list.size-1)/2 {
+		curr = list.head
+		for curr != nil && i > 0 {
+			curr = curr.next
+			i--
+		}
+		return curr
+	}
+
+	curr = list.tail
+	for curr != nil && i < list.size-1 {
+		curr = curr.prev
+		i++
+	}
+	return curr
+}
+
 func (list *doubly[T]) SetAt(i int, value T) bool {
 	if i < 0 || i >= list.size {
 		return false
 	}
 
-	curr := list.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
-	}
-
+	curr := list.shortestPath(i)
 	if curr == nil {
 		return false
 	}
@@ -154,12 +174,12 @@ func (list *doubly[T]) InsertAfter(i int, value T) bool {
 		return false
 	}
 
-	curr := list.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
+	if i == list.size-1 {
+		list.AddLast(value)
+		return true
 	}
 
+	curr := list.shortestPath(i)
 	if curr == nil {
 		return false
 	}
@@ -205,8 +225,8 @@ func (list *doubly[T]) InsertAfterNode(node *Node[T], value T) bool {
 }
 
 func (list *doubly[T]) unlink(curr *Node[T]) (T, bool) {
-	if curr == nil || list.head == nil || list.tail == nil {
-		var zero T
+	var zero T
+	if curr == nil {
 		return zero, false
 	}
 
@@ -228,7 +248,6 @@ func (list *doubly[T]) unlink(curr *Node[T]) (T, bool) {
 
 func (list *doubly[T]) RemoveAt(i int) (T, bool) {
 	var zero T
-
 	if i < 0 || i >= list.size {
 		return zero, false
 	}
@@ -236,38 +255,22 @@ func (list *doubly[T]) RemoveAt(i int) (T, bool) {
 	if i == 0 {
 		return list.RemoveFirst()
 	}
-
 	if i == list.size-1 {
 		return list.RemoveLast()
 	}
 
-	curr := list.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
-	}
-
-	if curr == nil {
-		return zero, false
-	}
-
+	curr := list.shortestPath(i)
 	return list.unlink(curr)
 }
 
 func (list *doubly[T]) RemoveAfter(i int) (T, bool) {
 	var zero T
-
 	if i < 0 || i >= list.size {
 		return zero, false
 	}
 
-	curr := list.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
-	}
-
-	if curr == nil || curr.next == nil {
+	curr := list.shortestPath(i)
+	if curr == nil {
 		return zero, false
 	}
 
@@ -288,7 +291,7 @@ func (list *doubly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 	}
 
 	curr := list.head
-	for curr != nil && curr.next != node {
+	for curr != nil && curr != node {
 		curr = curr.next
 	}
 
@@ -319,17 +322,22 @@ func (list *doubly[T]) RemoveValue(value T) bool {
 		return false
 	}
 
-	if list.head.Value == value {
-		_, found := list.RemoveFirst()
-		return found
+	if utils.Is(list.head.Value, utils.EqualTo, value) {
+		list.RemoveFirst()
+		return true
+	}
+	if utils.Is(list.tail.Value, utils.EqualTo, value) {
+		list.RemoveLast()
+		return true
 	}
 
 	curr := list.head
 	for curr != nil {
-		if curr.Value == value {
+		if utils.Is(curr.Value, utils.EqualTo, value) {
 			list.unlink(curr)
 			return true
 		}
+
 		curr = curr.next
 	}
 	return false
@@ -337,17 +345,11 @@ func (list *doubly[T]) RemoveValue(value T) bool {
 
 func (list doubly[T]) Get(i int) (T, bool) {
 	var zero T
-
 	if i < 0 || i >= list.size {
 		return zero, false
 	}
 
-	curr := list.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
-	}
-
+	curr := list.shortestPath(i)
 	if curr == nil {
 		return zero, false
 	}
@@ -357,28 +359,24 @@ func (list doubly[T]) Get(i int) (T, bool) {
 
 func (list doubly[T]) GetAll() []T {
 	out := make([]T, 0, list.size)
-	curr := list.head
-	for curr != nil {
-		out = append(out, curr.Value)
-		curr = curr.next
-	}
+
+	list.Traverse(func(i int, value T) bool {
+		out = append(out, value)
+		return true
+	})
 
 	return out
 }
 
 func (list doubly[T]) Search(value T) int {
 	i := 0
-	curr := list.head
-	for curr != nil && curr.Value != value {
-		curr = curr.next
+	for curr := list.head; curr != nil; curr = curr.next {
+		if utils.Is(curr.Value, utils.EqualTo, value) {
+			return i
+		}
 		i++
 	}
-
-	if curr == nil {
-		return -1
-	}
-
-	return i
+	return -1
 }
 
 func (list doubly[T]) Contains(value T) bool {
@@ -387,18 +385,15 @@ func (list doubly[T]) Contains(value T) bool {
 
 func (list doubly[T]) Traverse(fn func(i int, value T) bool) {
 	i := 0
-	curr := list.head
-	for curr != nil {
+	for curr := list.head; curr != nil; curr = curr.next {
 		if !fn(i, curr.Value) {
 			break
 		}
-		curr = curr.next
 		i++
 	}
 }
 
 func (list doubly[T]) Reverse() *doubly[T] {
-
 	out := list.Copy()
 	curr := out.head
 	for curr != nil {
@@ -437,12 +432,9 @@ func (list *doubly[T]) Swap(i, j int) error {
 		i, j = j, i
 	}
 
-	var n1, n2 *Node[T]
-
 	index := 0
-	curr := list.head
-
-	for curr != nil {
+	var n1, n2 *Node[T]
+	for curr := list.head; curr != nil; curr = curr.next {
 		if index == i {
 			n1 = curr
 		}
@@ -452,62 +444,54 @@ func (list *doubly[T]) Swap(i, j int) error {
 		}
 
 		index++
-		curr = curr.next
+
 	}
 
 	if n1 == nil || n2 == nil {
 		return fmt.Errorf("nodes not found at i=%d, j=%d", i, j)
 	}
 
-	prev1, prev2 := n1.prev, n2.prev
-	next1, next2 := n1.next, n2.next
-
-	if next1 != n2 {
-		// reconnect neighbors to opposite nodes
-		if prev1 != nil {
-			prev1.next = n2
-		} else {
-			list.head = n2
-		}
-		if next1 != nil {
-			next1.prev = n2
-		}
-		if prev2 != nil {
-			prev2.next = n1
-		} else {
-			list.head = n1
-		}
-		if next2 != nil {
-			next2.prev = n1
-		}
-
-		// swap n1 <-> n2 links
-		n1.prev, n1.next, n2.prev, n2.next = prev2, next2, prev1, next1
+	if n1.prev == nil {
+		list.head = n2
+		n2.prev = nil
 	} else {
-		// n1 <-> n2 are adjacent: prev1 -> n1 -> n2 -> nj
-		if prev1 != nil {
-			prev1.next = n2
-		} else {
-			list.head = n2
-		}
-		if next2 != nil {
-			next2.prev = n1
-		} else {
+		n1.prev.next = n2
+		n2.prev = n1.prev
+	}
+
+	if n1.next == n2 {
+		n1.next = n2.next
+
+		if n2.next == nil {
 			list.tail = n1
+		} else {
+			n2.next.prev = n1
 		}
 
-		n2.prev = prev1
-		n1.next = next2
 		n2.next = n1
 		n1.prev = n2
+
+		return nil
 	}
 
-	// fix tail (for non-adjacent case we may need both checks)
-	if n1.next == nil {
-		list.tail = n1
-	}
-	if n2.next == nil {
+	n2.prev.next = n1
+	n1.prev = n2.prev
+
+	ogNext1, ogNext2 := n1.next, n2.next
+
+	if ogNext1 == nil {
 		list.tail = n2
+	} else {
+		ogNext1.prev = n2
 	}
+
+	if ogNext2 == nil {
+		list.tail = n1
+	} else {
+		ogNext2.prev = n1
+	}
+
+	n1.next, n2.next = ogNext2, ogNext1
+
 	return nil
 }
