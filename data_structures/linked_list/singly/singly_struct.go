@@ -13,10 +13,6 @@ type singly[T cmp.Ordered] struct {
 	tail *Node[T]
 }
 
-func newNode[T cmp.Ordered](value T, next *Node[T]) *Node[T] {
-	return &Node[T]{Value: value, next: next}
-}
-
 func New[T cmp.Ordered]() *singly[T] {
 	return &singly[T]{}
 }

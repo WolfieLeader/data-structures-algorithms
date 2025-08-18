@@ -36,7 +36,7 @@ func (list singly[T]) Copy() *singly[T] {
 
 func (list *singly[T]) AddFirst(values ...T) {
 	for _, value := range values {
-		n := newNode(value, list.head)
+		n := &Node[T]{Value: value, next: list.head}
 
 		if list.IsEmpty() {
 			list.tail = n
@@ -49,7 +49,7 @@ func (list *singly[T]) AddFirst(values ...T) {
 
 func (list *singly[T]) AddLast(values ...T) {
 	for _, value := range values {
-		n := newNode(value, nil)
+		n := &Node[T]{Value: value, next: nil}
 		if list.IsEmpty() {
 			list.head, list.tail = n, n
 			list.size++
@@ -171,7 +171,7 @@ func (list *singly[T]) InsertAfter(i int, value T) bool {
 		return false
 	}
 
-	n := newNode(value, curr.next)
+	n := &Node[T]{Value: value, next: curr.next}
 	curr.next = n
 
 	if n.next == nil {
@@ -196,7 +196,7 @@ func (list *singly[T]) InsertAfterNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	n := newNode(value, curr.next)
+	n := &Node[T]{Value: value, next: curr.next}
 	curr.next = n
 
 	if n.next == nil {
