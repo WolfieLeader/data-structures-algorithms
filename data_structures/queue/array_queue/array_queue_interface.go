@@ -1,8 +1,8 @@
-package arrqueue
+package arrayqueue
 
 import "cmp"
 
-type ArrayQueue[T cmp.Ordered] interface {
+type Queue[T cmp.Ordered] interface {
 	Enqueue(values ...T)
 	Dequeue() (T, bool)
 	Peek() (T, bool)
@@ -10,5 +10,7 @@ type ArrayQueue[T cmp.Ordered] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
-	Copy() *ArrQueue[T]
+	Copy() *ArrayQueue[T]
 }
+
+var _ Queue[int] = (*ArrayQueue[int])(nil)
