@@ -2,7 +2,7 @@ package liststack
 
 import "cmp"
 
-type LinkedListStack[T cmp.Ordered] interface {
+type Stack[T cmp.Ordered] interface {
 	Push(values ...T)
 	Pop() (T, bool)
 	Peek() (T, bool)
@@ -10,7 +10,7 @@ type LinkedListStack[T cmp.Ordered] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
-	Copy() *ListStack[T]
+	Copy() *LinkedListStack[T]
 }
 
-var _ LinkedListStack[int] = (*ListStack[int])(nil)
+var _ Stack[int] = (*LinkedListStack[int])(nil)
