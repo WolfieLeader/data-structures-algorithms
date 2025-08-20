@@ -27,7 +27,7 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	RemoveValue(value T) bool
 
 	Get(i int) (T, bool)
-	GetAll() []T
+	ToSlice() []T
 	Search(value T) int
 	Contains(value T) bool
 

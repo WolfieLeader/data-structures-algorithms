@@ -373,7 +373,7 @@ func (list Singly[T]) Get(i int) (T, bool) {
 	return curr.Value, true
 }
 
-func (list Singly[T]) GetAll() []T {
+func (list Singly[T]) ToSlice() []T {
 	out := make([]T, 0, list.size)
 
 	list.Traverse(func(i int, value T) bool {

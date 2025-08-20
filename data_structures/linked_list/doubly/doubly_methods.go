@@ -357,7 +357,7 @@ func (list Doubly[T]) Get(i int) (T, bool) {
 	return curr.Value, true
 }
 
-func (list Doubly[T]) GetAll() []T {
+func (list Doubly[T]) ToSlice() []T {
 	out := make([]T, 0, list.size)
 
 	list.Traverse(func(i int, value T) bool {
