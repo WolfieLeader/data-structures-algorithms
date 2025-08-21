@@ -23,9 +23,11 @@ type DynamicArray[T cmp.Ordered] interface {
 	Traverse(fn func(i int, value T) bool)
 	Swap(i, j int) bool
 
-	Slice(start, end int) (Dynamic[T], bool)
+	Between(start, end int) (Dynamic[T], bool)
 	Copy() Dynamic[T]
 	Reverse() Dynamic[T]
+	ToSlice() []T
+	String() string
 }
 
 var _ DynamicArray[int] = (*Dynamic[int])(nil)

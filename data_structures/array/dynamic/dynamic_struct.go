@@ -2,8 +2,10 @@ package dynamic
 
 import "cmp"
 
-type Dynamic[T cmp.Ordered] []T
+type Dynamic[T cmp.Ordered] struct {
+	data []T
+}
 
 func New[T cmp.Ordered](values ...T) Dynamic[T] {
-	return append(Dynamic[T]{}, values...)
+	return Dynamic[T]{data: values}
 }

@@ -23,6 +23,7 @@ type MatrixArray[T cmp.Ordered] interface {
 	SwapCol(col1, col2 int) bool
 
 	Copy() Matrix[T]
+	String() string
 }
 
 var _ MatrixArray[int] = (*Matrix[int])(nil)

@@ -11,7 +11,6 @@ type StaticArray[T cmp.Ordered] interface {
 
 	Length() int
 	IsSorted() bool
-	IsEmpty() bool
 	Search(value T) int
 	BinarySearch(value T) int
 	Contains(value T) bool
@@ -21,6 +20,7 @@ type StaticArray[T cmp.Ordered] interface {
 	ToSlice() []T
 	Copy() Static[T]
 	Reverse() Static[T]
+	String() string
 }
 
 var _ StaticArray[int] = (*Static[int])(nil)

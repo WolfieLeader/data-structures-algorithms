@@ -1,90 +1,88 @@
 package static
 
 import (
+	"fmt"
+
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (arr Static[T]) Get(i int) (T, bool) {
-	if i < 0 || i >= len(arr) {
+func (a Static[T]) Get(i int) (T, bool) {
+	if i < 0 || i >= len(a.data) {
 		var zero T
 		return zero, false
 	}
 
-	return arr[i], true
+	return a.data[i], true
 }
 
-func (arr *Static[T]) Set(i int, value T) bool {
-	if i < 0 || i >= len(*arr) {
+func (a *Static[T]) Set(i int, value T) bool {
+	if i < 0 || i >= len(a.data) {
 		return false
 	}
 
-	(*arr)[i] = value
+	a.data[i] = value
 	return true
 }
 
-func (arr *Static[T]) Replace(values ...T) {
+func (a *Static[T]) Replace(values ...T) {
 	var zero T
-	arr.Fill(zero)
+	a.Fill(zero)
 
 	if len(values) > SIZE {
 		values = values[:SIZE] // Limit to SIZE elements
 	}
-	copy((*arr)[:], values)
+	copy(a.data[:], values)
 }
 
-func (arr *Static[T]) Fill(value T) {
-	for i := range *arr {
-		(*arr)[i] = value
+func (a *Static[T]) Fill(value T) {
+	for i := range a.data {
+		a.data[i] = value
 	}
 }
 
-func (arr *Static[T]) Clear() {
-	*arr = Static[T]{}
+func (a *Static[T]) Clear() {
+	*a = Static[T]{}
 }
 
-func (arr Static[T]) Length() int {
-	return len(arr)
+func (a Static[T]) Length() int {
+	return len(a.data)
 }
 
-func (arr Static[T]) IsSorted() bool {
-	for i := 1; i < len(arr); i++ {
-		if utils.Is(arr[i-1], utils.GreaterThan, arr[i]) {
+func (a Static[T]) IsSorted() bool {
+	for i := 1; i < len(a.data); i++ {
+		if utils.Is(a.data[i-1], utils.GreaterThan, a.data[i]) {
 			return false
 		}
 	}
 	return true
 }
 
-func (arr Static[T]) IsEmpty() bool {
-	return len(arr) == 0
+func (a Static[T]) Search(value T) int {
+	return searching.LinearSearch(a.data[:], value)
 }
 
-func (arr Static[T]) Search(value T) int {
-	return searching.LinearSearch(arr[:], value)
-}
-
-func (arr Static[T]) BinarySearch(value T) int {
-	if !arr.IsSorted() {
+func (a Static[T]) BinarySearch(value T) int {
+	if !a.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
-	return searching.BinarySearch(arr[:], value)
+	return searching.BinarySearch(a.data[:], value)
 }
 
-func (arr Static[T]) Contains(value T) bool {
-	return arr.Search(value) != -1
+func (a Static[T]) Contains(value T) bool {
+	return a.Search(value) != -1
 }
 
-func (arr Static[T]) Traverse(fn func(i int, value T) bool) {
-	for index, value := range arr {
+func (a Static[T]) Traverse(fn func(i int, value T) bool) {
+	for index, value := range a.data {
 		if !fn(index, value) {
 			break
 		}
 	}
 }
 
-func (arr *Static[T]) Swap(i, j int) bool {
-	length := len(*arr)
+func (a *Static[T]) Swap(i, j int) bool {
+	length := len(a.data)
 	if i < 0 || i >= length || j < 0 || j >= length {
 		return false
 	}
@@ -93,29 +91,33 @@ func (arr *Static[T]) Swap(i, j int) bool {
 		return true
 	}
 
-	(*arr)[i], (*arr)[j] = (*arr)[j], (*arr)[i]
+	a.data[i], a.data[j] = a.data[j], a.data[i]
 	return true
 }
 
-func (arr Static[T]) ToSlice() []T {
-	out := make([]T, len(arr))
-	copy(out, arr[:])
+func (a Static[T]) ToSlice() []T {
+	out := make([]T, len(a.data))
+	copy(out, a.data[:])
 	return out
 }
 
-func (arr Static[T]) Copy() Static[T] {
+func (a Static[T]) Copy() Static[T] {
 	var out Static[T]
-	copy(out[:], arr[:])
+	copy(out.data[:], a.data[:])
 	return out
 }
 
-func (arr Static[T]) Reverse() Static[T] {
-	out := arr.Copy()
+func (a Static[T]) Reverse() Static[T] {
+	out := a.data
 	left, right := 0, len(out)-1
 	for left < right {
 		out[left], out[right] = out[right], out[left]
 		left++
 		right--
 	}
-	return out
+	return Static[T]{data: out}
+}
+
+func (a Static[T]) String() string {
+	return fmt.Sprintf("%v", a.data)
 }
