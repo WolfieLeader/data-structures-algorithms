@@ -31,7 +31,7 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	Search(value T) int
 	Contains(value T) bool
 
-	Traverse(func(i int, value T) bool)
+	ForEach(func(i int, value T) bool)
 	Reverse() *Singly[T]
 	IsSorted() bool
 	Swap(i, j int) error

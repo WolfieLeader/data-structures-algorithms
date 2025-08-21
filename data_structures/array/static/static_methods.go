@@ -73,7 +73,7 @@ func (a Static[T]) Contains(value T) bool {
 	return a.Search(value) != -1
 }
 
-func (a Static[T]) Traverse(fn func(i int, value T) bool) {
+func (a Static[T]) ForEach(fn func(i int, value T) bool) {
 	for index, value := range a.data {
 		if !fn(index, value) {
 			break

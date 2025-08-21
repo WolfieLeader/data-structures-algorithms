@@ -26,7 +26,7 @@ func (l Doubly[T]) Copy() *Doubly[T] {
 	}
 
 	out := New[T]()
-	l.Traverse(func(i int, value T) bool {
+	l.ForEach(func(i int, value T) bool {
 		out.AddLast(value)
 		return true
 	})
@@ -360,7 +360,7 @@ func (l Doubly[T]) Get(i int) (T, bool) {
 func (l Doubly[T]) ToSlice() []T {
 	out := make([]T, 0, l.size)
 
-	l.Traverse(func(i int, value T) bool {
+	l.ForEach(func(i int, value T) bool {
 		out = append(out, value)
 		return true
 	})
@@ -383,7 +383,7 @@ func (l Doubly[T]) Contains(value T) bool {
 	return l.Search(value) != -1
 }
 
-func (l Doubly[T]) Traverse(fn func(i int, value T) bool) {
+func (l Doubly[T]) ForEach(fn func(i int, value T) bool) {
 	i := 0
 	for curr := l.head; curr != nil; curr = curr.next {
 		if !fn(i, curr.Value) {

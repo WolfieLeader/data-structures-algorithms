@@ -110,7 +110,7 @@ func (a Dynamic[T]) Contains(value T) bool {
 	return a.Search(value) != -1
 }
 
-func (a Dynamic[T]) Traverse(fn func(i int, value T) bool) {
+func (a Dynamic[T]) ForEach(fn func(i int, value T) bool) {
 	for i, value := range a.data {
 		if !fn(i, value) {
 			break

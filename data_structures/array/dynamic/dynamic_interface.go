@@ -20,7 +20,7 @@ type DynamicArray[T cmp.Ordered] interface {
 	Search(value T) int
 	BinarySearch(value T) int
 	Contains(value T) bool
-	Traverse(fn func(i int, value T) bool)
+	ForEach(fn func(i int, value T) bool)
 	Swap(i, j int) bool
 
 	Between(start, end int) (Dynamic[T], bool)

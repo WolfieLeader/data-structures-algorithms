@@ -110,7 +110,7 @@ func (a Matrix[T]) Contains(value T) bool {
 	return row != -1 && col != -1
 }
 
-func (a Matrix[T]) Traverse(fn func(row int, col int, value T) bool) {
+func (a Matrix[T]) ForEach(fn func(row int, col int, value T) bool) {
 	for i := 0; i < a.rows; i++ {
 		for j := 0; j < a.cols; j++ {
 			if !fn(i, j, a.data[i][j]) {
