@@ -5,6 +5,7 @@
     "searching_algorithms": "target",
     "sorting_algorithms": "functions",
     "array": "webpack",
-    "linked_list": "routes"
+    "linked_list": "routes",
+    "hash_map": "mappings"
   }
 }
