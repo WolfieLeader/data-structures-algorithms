@@ -80,7 +80,7 @@ func (l Doubly[T]) GetLast() (T, bool) {
 	return l.tail.Value, true
 }
 
-func (l *Doubly[T]) RemoveFirst() (T, bool) {
+func (l *Doubly[T]) DeleteFirst() (T, bool) {
 	var zero T
 	if l.head == nil {
 		return zero, false
@@ -99,7 +99,7 @@ func (l *Doubly[T]) RemoveFirst() (T, bool) {
 	return value, true
 }
 
-func (l *Doubly[T]) RemoveLast() (T, bool) {
+func (l *Doubly[T]) DeleteLast() (T, bool) {
 	var zero T
 	if l.tail == nil {
 		return zero, false
@@ -246,24 +246,24 @@ func (l *Doubly[T]) unlink(curr *Node[T]) (T, bool) {
 	return curr.Value, true
 }
 
-func (l *Doubly[T]) RemoveAt(i int) (T, bool) {
+func (l *Doubly[T]) DeleteAt(i int) (T, bool) {
 	var zero T
 	if i < 0 || i >= l.size {
 		return zero, false
 	}
 
 	if i == 0 {
-		return l.RemoveFirst()
+		return l.DeleteFirst()
 	}
 	if i == l.size-1 {
-		return l.RemoveLast()
+		return l.DeleteLast()
 	}
 
 	curr := l.shortestPath(i)
 	return l.unlink(curr)
 }
 
-func (l *Doubly[T]) RemoveAfter(i int) (T, bool) {
+func (l *Doubly[T]) DeleteAfter(i int) (T, bool) {
 	var zero T
 	if i < 0 || i >= l.size {
 		return zero, false
@@ -277,17 +277,17 @@ func (l *Doubly[T]) RemoveAfter(i int) (T, bool) {
 	return l.unlink(curr.next)
 }
 
-func (l *Doubly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
+func (l *Doubly[T]) DeleteAtNode(node *Node[T]) (T, bool) {
 	var zero T
 	if node == nil {
 		return zero, false
 	}
 
 	if l.head == node {
-		return l.RemoveFirst()
+		return l.DeleteFirst()
 	}
 	if l.tail == node {
-		return l.RemoveLast()
+		return l.DeleteLast()
 	}
 
 	curr := l.head
@@ -298,7 +298,7 @@ func (l *Doubly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 	return l.unlink(node)
 }
 
-func (l *Doubly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
+func (l *Doubly[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
 	var zero T
 
 	if node == nil {
@@ -317,17 +317,17 @@ func (l *Doubly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
 	return l.unlink(curr.next)
 }
 
-func (l *Doubly[T]) RemoveValue(value T) bool {
+func (l *Doubly[T]) DeleteValue(value T) bool {
 	if l.head == nil {
 		return false
 	}
 
 	if utils.Is(l.head.Value, utils.EqualTo, value) {
-		l.RemoveFirst()
+		l.DeleteFirst()
 		return true
 	}
 	if utils.Is(l.tail.Value, utils.EqualTo, value) {
-		l.RemoveLast()
+		l.DeleteLast()
 		return true
 	}
 

@@ -9,14 +9,13 @@ func (m *Map[K, V]) Get(key K) (V, bool) {
 	return v, ok
 }
 
-func (m *Map[K, V]) Remove(key K) (V, bool) {
-	var zero V
-	v, ok := m.data[key]
-	if !ok {
-		return zero, false
+func (m *Map[K, V]) Delete(key K) (V, bool) {
+	if v, ok := m.data[key]; ok {
+		delete(m.data, key)
+		return v, true
 	}
-	delete(m.data, key)
-	return v, true
+	var zero V
+	return zero, false
 }
 
 func (m *Map[K, V]) Contains(key K) bool {
@@ -46,11 +45,11 @@ func (m *Map[K, V]) Clear() {
 }
 
 func (m *Map[K, V]) ToMap() map[K]V {
-	cp := make(map[K]V, len(m.data))
+	out := make(map[K]V, len(m.data))
 	for k, v := range m.data {
-		cp[k] = v
+		out[k] = v
 	}
-	return cp
+	return out
 }
 
 func (m *Map[K, V]) Keys() []K {
@@ -70,11 +69,11 @@ func (m *Map[K, V]) Values() []V {
 }
 
 func (m *Map[K, V]) Copy() *Map[K, V] {
-	cp := New[K, V]()
+	out := New[K, V]()
 	for k, v := range m.data {
-		cp.data[k] = v
+		out.data[k] = v
 	}
-	return cp
+	return out
 }
 
 func (m *Map[K, V]) ForEach(fn func(K, V) bool) {

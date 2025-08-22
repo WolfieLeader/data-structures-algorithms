@@ -12,19 +12,19 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	AddLast(values ...T)
 	GetFirst() (T, bool)
 	GetLast() (T, bool)
-	RemoveFirst() (T, bool)
-	RemoveLast() (T, bool)
+	DeleteFirst() (T, bool)
+	DeleteLast() (T, bool)
 
 	SetAt(i int, value T) bool
 	SetAtNode(node *Node[T], value T) bool
 	InsertAfter(i int, value T) bool
 	InsertAfterNode(node *Node[T], value T) bool
 
-	RemoveAt(i int) (T, bool)
-	RemoveAfter(i int) (T, bool)
-	RemoveAtNode(node *Node[T]) (T, bool)
-	RemoveAfterNode(node *Node[T]) (T, bool)
-	RemoveValue(value T) bool
+	DeleteAt(i int) (T, bool)
+	DeleteAfter(i int) (T, bool)
+	DeleteAtNode(node *Node[T]) (T, bool)
+	DeleteAfterNode(node *Node[T]) (T, bool)
+	DeleteValue(value T) bool
 
 	Get(i int) (T, bool)
 	ToSlice() []T

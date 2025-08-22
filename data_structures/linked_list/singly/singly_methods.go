@@ -78,7 +78,7 @@ func (l Singly[T]) GetLast() (T, bool) {
 	return l.tail.Value, true
 }
 
-func (l *Singly[T]) RemoveFirst() (T, bool) {
+func (l *Singly[T]) DeleteFirst() (T, bool) {
 	var zero T
 	if l.head == nil {
 		return zero, false
@@ -95,7 +95,7 @@ func (l *Singly[T]) RemoveFirst() (T, bool) {
 	return value, true
 }
 
-func (l *Singly[T]) RemoveLast() (T, bool) {
+func (l *Singly[T]) DeleteLast() (T, bool) {
 	var zero T
 	if l.tail == nil {
 		return zero, false
@@ -213,17 +213,17 @@ func (l *Singly[T]) InsertAfterNode(node *Node[T], value T) bool {
 	return true
 }
 
-func (l *Singly[T]) RemoveAt(i int) (T, bool) {
+func (l *Singly[T]) DeleteAt(i int) (T, bool) {
 	var zero T
 	if i < 0 || i >= l.size {
 		return zero, false
 	}
 
 	if i == 0 {
-		return l.RemoveFirst()
+		return l.DeleteFirst()
 	}
 	if i == l.size-1 {
-		return l.RemoveLast()
+		return l.DeleteLast()
 	}
 
 	prev := l.head
@@ -243,7 +243,7 @@ func (l *Singly[T]) RemoveAt(i int) (T, bool) {
 	return value, true
 }
 
-func (l *Singly[T]) RemoveAfter(i int) (T, bool) {
+func (l *Singly[T]) DeleteAfter(i int) (T, bool) {
 	var zero T
 	if i < 0 || i >= l.size {
 		return zero, false
@@ -270,17 +270,17 @@ func (l *Singly[T]) RemoveAfter(i int) (T, bool) {
 	return value, true
 }
 
-func (l *Singly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
+func (l *Singly[T]) DeleteAtNode(node *Node[T]) (T, bool) {
 	var zero T
 	if node == nil {
 		return zero, false
 	}
 
 	if l.head == node {
-		return l.RemoveFirst()
+		return l.DeleteFirst()
 	}
 	if l.tail == node {
-		return l.RemoveLast()
+		return l.DeleteLast()
 	}
 
 	prev := l.head
@@ -299,7 +299,7 @@ func (l *Singly[T]) RemoveAtNode(node *Node[T]) (T, bool) {
 	return value, true
 }
 
-func (l *Singly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
+func (l *Singly[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
 	var zero T
 
 	if node == nil {
@@ -326,13 +326,13 @@ func (l *Singly[T]) RemoveAfterNode(node *Node[T]) (T, bool) {
 	return value, true
 }
 
-func (l *Singly[T]) RemoveValue(value T) bool {
+func (l *Singly[T]) DeleteValue(value T) bool {
 	if l.head == nil {
 		return false
 	}
 
 	if utils.Is(l.head.Value, utils.EqualTo, value) {
-		l.RemoveFirst()
+		l.DeleteFirst()
 		return true
 	}
 
