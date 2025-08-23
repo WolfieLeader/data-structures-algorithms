@@ -3,8 +3,8 @@ package static
 import "cmp"
 
 type StaticArray[T cmp.Ordered] interface {
-	Get(i int) (T, bool)
-	Set(i int, value T) bool
+	Get(index int) (T, bool)
+	Set(index int, value T) bool
 	Replace(values ...T)
 	Fill(value T)
 	Clear()
@@ -14,8 +14,8 @@ type StaticArray[T cmp.Ordered] interface {
 	Search(value T) int
 	BinarySearch(value T) int
 	Contains(value T) bool
-	ForEach(fn func(i int, value T) bool)
-	Swap(i, j int) bool
+	Traverse(fn func(index int, value T))
+	Swap(index1, index2 int) bool
 
 	ToSlice() []T
 	Copy() Static[T]

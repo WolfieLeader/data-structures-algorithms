@@ -9,6 +9,7 @@ type Deque[T cmp.Ordered] interface {
 	DequeueLast() (T, bool)
 	PeekFirst() (T, bool)
 	PeekLast() (T, bool)
+
 	Size() int
 	IsEmpty() bool
 	Clear()

@@ -6,6 +6,7 @@ type Queue[T cmp.Ordered] interface {
 	Enqueue(values ...T)
 	Dequeue() (T, bool)
 	Peek() (T, bool)
+
 	Size() int
 	IsEmpty() bool
 	Clear()

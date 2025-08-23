@@ -33,8 +33,8 @@ func copyArray[T Ordered](arr []T) (arrayType[T], int) {
 	return out, length
 }
 
-func (array *arrayType[T]) swap(i, j int) {
-	(*array)[i], (*array)[j] = (*array)[j], (*array)[i]
+func (array *arrayType[T]) swap(index1, index2 int) {
+	(*array)[index1], (*array)[index2] = (*array)[index2], (*array)[index1]
 }
 
 func (array arrayType[T]) findMinMax() (minVal T, maxVal T) {

@@ -14,10 +14,7 @@ func main() {
 
 func matrixExample() {
 	twoDArray := matrix.New[int](3, 3)
-	twoDArray.ForEach(func(i, j int, value int) bool {
-		fmt.Printf("Value at (%d, %d): %d\n", i, j, value)
-		return true
-	})
+	twoDArray.Traverse(func(i, j int, value int) { fmt.Printf("Value at (%d, %d): %d\n", i, j, value) })
 }
 
 func searchingExample() {

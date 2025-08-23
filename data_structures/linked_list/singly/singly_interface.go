@@ -15,26 +15,28 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	DeleteFirst() (T, bool)
 	DeleteLast() (T, bool)
 
-	SetAt(i int, value T) bool
+	SetAt(index int, value T) bool
 	SetAtNode(node *Node[T], value T) bool
-	InsertAfter(i int, value T) bool
+	InsertAt(index int, value T) bool
+	InsertAtNode(node *Node[T], value T) bool
+	InsertAfter(index int, value T) bool
 	InsertAfterNode(node *Node[T], value T) bool
 
-	DeleteAt(i int) (T, bool)
-	DeleteAfter(i int) (T, bool)
+	DeleteAt(index int) (T, bool)
+	DeleteAfter(index int) (T, bool)
 	DeleteAtNode(node *Node[T]) (T, bool)
 	DeleteAfterNode(node *Node[T]) (T, bool)
 	DeleteValue(value T) bool
 
-	Get(i int) (T, bool)
+	Get(index int) (T, bool)
 	ToSlice() []T
 	Search(value T) int
 	Contains(value T) bool
 
-	ForEach(func(i int, value T) bool)
+	Traverse(fn func(index int, value T))
 	Reverse() *Singly[T]
 	IsSorted() bool
-	Swap(i, j int) error
+	Swap(index1, index2 int) error
 }
 
 var _ SinglyLinkedList[int] = (*Singly[int])(nil)

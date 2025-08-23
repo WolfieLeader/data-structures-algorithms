@@ -26,10 +26,7 @@ func (l Singly[T]) Copy() *Singly[T] {
 	}
 
 	out := New[T]()
-	l.ForEach(func(i int, value T) bool {
-		out.AddLast(value)
-		return true
-	})
+	l.Traverse(func(index int, value T) { out.AddLast(value) })
 	return out
 }
 
@@ -120,22 +117,22 @@ func (l *Singly[T]) DeleteLast() (T, bool) {
 	return value, true
 }
 
-func (l *Singly[T]) SetAt(i int, value T) bool {
-	if i < 0 || i >= l.size {
+func (l *Singly[T]) SetAt(index int, value T) bool {
+	if index < 0 || index >= l.size {
 		return false
 	}
 
-	curr := l.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
+	cur := l.head
+	for cur != nil && index > 0 {
+		cur = cur.next
+		index--
 	}
 
-	if curr == nil {
+	if cur == nil {
 		return false
 	}
 
-	curr.Value = value
+	cur.Value = value
 	return true
 }
 
@@ -144,41 +141,110 @@ func (l *Singly[T]) SetAtNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	curr := l.head
-	for curr != nil && curr != node {
-		curr = curr.next
+	cur := l.head
+	for cur != nil && cur != node {
+		cur = cur.next
 	}
 
-	if curr == nil {
+	if cur == nil {
 		return false
 	}
 
-	curr.Value = value
+	cur.Value = value
 	return true
 }
 
-func (l *Singly[T]) InsertAfter(i int, value T) bool {
-	if i < 0 || i >= l.size {
+func (l *Singly[T]) InsertAt(index int, value T) bool {
+	if index < 0 || index > l.size {
 		return false
 	}
 
-	if i == l.size-1 {
+	if index == 0 {
+		l.AddFirst(value)
+		return true
+	}
+	if index == l.size {
 		l.AddLast(value)
 		return true
 	}
 
-	curr := l.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
+	prev := l.head
+	for prev != nil && index > 1 {
+		prev = prev.next
+		index--
 	}
 
-	if curr == nil {
+	if prev == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: curr.next}
-	curr.next = n
+	n := &Node[T]{Value: value, next: prev.next}
+	prev.next = n
+
+	if n.next == nil {
+		l.tail = n
+	}
+
+	l.size++
+	return true
+}
+
+func (l *Singly[T]) InsertAtNode(node *Node[T], value T) bool {
+	if node == nil {
+		return false
+	}
+
+	if l.head == node {
+		l.AddFirst(value)
+		return true
+	}
+	if l.tail == node {
+		l.AddLast(value)
+		return true
+	}
+
+	prev := l.head
+	for prev != nil && prev.next != node {
+		prev = prev.next
+	}
+
+	if prev == nil {
+		return false
+	}
+
+	n := &Node[T]{Value: value, next: prev.next}
+	prev.next = n
+
+	if n.next == nil {
+		l.tail = n
+	}
+
+	l.size++
+	return true
+}
+
+func (l *Singly[T]) InsertAfter(index int, value T) bool {
+	if index < 0 || index >= l.size {
+		return false
+	}
+
+	if index == l.size-1 {
+		l.AddLast(value)
+		return true
+	}
+
+	cur := l.head
+	for cur != nil && index > 0 {
+		cur = cur.next
+		index--
+	}
+
+	if cur == nil {
+		return false
+	}
+
+	n := &Node[T]{Value: value, next: cur.next}
+	cur.next = n
 
 	if n.next == nil {
 		l.tail = n
@@ -193,17 +259,17 @@ func (l *Singly[T]) InsertAfterNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	curr := l.head
-	for curr != nil && curr != node {
-		curr = curr.next
+	cur := l.head
+	for cur != nil && cur != node {
+		cur = cur.next
 	}
 
-	if curr == nil {
+	if cur == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: curr.next}
-	curr.next = n
+	n := &Node[T]{Value: value, next: cur.next}
+	cur.next = n
 
 	if n.next == nil {
 		l.tail = n
@@ -213,23 +279,23 @@ func (l *Singly[T]) InsertAfterNode(node *Node[T], value T) bool {
 	return true
 }
 
-func (l *Singly[T]) DeleteAt(i int) (T, bool) {
+func (l *Singly[T]) DeleteAt(index int) (T, bool) {
 	var zero T
-	if i < 0 || i >= l.size {
+	if index < 0 || index >= l.size {
 		return zero, false
 	}
 
-	if i == 0 {
+	if index == 0 {
 		return l.DeleteFirst()
 	}
-	if i == l.size-1 {
+	if index == l.size-1 {
 		return l.DeleteLast()
 	}
 
 	prev := l.head
-	for prev != nil && i > 1 {
+	for prev != nil && index > 1 {
 		prev = prev.next
-		i--
+		index--
 	}
 
 	if prev == nil || prev.next == nil {
@@ -243,27 +309,27 @@ func (l *Singly[T]) DeleteAt(i int) (T, bool) {
 	return value, true
 }
 
-func (l *Singly[T]) DeleteAfter(i int) (T, bool) {
+func (l *Singly[T]) DeleteAfter(index int) (T, bool) {
 	var zero T
-	if i < 0 || i >= l.size {
+	if index < 0 || index >= l.size {
 		return zero, false
 	}
 
-	curr := l.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
+	cur := l.head
+	for cur != nil && index > 0 {
+		cur = cur.next
+		index--
 	}
 
-	if curr == nil || curr.next == nil {
+	if cur == nil || cur.next == nil {
 		return zero, false
 	}
 
-	value := curr.next.Value
-	curr.next = curr.next.next
+	value := cur.next.Value
+	cur.next = cur.next.next
 
-	if curr.next == nil {
-		l.tail = curr
+	if cur.next == nil {
+		l.tail = cur
 	}
 
 	l.size--
@@ -306,20 +372,20 @@ func (l *Singly[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
 		return zero, false
 	}
 
-	curr := l.head
-	for curr != nil && curr != node {
-		curr = curr.next
+	cur := l.head
+	for cur != nil && cur != node {
+		cur = cur.next
 	}
 
-	if curr == nil || curr.next == nil {
+	if cur == nil || cur.next == nil {
 		return zero, false
 	}
 
-	value := curr.next.Value
-	curr.next = curr.next.next
+	value := cur.next.Value
+	cur.next = cur.next.next
 
-	if curr.next == nil {
-		l.tail = curr
+	if cur.next == nil {
+		l.tail = cur
 	}
 
 	l.size--
@@ -354,40 +420,35 @@ func (l *Singly[T]) DeleteValue(value T) bool {
 	return false
 }
 
-func (l Singly[T]) Get(i int) (T, bool) {
+func (l Singly[T]) Get(index int) (T, bool) {
 	var zero T
-	if i < 0 || i >= l.size {
+	if index < 0 || index >= l.size {
 		return zero, false
 	}
 
-	curr := l.head
-	for curr != nil && i > 0 {
-		curr = curr.next
-		i--
+	cur := l.head
+	for cur != nil && index > 0 {
+		cur = cur.next
+		index--
 	}
 
-	if curr == nil {
+	if cur == nil {
 		return zero, false
 	}
 
-	return curr.Value, true
+	return cur.Value, true
 }
 
 func (l Singly[T]) ToSlice() []T {
 	out := make([]T, 0, l.size)
-
-	l.ForEach(func(i int, value T) bool {
-		out = append(out, value)
-		return true
-	})
-
+	l.Traverse(func(i int, value T) { out = append(out, value) })
 	return out
 }
 
 func (l Singly[T]) Search(value T) int {
 	i := 0
-	for curr := l.head; curr != nil; curr = curr.next {
-		if utils.Is(curr.Value, utils.EqualTo, value) {
+	for cur := l.head; cur != nil; cur = cur.next {
+		if utils.Is(cur.Value, utils.EqualTo, value) {
 			return i
 		}
 		i++
@@ -399,12 +460,10 @@ func (l Singly[T]) Contains(value T) bool {
 	return l.Search(value) != -1
 }
 
-func (l Singly[T]) ForEach(fn func(i int, value T) bool) {
+func (l Singly[T]) Traverse(fn func(index int, value T)) {
 	i := 0
-	for curr := l.head; curr != nil; curr = curr.next {
-		if !fn(i, curr.Value) {
-			break
-		}
+	for cur := l.head; cur != nil; cur = cur.next {
+		fn(i, cur.Value)
 		i++
 	}
 }
@@ -412,13 +471,13 @@ func (l Singly[T]) ForEach(fn func(i int, value T) bool) {
 func (l Singly[T]) Reverse() *Singly[T] {
 	var prev, next *Node[T]
 	out := l.Copy()
-	curr := out.head
-	for curr != nil {
-		next = curr.next
-		curr.next = prev
+	cur := out.head
+	for cur != nil {
+		next = cur.next
+		cur.next = prev
 
-		prev = curr
-		curr = next
+		prev = cur
+		cur = next
 	}
 	out.head, out.tail = out.tail, out.head
 	return out
@@ -429,47 +488,47 @@ func (l Singly[T]) IsSorted() bool {
 		return true
 	}
 
-	curr := l.head
-	for curr != nil && curr.next != nil {
-		if utils.Is(curr.Value, utils.GreaterThan, curr.next.Value) {
+	cur := l.head
+	for cur != nil && cur.next != nil {
+		if utils.Is(cur.Value, utils.GreaterThan, cur.next.Value) {
 			return false
 		}
-		curr = curr.next
+		cur = cur.next
 	}
 	return true
 }
 
-func (l *Singly[T]) Swap(i, j int) error {
-	if i < 0 || j < 0 || i >= l.size || j >= l.size {
-		return fmt.Errorf("index out of bounds: i=%d, j=%d", i, j)
+func (l *Singly[T]) Swap(index1, index2 int) error {
+	if index1 < 0 || index2 < 0 || index1 >= l.size || index2 >= l.size {
+		return fmt.Errorf("index out of bounds: i=%d, j=%d", index1, index2)
 	}
 
-	if i == j {
+	if index1 == index2 {
 		return nil
 	}
 
-	if i > j {
-		i, j = j, i
+	if index1 > index2 {
+		index1, index2 = index2, index1
 	}
 
-	index := 0
+	i := 0
 	var prev, prev1, prev2, n1, n2 *Node[T]
-	for curr := l.head; curr != nil; curr = curr.next {
-		if index == i {
-			prev1, n1 = prev, curr
+	for cur := l.head; cur != nil; cur = cur.next {
+		if i == index1 {
+			prev1, n1 = prev, cur
 		}
 
-		if index == j {
-			prev2, n2 = prev, curr
+		if i == index2 {
+			prev2, n2 = prev, cur
 			break
 		}
 
-		index++
-		prev = curr
+		i++
+		prev = cur
 	}
 
 	if n1 == nil || n2 == nil {
-		return fmt.Errorf("nodes not found at i=%d, j=%d", i, j)
+		return fmt.Errorf("nodes not found at i=%d, j=%d", index1, index2)
 	}
 
 	if prev1 == nil {

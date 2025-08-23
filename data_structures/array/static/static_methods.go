@@ -7,21 +7,21 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
-func (a Static[T]) Get(i int) (T, bool) {
-	if i < 0 || i >= len(a.data) {
+func (a Static[T]) Get(index int) (T, bool) {
+	if index < 0 || index >= len(a.data) {
 		var zero T
 		return zero, false
 	}
 
-	return a.data[i], true
+	return a.data[index], true
 }
 
-func (a *Static[T]) Set(i int, value T) bool {
-	if i < 0 || i >= len(a.data) {
+func (a *Static[T]) Set(index int, value T) bool {
+	if index < 0 || index >= len(a.data) {
 		return false
 	}
 
-	a.data[i] = value
+	a.data[index] = value
 	return true
 }
 
@@ -73,25 +73,23 @@ func (a Static[T]) Contains(value T) bool {
 	return a.Search(value) != -1
 }
 
-func (a Static[T]) ForEach(fn func(i int, value T) bool) {
+func (a Static[T]) Traverse(fn func(index int, value T)) {
 	for index, value := range a.data {
-		if !fn(index, value) {
-			break
-		}
+		fn(index, value)
 	}
 }
 
-func (a *Static[T]) Swap(i, j int) bool {
+func (a *Static[T]) Swap(index1, index2 int) bool {
 	length := len(a.data)
-	if i < 0 || i >= length || j < 0 || j >= length {
+	if index1 < 0 || index1 >= length || index2 < 0 || index2 >= length {
 		return false
 	}
 
-	if i == j {
+	if index1 == index2 {
 		return true
 	}
 
-	a.data[i], a.data[j] = a.data[j], a.data[i]
+	a.data[index1], a.data[index2] = a.data[index2], a.data[index1]
 	return true
 }
 
