@@ -19,18 +19,34 @@ func main() {
 
 func singlyExample() {
 	s := singly.New[int]()
-	fmt.Printf("- Empty:    %v\n", s)
-	s.AddLast(1)
-	fmt.Printf("- Element:  %v\n", s)
-	s.AddFirst(5, 4, 3, 2)
-	fmt.Printf("- More:     %v\n", s)
+	fmt.Printf("- Empty:           %v\n", s)
+	s.AddFirst(3)
+	fmt.Printf("- Element:         %v\n", s)
+	s.AddFirst(2, 1)
+	s.AddLast(4, 5)
+	fmt.Printf("- More:            %v\n", s)
+	s.DeleteAt(2)        // Delete 3
+	n := s.GetNode(1)    // Get Node of 2
+	s.DeleteAfterNode(n) // Delete 4
+	fmt.Printf("- After Deletions: %v\n", s)
+	fmt.Printf("- Reversed:        %v\n", s.Reverse())
+	s.Swap(2, 1)
+	fmt.Printf("- Swap(2,1):       %v\n", s)
 }
 
 func doublyExample() {
 	d := doubly.New[int]()
-	fmt.Printf("- Empty:    %v\n", d)
-	d.AddLast(1)
-	fmt.Printf("- Element:  %v\n", d)
-	d.AddFirst(5, 4, 3, 2)
-	fmt.Printf("- More:     %v\n", d)
+	fmt.Printf("- Empty:           %v\n", d)
+	d.AddFirst(3)
+	fmt.Printf("- Element:         %v\n", d)
+	d.AddFirst(2, 1)
+	d.AddLast(4, 5)
+	fmt.Printf("- More:            %v\n", d)
+	d.DeleteAt(2)        // Delete 3
+	n := d.GetNode(1)    // Get Node of 2
+	d.DeleteAfterNode(n) // Delete 4
+	fmt.Printf("- After Deletions: %v\n", d)
+	fmt.Printf("- Reversed:        %v\n", d.Reverse())
+	d.Swap(2, 1)
+	fmt.Printf("- Swap(2,1):       %v\n", d)
 }

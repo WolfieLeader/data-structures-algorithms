@@ -70,12 +70,20 @@ func (l Doubly[T]) GetFirst() (T, bool) {
 	return l.head.Value, true
 }
 
+func (l Doubly[T]) GetFirstNode() *Node[T] {
+	return l.head
+}
+
 func (l Doubly[T]) GetLast() (T, bool) {
 	var zero T
 	if l.tail == nil {
 		return zero, false
 	}
 	return l.tail.Value, true
+}
+
+func (l Doubly[T]) GetLastNode() *Node[T] {
+	return l.tail
 }
 
 func (l *Doubly[T]) DeleteFirst() (T, bool) {
@@ -390,13 +398,13 @@ func (l *Doubly[T]) DeleteValue(value T) bool {
 	return false
 }
 
-func (l Doubly[T]) Get(i int) (T, bool) {
+func (l Doubly[T]) Get(index int) (T, bool) {
 	var zero T
-	if i < 0 || i >= l.size {
+	if index < 0 || index >= l.size {
 		return zero, false
 	}
 
-	cur := l.shortestPath(i)
+	cur := l.shortestPath(index)
 	if cur == nil {
 		return zero, false
 	}
@@ -404,9 +412,18 @@ func (l Doubly[T]) Get(i int) (T, bool) {
 	return cur.Value, true
 }
 
+func (l Doubly[T]) GetNode(index int) *Node[T] {
+	if index < 0 || index >= l.size {
+		return nil
+	}
+
+	return l.shortestPath(index)
+
+}
+
 func (l Doubly[T]) ToSlice() []T {
 	out := make([]T, 0, l.size)
-	l.Traverse(func(i int, value T) { out = append(out, value) })
+	l.Traverse(func(index int, value T) { out = append(out, value) })
 	return out
 }
 
@@ -459,13 +476,13 @@ func (l Doubly[T]) IsSorted() bool {
 	return true
 }
 
-func (l *Doubly[T]) Swap(index1, index2 int) error {
+func (l *Doubly[T]) Swap(index1, index2 int) bool {
 	if index1 < 0 || index2 < 0 || index1 >= l.size || index2 >= l.size {
-		return fmt.Errorf("index out of bounds: i=%d, j=%d", index1, index2)
+		return false
 	}
 
 	if index1 == index2 {
-		return nil
+		return true
 	}
 
 	if index1 > index2 {
@@ -487,7 +504,7 @@ func (l *Doubly[T]) Swap(index1, index2 int) error {
 	}
 
 	if n1 == nil || n2 == nil {
-		return fmt.Errorf("nodes not found at i=%d, j=%d", index1, index2)
+		return false
 	}
 
 	if n1.prev == nil {
@@ -510,7 +527,7 @@ func (l *Doubly[T]) Swap(index1, index2 int) error {
 		n2.next = n1
 		n1.prev = n2
 
-		return nil
+		return true
 	}
 
 	n2.prev.next = n1
@@ -532,7 +549,7 @@ func (l *Doubly[T]) Swap(index1, index2 int) error {
 
 	n1.next, n2.next = realNext2, realNext1
 
-	return nil
+	return true
 }
 
 func (l Doubly[T]) String() string {

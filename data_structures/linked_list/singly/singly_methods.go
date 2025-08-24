@@ -68,12 +68,20 @@ func (l Singly[T]) GetFirst() (T, bool) {
 	return l.head.Value, true
 }
 
+func (l Singly[T]) GetFirstNode() *Node[T] {
+	return l.head
+}
+
 func (l Singly[T]) GetLast() (T, bool) {
 	var zero T
 	if l.tail == nil {
 		return zero, false
 	}
 	return l.tail.Value, true
+}
+
+func (l Singly[T]) GetLastNode() *Node[T] {
+	return l.tail
 }
 
 func (l *Singly[T]) DeleteFirst() (T, bool) {
@@ -440,9 +448,23 @@ func (l Singly[T]) Get(index int) (T, bool) {
 	return cur.Value, true
 }
 
+func (l Singly[T]) GetNode(index int) *Node[T] {
+	if index < 0 || index >= l.size {
+		return nil
+	}
+
+	cur := l.head
+	for cur != nil && index > 0 {
+		cur = cur.next
+		index--
+	}
+
+	return cur
+}
+
 func (l Singly[T]) ToSlice() []T {
 	out := make([]T, 0, l.size)
-	l.Traverse(func(i int, value T) { out = append(out, value) })
+	l.Traverse(func(index int, value T) { out = append(out, value) })
 	return out
 }
 
@@ -499,13 +521,13 @@ func (l Singly[T]) IsSorted() bool {
 	return true
 }
 
-func (l *Singly[T]) Swap(index1, index2 int) error {
+func (l *Singly[T]) Swap(index1, index2 int) bool {
 	if index1 < 0 || index2 < 0 || index1 >= l.size || index2 >= l.size {
-		return fmt.Errorf("index out of bounds: i=%d, j=%d", index1, index2)
+		return false
 	}
 
 	if index1 == index2 {
-		return nil
+		return true
 	}
 
 	if index1 > index2 {
@@ -529,7 +551,7 @@ func (l *Singly[T]) Swap(index1, index2 int) error {
 	}
 
 	if n1 == nil || n2 == nil {
-		return fmt.Errorf("nodes not found at i=%d, j=%d", index1, index2)
+		return false
 	}
 
 	if prev1 == nil {
@@ -546,7 +568,7 @@ func (l *Singly[T]) Swap(index1, index2 int) error {
 			l.tail = n1
 		}
 
-		return nil
+		return true
 	}
 
 	prev2.next = n1
@@ -558,7 +580,7 @@ func (l *Singly[T]) Swap(index1, index2 int) error {
 		l.tail = n2
 	}
 
-	return nil
+	return true
 }
 
 func (l Singly[T]) String() string {

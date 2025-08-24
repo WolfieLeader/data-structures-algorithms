@@ -11,7 +11,9 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	AddFirst(values ...T)
 	AddLast(values ...T)
 	GetFirst() (T, bool)
+	GetFirstNode() *Node[T]
 	GetLast() (T, bool)
+	GetLastNode() *Node[T]
 	DeleteFirst() (T, bool)
 	DeleteLast() (T, bool)
 
@@ -29,6 +31,7 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	DeleteValue(value T) bool
 
 	Get(index int) (T, bool)
+	GetNode(index int) *Node[T]
 	ToSlice() []T
 	Search(value T) int
 	Contains(value T) bool
@@ -36,7 +39,7 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	Traverse(fn func(index int, value T))
 	Reverse() *Singly[T]
 	IsSorted() bool
-	Swap(index1, index2 int) error
+	Swap(index1, index2 int) bool
 	String() string
 }
 
