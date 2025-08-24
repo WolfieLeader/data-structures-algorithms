@@ -12,6 +12,7 @@ type Queue[T cmp.Ordered] interface {
 	Clear()
 	ToSlice() []T
 	Copy() *LinkedListQueue[T]
+	String() string
 }
 
 var _ Queue[int] = (*LinkedListQueue[int])(nil)

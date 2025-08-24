@@ -12,6 +12,7 @@ type Queue[T cmp.Ordered] interface {
 	Clear()
 	ToSlice() []T
 	Copy() *ArrayQueue[T]
+	String() string
 }
 
 var _ Queue[int] = (*ArrayQueue[int])(nil)

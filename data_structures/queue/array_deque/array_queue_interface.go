@@ -15,6 +15,7 @@ type Deque[T cmp.Ordered] interface {
 	Clear()
 	ToSlice() []T
 	Copy() *ArrayDeque[T]
+	String() string
 }
 
 var _ Deque[int] = (*ArrayDeque[int])(nil)

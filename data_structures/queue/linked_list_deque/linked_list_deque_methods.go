@@ -1,5 +1,10 @@
 package listdeque
 
+import (
+	"fmt"
+	"strings"
+)
+
 func (d *LinkedListDeque[T]) EnqueueFirst(values ...T) { d.data.AddFirst(values...) }
 func (d *LinkedListDeque[T]) EnqueueLast(values ...T)  { d.data.AddLast(values...) }
 func (d *LinkedListDeque[T]) DequeueFirst() (T, bool)  { return d.data.DeleteFirst() }
@@ -12,4 +17,24 @@ func (d *LinkedListDeque[T]) Clear()                   { d.data.Clear() }
 func (d LinkedListDeque[T]) ToSlice() []T              { return d.data.ToSlice() }
 func (d LinkedListDeque[T]) Copy() *LinkedListDeque[T] {
 	return &LinkedListDeque[T]{data: d.data.Copy()}
+}
+func (d LinkedListDeque[T]) String() string {
+	if d.IsEmpty() {
+		return "[]"
+	}
+
+	var sb strings.Builder
+	sb.WriteString("[")
+	for i := 0; i < d.data.Size(); i++ {
+		if i == 0 {
+			sb.WriteString("(first) ")
+		}
+		v, _ := d.data.Get(i)
+		fmt.Fprintf(&sb, "%v ", v)
+		if i == d.data.Size()-1 {
+			sb.WriteString("(last)")
+		}
+	}
+	sb.WriteString("]")
+	return sb.String()
 }
