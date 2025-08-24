@@ -5,24 +5,52 @@ import (
 
 	"github.com/WolfieLeader/data-structures-algorithms/data_structures/array/dynamic"
 	"github.com/WolfieLeader/data-structures-algorithms/data_structures/array/matrix"
+	"github.com/WolfieLeader/data-structures-algorithms/data_structures/array/static"
 )
 
 func main() {
-	// matrixExample()
-	// searchingExample()
+	fmt.Println("Static Array Example:")
+	staticExample()
+	fmt.Println()
+
+	fmt.Println("Dynamic Array Example:")
+	dynamicExample()
+	fmt.Println()
+
+	fmt.Println("Matrix Example:")
+	matrixExample()
+}
+
+func staticExample() {
+	s := static.New(1, 2, 3, 4, 5)
+	fmt.Printf("Find 2 with binary search (%v): %d\n", s, s.BinarySearch(2))
+	s.Replace(2, 20, 5, 3)
+	fmt.Printf("Find 20 after replacing array (%v): %d\n", s, s.Search(20))
+	fmt.Printf("Reversed array (%v): %v\n", s, s.Reverse())
+	s.Swap(4, 0)
+	fmt.Printf("Array after swapping 4 and 0: %v\n", s)
+}
+
+func dynamicExample() {
+	d := dynamic.New(2, 4, 6, 8, 10, 12)
+	fmt.Printf("Find 4 with binary search (%v): %d\n", d, d.BinarySearch(4))
+	d.Replace(10, 50, 20, 30, 40, 60)
+	fmt.Printf("Find 20 after replacing array (%v): %d\n", d, d.Search(20))
+	fmt.Printf("Reversed array (%v): %v\n", d, d.Reverse())
+	d.Swap(1, 5)
+	fmt.Printf("Array after swapping 1 and 5: %v\n", d)
+	d.Append(70, 80, 90)
+	d.Prepend(0, -10, -20)
+	b, _ := d.Between(4, 7)
+	fmt.Printf("Array: %v, Between 4 and 7: %v\n", d, b)
 }
 
 func matrixExample() {
-	twoDArray := matrix.New[int](3, 3)
-	twoDArray.Traverse(func(i, j int, value int) { fmt.Printf("Value at (%d, %d): %d\n", i, j, value) })
-}
-
-func searchingExample() {
-	unsortedArray := dynamic.New(1, 23, 5, 7, 9, 11, 13, 15, 17, 19, 21, 3, 25, 27, 29, 31)
-	fmt.Printf("Searching for 23 in %v, result: %d\n", unsortedArray, unsortedArray.Search(23))
-	fmt.Printf("Searching for 71 in %v, result: %d\n", unsortedArray, unsortedArray.Search(71))
-
-	sortedArray := dynamic.New(3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31)
-	fmt.Printf("Searching for 15 in %v, result: %d\n", sortedArray, sortedArray.Search(15))
-	fmt.Printf("Searching for 2 in %v, result: %d\n", sortedArray, sortedArray.Search(2))
+	m := matrix.New[int](3, 3)
+	m.Replace([]int{1, 2, 3}, []int{4, 5, 6}, []int{7, 8, 9})
+	fmt.Printf("Matrix after replacement:\n %v\n", m)
+	e, _ := m.Get(1, 1)
+	fmt.Printf("Element at (1, 1): %d\n", e)
+	fmt.Printf("Row 0: %v\n", m.GetRow(0))
+	fmt.Printf("Column 1: %v\n", m.GetCol(1))
 }

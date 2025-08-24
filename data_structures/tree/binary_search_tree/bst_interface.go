@@ -12,11 +12,11 @@ type BinarySearchTree[T comparable] interface {
 
 	Size() int
 	IsEmpty() bool
-	Clear()
 	Root() T
-	Copy() *BST[T]
 	Height() int
 	IsBalanced() bool
 	Min() T
 	Max() T
+	Clear()
+	Copy() *BST[T]
 }
