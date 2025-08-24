@@ -12,6 +12,7 @@ type Stack[T cmp.Ordered] interface {
 	Clear()
 	ToSlice() []T
 	Copy() *LinkedListStack[T]
+	String() string
 }
 
 var _ Stack[int] = (*LinkedListStack[int])(nil)
