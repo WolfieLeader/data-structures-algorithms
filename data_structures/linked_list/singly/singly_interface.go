@@ -37,6 +37,7 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	Reverse() *Singly[T]
 	IsSorted() bool
 	Swap(index1, index2 int) error
+	String() string
 }
 
 var _ SinglyLinkedList[int] = (*Singly[int])(nil)

@@ -2,6 +2,7 @@ package doubly
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
@@ -532,4 +533,23 @@ func (l *Doubly[T]) Swap(index1, index2 int) error {
 	n1.next, n2.next = realNext2, realNext1
 
 	return nil
+}
+
+func (l Doubly[T]) String() string {
+	if l.head == nil {
+		return "[nil]"
+	}
+
+	var sb strings.Builder
+	sb.WriteString("[nil <- (head) ")
+
+	for cur := l.head; cur != nil; cur = cur.next {
+		fmt.Fprintf(&sb, "%v", cur.Value)
+		if cur.next != nil {
+			sb.WriteString(" <-> ")
+		} else {
+			sb.WriteString(" (tail) -> nil]")
+		}
+	}
+	return sb.String()
 }

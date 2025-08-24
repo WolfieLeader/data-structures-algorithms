@@ -2,6 +2,7 @@ package singly
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
@@ -558,4 +559,23 @@ func (l *Singly[T]) Swap(index1, index2 int) error {
 	}
 
 	return nil
+}
+
+func (l Singly[T]) String() string {
+	if l.head == nil {
+		return "[nil]"
+	}
+
+	var sb strings.Builder
+	sb.WriteString("[(head) ")
+
+	for cur := l.head; cur != nil; cur = cur.next {
+		fmt.Fprintf(&sb, "%v", cur.Value)
+		if cur.next != nil {
+			sb.WriteString(" -> ")
+		} else {
+			sb.WriteString(" (tail) -> nil]")
+		}
+	}
+	return sb.String()
 }

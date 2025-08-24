@@ -37,6 +37,7 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	Reverse() *Doubly[T]
 	IsSorted() bool
 	Swap(index1, index2 int) error
+	String() string
 }
 
 var _ DoublyLinkedList[int] = (*Doubly[int])(nil)
