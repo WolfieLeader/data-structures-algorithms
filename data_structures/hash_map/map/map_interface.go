@@ -12,8 +12,9 @@ type HashMap[K comparable, V comparable] interface {
 	ToMap() map[K]V
 	Keys() []K
 	Values() []V
-	ForEach(func(key K, value V) bool)
+	Traverse(func(key K, value V) bool)
 	Copy() *Map[K, V]
+	String() string
 }
 
 var _ HashMap[string, int] = (*Map[string, int])(nil)

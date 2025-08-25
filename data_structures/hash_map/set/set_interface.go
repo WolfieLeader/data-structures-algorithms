@@ -8,8 +8,9 @@ type HashSet[T comparable] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
-	ForEach(func(value T) bool)
+	Traverse(func(value T) bool)
 	Copy() *Set[T]
+	String() string
 }
 
 var _ HashSet[string] = (*Set[string])(nil)

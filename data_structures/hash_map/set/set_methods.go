@@ -1,5 +1,11 @@
 package hashset
 
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
+
 func (s *Set[T]) Add(values ...T) {
 	for _, value := range values {
 		s.data[value] = struct{}{}
@@ -39,7 +45,7 @@ func (s Set[T]) ToSlice() []T {
 	return out
 }
 
-func (s Set[T]) ForEach(fn func(value T) bool) {
+func (s Set[T]) Traverse(fn func(value T) bool) {
 	for k := range s.data {
 		if !fn(k) {
 			return
@@ -53,4 +59,18 @@ func (s Set[T]) Copy() *Set[T] {
 		out.data[k] = struct{}{}
 	}
 	return out
+}
+
+func (s Set[T]) String() string {
+	if s.Size() == 0 {
+		return "[]"
+	}
+
+	values := make([]string, 0, len(s.data))
+	for k := range s.data {
+		values = append(values, fmt.Sprintf("%v", k))
+	}
+
+	sort.Strings(values)
+	return "[" + strings.Join(values, " ") + "]"
 }
