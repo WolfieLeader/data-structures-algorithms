@@ -5,7 +5,6 @@ import "cmp"
 type BinarySearchTree[T cmp.Ordered] interface {
 	Insert(value T) bool
 	Delete(value T) bool
-	Search(value T) bool
 	Contains(value T) bool
 
 	TraverseInOrder(fn func(value T))
@@ -15,10 +14,12 @@ type BinarySearchTree[T cmp.Ordered] interface {
 	Size() int
 	IsEmpty() bool
 	Root() T
-	Height() int
-	IsBalanced() bool
 	Min() T
 	Max() T
+	Height() int
+	IsBalanced() bool
 	Clear()
 	Copy() *BST[T]
 }
+
+var _ BinarySearchTree[int] = (*BST[int])(nil)

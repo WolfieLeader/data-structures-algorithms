@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["Deque", "heapify", "hoare", "lomuto", "Wolfie"],
+  "cSpell.words": ["Deque", "heapify", "hoare", "lomuto", "succ", "Wolfie"],
   "material-icon-theme.folders.associations": {
     "data_structures": "app",
     "searching_algorithms": "target",
