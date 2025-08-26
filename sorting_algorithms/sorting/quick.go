@@ -64,24 +64,20 @@ func hoarePartition[T Ordered](array arrayType[T], low int, high int) int {
 	median := medianOfThree(array, low, high)
 	pivotVal := array[median]
 
-	left, right := low-1, high+1
+	left, right := low, high
 	for {
-		for {
+		for is(array[left], LessThan, pivotVal) {
 			left++
-			if is(array[left], GreaterOrEqualTo, pivotVal) {
-				break
-			}
 		}
-		for {
+		for is(array[right], GreaterThan, pivotVal) {
 			right--
-			if is(array[right], LessOrEqualTo, pivotVal) {
-				break
-			}
 		}
 		if left >= right {
 			return right
 		}
 		array.swap(left, right)
+		left++
+		right--
 	}
 }
 
@@ -149,5 +145,6 @@ func medianOfThree[T Ordered](array arrayType[T], low, high int) int {
 		mid, high = high, mid
 	}
 
-	return mid // returns the median index without swapping
+	_, _ = low, high // remove warnings
+	return mid       // returns the median index without swapping
 }
