@@ -1,6 +1,8 @@
 package sorting
 
-func Shell[T Ordered](arr []T) []T {
+import "cmp"
+
+func Shell[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -12,7 +14,7 @@ func Shell[T Ordered](arr []T) []T {
 			temp := array[pass]
 			i := pass
 
-			for i >= gap && is(temp, LessThan, array[i-gap]) {
+			for i >= gap && temp < array[i-gap] {
 				array[i] = array[i-gap]
 				i -= gap
 			}

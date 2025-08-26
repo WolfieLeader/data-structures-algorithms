@@ -7,7 +7,7 @@ func Bucket[T Numbers](arr []T) []T {
 	}
 
 	minVal, maxVal := array.findMinMax()
-	if is(minVal, EqualTo, maxVal) {
+	if minVal == maxVal {
 		return array
 	}
 

@@ -1,6 +1,8 @@
 package sorting
 
-func Bubble[T Ordered](arr []T) []T {
+import "cmp"
+
+func Bubble[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -10,7 +12,7 @@ func Bubble[T Ordered](arr []T) []T {
 		swapped := false
 
 		for i := 0; i < length-1-pass; i++ {
-			if is(array[i], GreaterThan, array[i+1]) {
+			if array[i] > array[i+1] {
 				array.swap(i+1, i)
 				swapped = true
 			}

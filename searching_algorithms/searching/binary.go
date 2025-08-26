@@ -1,18 +1,18 @@
 package searching
 
-import "github.com/WolfieLeader/data-structures-algorithms/utils"
+import "cmp"
 
-func BinarySearch[T utils.Ordered](array []T, value T) int {
+func BinarySearch[T cmp.Ordered](array []T, value T) int {
 	low, high := 0, len(array)-1
 
 	for low <= high {
 		mid := low + (high-low)/2
 
-		if utils.Is(array[mid], utils.EqualTo, value) {
+		if array[mid] == value {
 			return mid
 		}
 
-		if utils.Is(array[mid], utils.LessThan, value) {
+		if array[mid] < value {
 			low = mid + 1
 		} else {
 			high = mid - 1

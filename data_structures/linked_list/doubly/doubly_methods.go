@@ -3,8 +3,6 @@ package doubly
 import (
 	"fmt"
 	"strings"
-
-	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
 func (l Doubly[T]) Size() int {
@@ -377,18 +375,18 @@ func (l *Doubly[T]) DeleteValue(value T) bool {
 		return false
 	}
 
-	if utils.Is(l.head.Value, utils.EqualTo, value) {
+	if l.head.Value == value {
 		l.DeleteFirst()
 		return true
 	}
-	if utils.Is(l.tail.Value, utils.EqualTo, value) {
+	if l.tail.Value == value {
 		l.DeleteLast()
 		return true
 	}
 
 	cur := l.head
 	for cur != nil {
-		if utils.Is(cur.Value, utils.EqualTo, value) {
+		if cur.Value == value {
 			l.unlink(cur)
 			return true
 		}
@@ -430,7 +428,7 @@ func (l Doubly[T]) ToSlice() []T {
 func (l Doubly[T]) Search(value T) int {
 	i := 0
 	for cur := l.head; cur != nil; cur = cur.next {
-		if utils.Is(cur.Value, utils.EqualTo, value) {
+		if cur.Value == value {
 			return i
 		}
 		i++
@@ -468,7 +466,7 @@ func (l Doubly[T]) IsSorted() bool {
 
 	cur := l.head
 	for cur != nil && cur.next != nil {
-		if utils.Is(cur.Value, utils.GreaterThan, cur.next.Value) {
+		if cur.Value > cur.next.Value {
 			return false
 		}
 		cur = cur.next

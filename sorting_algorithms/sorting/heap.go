@@ -1,6 +1,8 @@
 package sorting
 
-func Heap[T Ordered](arr []T) []T {
+import "cmp"
+
+func Heap[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -18,7 +20,7 @@ func Heap[T Ordered](arr []T) []T {
 	return array
 }
 
-func heapify[T Ordered](array arrayType[T], root, end int) {
+func heapify[T cmp.Ordered](array arrayType[T], root, end int) {
 	for {
 		left := 2*root + 1
 		if left >= end {
@@ -28,11 +30,11 @@ func heapify[T Ordered](array arrayType[T], root, end int) {
 		child := left
 		right := left + 1
 
-		if right < end && is(array[left], LessThan, array[right]) {
+		if right < end && array[left] < array[right] {
 			child = right
 		}
 
-		if is(array[root], LessThan, array[child]) {
+		if array[root] < array[child] {
 			array.swap(root, child)
 			root = child
 		} else {

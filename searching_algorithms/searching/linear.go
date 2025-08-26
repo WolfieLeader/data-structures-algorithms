@@ -1,12 +1,10 @@
 package searching
 
-import (
-	"github.com/WolfieLeader/data-structures-algorithms/utils"
-)
+import "cmp"
 
-func LinearSearch[T utils.Ordered](array []T, value T) int {
+func LinearSearch[T cmp.Ordered](array []T, value T) int {
 	for i, v := range array {
-		if utils.Is(v, utils.EqualTo, value) {
+		if v == value {
 			return i
 		}
 	}

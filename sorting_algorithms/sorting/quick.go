@@ -1,8 +1,10 @@
 package sorting
 
+import "cmp"
+
 // ------ Lomuto Partition -----
 
-func Quick[T Ordered](arr []T) []T {
+func Quick[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -12,7 +14,7 @@ func Quick[T Ordered](arr []T) []T {
 	return array
 }
 
-func lomutoQuickSort[T Ordered](array arrayType[T], low int, high int) {
+func lomutoQuickSort[T cmp.Ordered](array arrayType[T], low int, high int) {
 	if low >= high {
 		return
 	}
@@ -21,14 +23,14 @@ func lomutoQuickSort[T Ordered](array arrayType[T], low int, high int) {
 	lomutoQuickSort(array, pivot+1, high)
 }
 
-func lomutoPartition[T Ordered](array arrayType[T], low int, high int) int {
+func lomutoPartition[T cmp.Ordered](array arrayType[T], low int, high int) int {
 	median := medianOfThree(array, low, high)
 	array.swap(median, high)
 	pivotVal := array[high]
 
 	i := low
 	for j := low; j < high; j++ {
-		if is(array[j], LessThan, pivotVal) {
+		if array[j] < pivotVal {
 			array.swap(i, j)
 			i++
 		}
@@ -40,7 +42,7 @@ func lomutoPartition[T Ordered](array arrayType[T], low int, high int) int {
 
 // ------ Hoare Partition ------
 
-func QuickHoare[T Ordered](arr []T) []T {
+func QuickHoare[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -50,7 +52,7 @@ func QuickHoare[T Ordered](arr []T) []T {
 	return array
 }
 
-func hoareQuickSort[T Ordered](array arrayType[T], low int, high int) {
+func hoareQuickSort[T cmp.Ordered](array arrayType[T], low int, high int) {
 	if low >= high {
 		return
 	}
@@ -60,16 +62,16 @@ func hoareQuickSort[T Ordered](array arrayType[T], low int, high int) {
 	hoareQuickSort(array, pivot+1, high)
 }
 
-func hoarePartition[T Ordered](array arrayType[T], low int, high int) int {
+func hoarePartition[T cmp.Ordered](array arrayType[T], low int, high int) int {
 	median := medianOfThree(array, low, high)
 	pivotVal := array[median]
 
 	left, right := low, high
 	for {
-		for is(array[left], LessThan, pivotVal) {
+		for array[left] < pivotVal {
 			left++
 		}
-		for is(array[right], GreaterThan, pivotVal) {
+		for array[right] > pivotVal {
 			right--
 		}
 		if left >= right {
@@ -83,7 +85,7 @@ func hoarePartition[T Ordered](array arrayType[T], low int, high int) int {
 
 // ------ 3 Way (Dutch Flag) -----
 
-func Quick3Way[T Ordered](arr []T) []T {
+func Quick3Way[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -93,7 +95,7 @@ func Quick3Way[T Ordered](arr []T) []T {
 	return array
 }
 
-func threeWayQuickSort[T Ordered](array arrayType[T], low int, high int) {
+func threeWayQuickSort[T cmp.Ordered](array arrayType[T], low int, high int) {
 	if low >= high {
 		return
 	}
@@ -103,18 +105,18 @@ func threeWayQuickSort[T Ordered](array arrayType[T], low int, high int) {
 	threeWayQuickSort(array, greater+1, high)
 }
 
-func threeWayPartition[T Ordered](array arrayType[T], low int, high int) (int, int) {
+func threeWayPartition[T cmp.Ordered](array arrayType[T], low int, high int) (int, int) {
 	median := medianOfThree(array, low, high)
 	pivotVal := array[median]
 
 	lesser, equal, greater := low, low, high
 	for equal <= greater {
 		switch {
-		case is(array[equal], LessThan, pivotVal):
+		case array[equal] < pivotVal:
 			array.swap(lesser, equal)
 			lesser++
 			equal++
-		case is(array[equal], GreaterThan, pivotVal):
+		case array[equal] > pivotVal:
 			array.swap(equal, greater)
 			greater--
 		default:
@@ -127,21 +129,16 @@ func threeWayPartition[T Ordered](array arrayType[T], low int, high int) (int, i
 
 // ------ Shared Utilities ------
 
-func medianOfThree[T Ordered](array arrayType[T], low, high int) int {
+func medianOfThree[T cmp.Ordered](array arrayType[T], low, high int) int {
 	mid := low + (high-low)/2
 
-	// mid < low => swap mid <-> low
-	if is(array[mid], LessThan, array[low]) {
+	if array[mid] < array[low] {
 		low, mid = mid, low
 	}
-
-	// high < low => swap high <-> low
-	if is(array[high], LessThan, array[low]) {
+	if array[high] < array[low] {
 		low, high = high, low
 	}
-
-	// mid < high => swap mid <-> high
-	if is(array[high], LessThan, array[mid]) {
+	if array[high] < array[mid] {
 		mid, high = high, mid
 	}
 

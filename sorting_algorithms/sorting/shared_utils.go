@@ -1,10 +1,10 @@
 package sorting
 
 import (
-	"github.com/WolfieLeader/data-structures-algorithms/utils"
+	"cmp"
 )
 
-type arrayType[T Ordered] []T
+type arrayType[T cmp.Ordered] []T
 
 type Signed interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64
@@ -26,41 +26,26 @@ type Numbers interface {
 	Integers | Float
 }
 
-func copyArray[T Ordered](arr []T) (arrayType[T], int) {
+func copyArray[T cmp.Ordered](arr []T) (arrayType[T], int) {
 	length := len(arr)
 	out := make(arrayType[T], length)
 	copy(out, arr)
 	return out, length
 }
 
-func (array *arrayType[T]) swap(index1, index2 int) {
-	(*array)[index1], (*array)[index2] = (*array)[index2], (*array)[index1]
+func (a *arrayType[T]) swap(index1, index2 int) {
+	(*a)[index1], (*a)[index2] = (*a)[index2], (*a)[index1]
 }
 
-func (array arrayType[T]) findMinMax() (minVal T, maxVal T) {
-	minVal, maxVal = array[0], array[0]
-	for _, value := range array {
-		if utils.Is(value, utils.LessThan, minVal) {
-			minVal = value
+func (a arrayType[T]) findMinMax() (min T, max T) {
+	min, max = a[0], a[0]
+	for _, value := range a {
+		if value < min {
+			min = value
 		}
-		if utils.Is(value, utils.GreaterThan, maxVal) {
-			maxVal = value
+		if value > max {
+			max = value
 		}
 	}
-	return minVal, maxVal
-}
-
-type Ordered = utils.Ordered
-type operator = utils.Operator
-
-const (
-	LessThan         operator = utils.LessThan
-	GreaterThan      operator = utils.GreaterThan
-	LessOrEqualTo    operator = utils.LessOrEqualTo
-	GreaterOrEqualTo operator = utils.GreaterOrEqualTo
-	EqualTo          operator = utils.EqualTo
-)
-
-func is[T Ordered](x T, op operator, y T) bool {
-	return utils.Is(x, op, y)
+	return min, max
 }

@@ -1,6 +1,8 @@
 package sorting
 
-func Cocktail[T Ordered](arr []T) []T {
+import "cmp"
+
+func Cocktail[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -13,7 +15,7 @@ func Cocktail[T Ordered](arr []T) []T {
 
 		// left -> right
 		for i := left; i < right; i++ {
-			if is(array[i], GreaterThan, array[i+1]) {
+			if array[i] > array[i+1] {
 				array.swap(i+1, i)
 				swapped = true
 				lastRight = i
@@ -28,7 +30,7 @@ func Cocktail[T Ordered](arr []T) []T {
 		swapped = false
 		lastLeft := right
 		for j := right; j > left; j-- {
-			if is(array[j], LessThan, array[j-1]) {
+			if array[j] < array[j-1] {
 				array.swap(j, j-1)
 				swapped = true
 				lastLeft = j

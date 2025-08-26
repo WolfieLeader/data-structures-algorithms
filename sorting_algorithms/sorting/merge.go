@@ -1,6 +1,8 @@
 package sorting
 
-func Merge[T Ordered](arr []T) []T {
+import "cmp"
+
+func Merge[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -12,13 +14,13 @@ func Merge[T Ordered](arr []T) []T {
 	return merge(left, right)
 }
 
-func merge[T Ordered](left []T, right []T) []T {
+func merge[T cmp.Ordered](left []T, right []T) []T {
 	leftLen, rightLen := len(left), len(right)
 	array := make([]T, 0, leftLen+rightLen)
 
 	i, j := 0, 0
 	for i < leftLen && j < rightLen {
-		if is(left[i], GreaterThan, right[j]) {
+		if left[i] > right[j] {
 			array = append(array, right[j])
 			j++
 		} else {

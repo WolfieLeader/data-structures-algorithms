@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
-	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
 func (a Static[T]) Get(index int) (T, bool) {
@@ -51,7 +50,7 @@ func (a Static[T]) Length() int {
 
 func (a Static[T]) IsSorted() bool {
 	for i := 1; i < len(a.data); i++ {
-		if utils.Is(a.data[i-1], utils.GreaterThan, a.data[i]) {
+		if a.data[i-1] > a.data[i] {
 			return false
 		}
 	}

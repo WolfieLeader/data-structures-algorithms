@@ -1,6 +1,8 @@
 package sorting
 
-func Insertion[T Ordered](arr []T) []T {
+import "cmp"
+
+func Insertion[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -10,7 +12,7 @@ func Insertion[T Ordered](arr []T) []T {
 		value := array[pass]
 		i := pass - 1
 
-		for i >= 0 && is(array[i], GreaterThan, value) {
+		for i >= 0 && array[i] > value {
 			array[i+1] = array[i]
 			i--
 		}

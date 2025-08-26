@@ -1,6 +1,8 @@
 package sorting
 
-func Comb[T Ordered](arr []T) []T {
+import "cmp"
+
+func Comb[T cmp.Ordered](arr []T) []T {
 	array, length := copyArray(arr)
 	if length <= 1 {
 		return array
@@ -14,7 +16,7 @@ func Comb[T Ordered](arr []T) []T {
 
 		swapped = false
 		for i := 0; i+gap < length; i++ {
-			if is(array[i], GreaterThan, array[i+gap]) {
+			if array[i] > array[i+gap] {
 				array.swap(i+gap, i)
 				swapped = true
 			}

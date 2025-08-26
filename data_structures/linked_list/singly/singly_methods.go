@@ -3,8 +3,6 @@ package singly
 import (
 	"fmt"
 	"strings"
-
-	"github.com/WolfieLeader/data-structures-algorithms/utils"
 )
 
 func (l Singly[T]) Size() int {
@@ -406,14 +404,14 @@ func (l *Singly[T]) DeleteValue(value T) bool {
 		return false
 	}
 
-	if utils.Is(l.head.Value, utils.EqualTo, value) {
+	if l.head.Value == value {
 		l.DeleteFirst()
 		return true
 	}
 
 	prev := l.head
 	for prev != nil && prev.next != nil {
-		if utils.Is(prev.next.Value, utils.EqualTo, value) {
+		if prev.next.Value == value {
 			prev.next = prev.next.next
 
 			if prev.next == nil {
@@ -471,7 +469,7 @@ func (l Singly[T]) ToSlice() []T {
 func (l Singly[T]) Search(value T) int {
 	i := 0
 	for cur := l.head; cur != nil; cur = cur.next {
-		if utils.Is(cur.Value, utils.EqualTo, value) {
+		if cur.Value == value {
 			return i
 		}
 		i++
@@ -513,7 +511,7 @@ func (l Singly[T]) IsSorted() bool {
 
 	cur := l.head
 	for cur != nil && cur.next != nil {
-		if utils.Is(cur.Value, utils.GreaterThan, cur.next.Value) {
+		if cur.Value > cur.next.Value {
 			return false
 		}
 		cur = cur.next
