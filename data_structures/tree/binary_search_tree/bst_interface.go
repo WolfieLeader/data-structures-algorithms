@@ -1,6 +1,8 @@
 package bst
 
-type BinarySearchTree[T comparable] interface {
+import "cmp"
+
+type BinarySearchTree[T cmp.Ordered] interface {
 	Insert(value T) bool
 	Delete(value T) bool
 	Search(value T) bool

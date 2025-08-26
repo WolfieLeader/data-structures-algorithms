@@ -1,16 +1,18 @@
 package bst
 
-type Node[T comparable] struct {
+import "cmp"
+
+type Node[T cmp.Ordered] struct {
 	Value T
 	left  *Node[T]
 	right *Node[T]
 }
 
-type BST[T comparable] struct {
+type BST[T cmp.Ordered] struct {
 	root *Node[T]
 	size int
 }
 
-func New[T comparable]() *BST[T] {
+func New[T cmp.Ordered]() *BST[T] {
 	return &BST[T]{}
 }
