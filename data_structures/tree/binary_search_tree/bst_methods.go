@@ -1,13 +1,13 @@
 package bst
 
 func (t BST[T]) Contains(value T) bool {
-	cur := t.root
-	for cur != nil {
+	curr := t.root
+	for curr != nil {
 		switch {
-		case value < cur.Value:
-			cur = cur.left
-		case value > cur.Value:
-			cur = cur.right
+		case value < curr.Value:
+			curr = curr.left
+		case value > curr.Value:
+			curr = curr.right
 		default: // Equal
 			return true
 		}
@@ -41,24 +41,24 @@ func (t *BST[T]) Insert(value T) bool {
 		return true
 	}
 
-	cur := t.root
+	curr := t.root
 	for {
 		switch {
-		case value < cur.Value:
-			if cur.left == nil {
-				cur.left = &Node[T]{Value: value}
+		case value < curr.Value:
+			if curr.left == nil {
+				curr.left = &Node[T]{Value: value}
 				t.size++
 				return true
 			}
-			cur = cur.left
+			curr = curr.left
 
-		case value > cur.Value:
-			if cur.right == nil {
-				cur.right = &Node[T]{Value: value}
+		case value > curr.Value:
+			if curr.right == nil {
+				curr.right = &Node[T]{Value: value}
 				t.size++
 				return true
 			}
-			cur = cur.right
+			curr = curr.right
 
 		default: // Equal
 			return false
@@ -97,46 +97,36 @@ func (n *Node[T]) nodeInsert(value T) (*Node[T], bool) {
 }
 
 func (t *BST[T]) Delete(value T) bool {
-	var parent *Node[T]
-	cur := t.root
-	for cur != nil && cur.Value != value {
-		parent = cur
-		if value < cur.Value {
-			cur = cur.left
+	curr, ptr := t.root, &t.root
+	for curr != nil && curr.Value != value {
+		if value < curr.Value {
+			ptr = &curr.left
+			curr = curr.left
 		} else {
-			cur = cur.right
+			ptr = &curr.right
+			curr = curr.right
 		}
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	if cur.left != nil && cur.right != nil {
-		succParent, succ := cur, cur.right
+	if curr.left != nil && curr.right != nil {
+		succ, succPtr := curr.right, &curr.right
 		for succ.left != nil {
-			succParent = succ
+			succPtr = &succ.left
 			succ = succ.left
 		}
 
-		cur.Value = succ.Value
-		parent, cur = succParent, succ
+		curr.Value = succ.Value
+		curr, ptr = succ, succPtr
 	}
 
-	var child *Node[T]
-	if cur.left != nil {
-		child = cur.left
+	if curr.left != nil {
+		*ptr = curr.left
 	} else {
-		child = cur.right
-	}
-
-	switch {
-	case parent == nil:
-		t.root = child
-	case parent.left == cur:
-		parent.left = child
-	default:
-		parent.right = child
+		*ptr = curr.right
 	}
 
 	t.size--
@@ -209,11 +199,11 @@ func (t BST[T]) Min() (T, bool) {
 	if t.root == nil {
 		return zero, false
 	}
-	cur := t.root
-	for cur.left != nil {
-		cur = cur.left
+	curr := t.root
+	for curr.left != nil {
+		curr = curr.left
 	}
-	return cur.Value, true
+	return curr.Value, true
 }
 
 func (t BST[T]) Max() (T, bool) {
@@ -221,9 +211,9 @@ func (t BST[T]) Max() (T, bool) {
 	if t.root == nil {
 		return zero, false
 	}
-	cur := t.root
-	for cur.right != nil {
-		cur = cur.right
+	curr := t.root
+	for curr.right != nil {
+		curr = curr.right
 	}
-	return cur.Value, true
+	return curr.Value, true
 }

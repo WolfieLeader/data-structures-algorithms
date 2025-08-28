@@ -123,22 +123,22 @@ func (l *Doubly[T]) DeleteLast() (T, bool) {
 }
 
 func (l Doubly[T]) shortestPath(index int) *Node[T] {
-	var cur *Node[T]
+	var curr *Node[T]
 	if index <= (l.size-1)/2 {
-		cur = l.head
-		for cur != nil && index > 0 {
-			cur = cur.next
+		curr = l.head
+		for curr != nil && index > 0 {
+			curr = curr.next
 			index--
 		}
-		return cur
+		return curr
 	}
 
-	cur = l.tail
-	for cur != nil && index < l.size-1 {
-		cur = cur.prev
+	curr = l.tail
+	for curr != nil && index < l.size-1 {
+		curr = curr.prev
 		index++
 	}
-	return cur
+	return curr
 }
 
 func (l *Doubly[T]) SetAt(index int, value T) bool {
@@ -146,12 +146,12 @@ func (l *Doubly[T]) SetAt(index int, value T) bool {
 		return false
 	}
 
-	cur := l.shortestPath(index)
-	if cur == nil {
+	curr := l.shortestPath(index)
+	if curr == nil {
 		return false
 	}
 
-	cur.Value = value
+	curr.Value = value
 	return true
 }
 
@@ -160,16 +160,16 @@ func (l *Doubly[T]) SetAtNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	cur.Value = value
+	curr.Value = value
 	return true
 }
 
@@ -187,14 +187,14 @@ func (l *Doubly[T]) InsertAt(index int, value T) bool {
 		return true
 	}
 
-	cur := l.shortestPath(index)
-	if cur == nil {
+	curr := l.shortestPath(index)
+	if curr == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, prev: cur.prev, next: cur}
-	cur.prev.next = n
-	cur.prev = n
+	n := &Node[T]{Value: value, prev: curr.prev, next: curr}
+	curr.prev.next = n
+	curr.prev = n
 
 	l.size++
 	return true
@@ -205,18 +205,18 @@ func (l *Doubly[T]) InsertAtNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, prev: cur.prev, next: cur}
-	cur.prev.next = n
-	cur.prev = n
+	n := &Node[T]{Value: value, prev: curr.prev, next: curr}
+	curr.prev.next = n
+	curr.prev = n
 
 	l.size++
 	return true
@@ -232,13 +232,13 @@ func (l *Doubly[T]) InsertAfter(index int, value T) bool {
 		return true
 	}
 
-	cur := l.shortestPath(index)
-	if cur == nil {
+	curr := l.shortestPath(index)
+	if curr == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, prev: cur, next: cur.next}
-	cur.next = n
+	n := &Node[T]{Value: value, prev: curr, next: curr.next}
+	curr.next = n
 
 	if n.next == nil {
 		l.tail = n
@@ -255,17 +255,17 @@ func (l *Doubly[T]) InsertAfterNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, prev: cur, next: cur.next}
-	cur.next = n
+	n := &Node[T]{Value: value, prev: curr, next: curr.next}
+	curr.next = n
 
 	if n.next == nil {
 		l.tail = n
@@ -277,26 +277,26 @@ func (l *Doubly[T]) InsertAfterNode(node *Node[T], value T) bool {
 	return true
 }
 
-func (l *Doubly[T]) unlink(cur *Node[T]) (T, bool) {
+func (l *Doubly[T]) unlink(curr *Node[T]) (T, bool) {
 	var zero T
-	if cur == nil {
+	if curr == nil {
 		return zero, false
 	}
 
-	if cur.prev == nil {
-		l.head = cur.next
+	if curr.prev == nil {
+		l.head = curr.next
 	} else {
-		cur.prev.next = cur.next
+		curr.prev.next = curr.next
 	}
 
-	if cur.next == nil {
-		l.tail = cur.prev
+	if curr.next == nil {
+		l.tail = curr.prev
 	} else {
-		cur.next.prev = cur.prev
+		curr.next.prev = curr.prev
 	}
 
 	l.size--
-	return cur.Value, true
+	return curr.Value, true
 }
 
 func (l *Doubly[T]) DeleteAt(index int) (T, bool) {
@@ -312,8 +312,8 @@ func (l *Doubly[T]) DeleteAt(index int) (T, bool) {
 		return l.DeleteLast()
 	}
 
-	cur := l.shortestPath(index)
-	return l.unlink(cur)
+	curr := l.shortestPath(index)
+	return l.unlink(curr)
 }
 
 func (l *Doubly[T]) DeleteAfter(index int) (T, bool) {
@@ -322,12 +322,12 @@ func (l *Doubly[T]) DeleteAfter(index int) (T, bool) {
 		return zero, false
 	}
 
-	cur := l.shortestPath(index)
-	if cur == nil {
+	curr := l.shortestPath(index)
+	if curr == nil {
 		return zero, false
 	}
 
-	return l.unlink(cur.next)
+	return l.unlink(curr.next)
 }
 
 func (l *Doubly[T]) DeleteAtNode(node *Node[T]) (T, bool) {
@@ -343,9 +343,9 @@ func (l *Doubly[T]) DeleteAtNode(node *Node[T]) (T, bool) {
 		return l.DeleteLast()
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
 	return l.unlink(node)
@@ -358,16 +358,16 @@ func (l *Doubly[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
 		return zero, false
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return zero, false
 	}
 
-	return l.unlink(cur.next)
+	return l.unlink(curr.next)
 }
 
 func (l *Doubly[T]) DeleteValue(value T) bool {
@@ -384,14 +384,14 @@ func (l *Doubly[T]) DeleteValue(value T) bool {
 		return true
 	}
 
-	cur := l.head
-	for cur != nil {
-		if cur.Value == value {
-			l.unlink(cur)
+	curr := l.head
+	for curr != nil {
+		if curr.Value == value {
+			l.unlink(curr)
 			return true
 		}
 
-		cur = cur.next
+		curr = curr.next
 	}
 	return false
 }
@@ -402,12 +402,12 @@ func (l Doubly[T]) Get(index int) (T, bool) {
 		return zero, false
 	}
 
-	cur := l.shortestPath(index)
-	if cur == nil {
+	curr := l.shortestPath(index)
+	if curr == nil {
 		return zero, false
 	}
 
-	return cur.Value, true
+	return curr.Value, true
 }
 
 func (l Doubly[T]) GetNode(index int) *Node[T] {
@@ -427,8 +427,8 @@ func (l Doubly[T]) ToSlice() []T {
 
 func (l Doubly[T]) Search(value T) int {
 	i := 0
-	for cur := l.head; cur != nil; cur = cur.next {
-		if cur.Value == value {
+	for curr := l.head; curr != nil; curr = curr.next {
+		if curr.Value == value {
 			return i
 		}
 		i++
@@ -442,18 +442,18 @@ func (l Doubly[T]) Contains(value T) bool {
 
 func (l Doubly[T]) Traverse(fn func(index int, value T)) {
 	i := 0
-	for cur := l.head; cur != nil; cur = cur.next {
-		fn(i, cur.Value)
+	for curr := l.head; curr != nil; curr = curr.next {
+		fn(i, curr.Value)
 		i++
 	}
 }
 
 func (l Doubly[T]) Reverse() *Doubly[T] {
 	out := l.Copy()
-	cur := out.head
-	for cur != nil {
-		cur.prev, cur.next = cur.next, cur.prev
-		cur = cur.prev
+	curr := out.head
+	for curr != nil {
+		curr.prev, curr.next = curr.next, curr.prev
+		curr = curr.prev
 	}
 	out.head, out.tail = out.tail, out.head
 	return out
@@ -464,12 +464,12 @@ func (l Doubly[T]) IsSorted() bool {
 		return true
 	}
 
-	cur := l.head
-	for cur != nil && cur.next != nil {
-		if cur.Value > cur.next.Value {
+	curr := l.head
+	for curr != nil && curr.next != nil {
+		if curr.Value > curr.next.Value {
 			return false
 		}
-		cur = cur.next
+		curr = curr.next
 	}
 	return true
 }
@@ -489,12 +489,12 @@ func (l *Doubly[T]) Swap(index1, index2 int) bool {
 
 	i := 0
 	var n1, n2 *Node[T]
-	for cur := l.head; cur != nil; cur = cur.next {
+	for curr := l.head; curr != nil; curr = curr.next {
 		if i == index1 {
-			n1 = cur
+			n1 = curr
 		}
 		if i == index2 {
-			n2 = cur
+			n2 = curr
 			break
 		}
 
@@ -558,9 +558,9 @@ func (l Doubly[T]) String() string {
 	var sb strings.Builder
 	sb.WriteString("[nil <- (head) ")
 
-	for cur := l.head; cur != nil; cur = cur.next {
-		fmt.Fprintf(&sb, "%v", cur.Value)
-		if cur.next != nil {
+	for curr := l.head; curr != nil; curr = curr.next {
+		fmt.Fprintf(&sb, "%v", curr.Value)
+		if curr.next != nil {
 			sb.WriteString(" <-> ")
 		} else {
 			sb.WriteString(" (tail) -> nil]")

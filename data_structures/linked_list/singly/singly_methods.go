@@ -129,17 +129,17 @@ func (l *Singly[T]) SetAt(index int, value T) bool {
 		return false
 	}
 
-	cur := l.head
-	for cur != nil && index > 0 {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && index > 0 {
+		curr = curr.next
 		index--
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	cur.Value = value
+	curr.Value = value
 	return true
 }
 
@@ -148,16 +148,16 @@ func (l *Singly[T]) SetAtNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	cur.Value = value
+	curr.Value = value
 	return true
 }
 
@@ -240,18 +240,18 @@ func (l *Singly[T]) InsertAfter(index int, value T) bool {
 		return true
 	}
 
-	cur := l.head
-	for cur != nil && index > 0 {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && index > 0 {
+		curr = curr.next
 		index--
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: cur.next}
-	cur.next = n
+	n := &Node[T]{Value: value, next: curr.next}
+	curr.next = n
 
 	if n.next == nil {
 		l.tail = n
@@ -266,17 +266,17 @@ func (l *Singly[T]) InsertAfterNode(node *Node[T], value T) bool {
 		return false
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return false
 	}
 
-	n := &Node[T]{Value: value, next: cur.next}
-	cur.next = n
+	n := &Node[T]{Value: value, next: curr.next}
+	curr.next = n
 
 	if n.next == nil {
 		l.tail = n
@@ -322,21 +322,21 @@ func (l *Singly[T]) DeleteAfter(index int) (T, bool) {
 		return zero, false
 	}
 
-	cur := l.head
-	for cur != nil && index > 0 {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && index > 0 {
+		curr = curr.next
 		index--
 	}
 
-	if cur == nil || cur.next == nil {
+	if curr == nil || curr.next == nil {
 		return zero, false
 	}
 
-	value := cur.next.Value
-	cur.next = cur.next.next
+	value := curr.next.Value
+	curr.next = curr.next.next
 
-	if cur.next == nil {
-		l.tail = cur
+	if curr.next == nil {
+		l.tail = curr
 	}
 
 	l.size--
@@ -379,20 +379,20 @@ func (l *Singly[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
 		return zero, false
 	}
 
-	cur := l.head
-	for cur != nil && cur != node {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && curr != node {
+		curr = curr.next
 	}
 
-	if cur == nil || cur.next == nil {
+	if curr == nil || curr.next == nil {
 		return zero, false
 	}
 
-	value := cur.next.Value
-	cur.next = cur.next.next
+	value := curr.next.Value
+	curr.next = curr.next.next
 
-	if cur.next == nil {
-		l.tail = cur
+	if curr.next == nil {
+		l.tail = curr
 	}
 
 	l.size--
@@ -433,17 +433,17 @@ func (l Singly[T]) Get(index int) (T, bool) {
 		return zero, false
 	}
 
-	cur := l.head
-	for cur != nil && index > 0 {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && index > 0 {
+		curr = curr.next
 		index--
 	}
 
-	if cur == nil {
+	if curr == nil {
 		return zero, false
 	}
 
-	return cur.Value, true
+	return curr.Value, true
 }
 
 func (l Singly[T]) GetNode(index int) *Node[T] {
@@ -451,13 +451,13 @@ func (l Singly[T]) GetNode(index int) *Node[T] {
 		return nil
 	}
 
-	cur := l.head
-	for cur != nil && index > 0 {
-		cur = cur.next
+	curr := l.head
+	for curr != nil && index > 0 {
+		curr = curr.next
 		index--
 	}
 
-	return cur
+	return curr
 }
 
 func (l Singly[T]) ToSlice() []T {
@@ -468,8 +468,8 @@ func (l Singly[T]) ToSlice() []T {
 
 func (l Singly[T]) Search(value T) int {
 	i := 0
-	for cur := l.head; cur != nil; cur = cur.next {
-		if cur.Value == value {
+	for curr := l.head; curr != nil; curr = curr.next {
+		if curr.Value == value {
 			return i
 		}
 		i++
@@ -483,8 +483,8 @@ func (l Singly[T]) Contains(value T) bool {
 
 func (l Singly[T]) Traverse(fn func(index int, value T)) {
 	i := 0
-	for cur := l.head; cur != nil; cur = cur.next {
-		fn(i, cur.Value)
+	for curr := l.head; curr != nil; curr = curr.next {
+		fn(i, curr.Value)
 		i++
 	}
 }
@@ -492,13 +492,13 @@ func (l Singly[T]) Traverse(fn func(index int, value T)) {
 func (l Singly[T]) Reverse() *Singly[T] {
 	var prev, next *Node[T]
 	out := l.Copy()
-	cur := out.head
-	for cur != nil {
-		next = cur.next
-		cur.next = prev
+	curr := out.head
+	for curr != nil {
+		next = curr.next
+		curr.next = prev
 
-		prev = cur
-		cur = next
+		prev = curr
+		curr = next
 	}
 	out.head, out.tail = out.tail, out.head
 	return out
@@ -509,12 +509,12 @@ func (l Singly[T]) IsSorted() bool {
 		return true
 	}
 
-	cur := l.head
-	for cur != nil && cur.next != nil {
-		if cur.Value > cur.next.Value {
+	curr := l.head
+	for curr != nil && curr.next != nil {
+		if curr.Value > curr.next.Value {
 			return false
 		}
-		cur = cur.next
+		curr = curr.next
 	}
 	return true
 }
@@ -534,18 +534,18 @@ func (l *Singly[T]) Swap(index1, index2 int) bool {
 
 	i := 0
 	var prev, prev1, prev2, n1, n2 *Node[T]
-	for cur := l.head; cur != nil; cur = cur.next {
+	for curr := l.head; curr != nil; curr = curr.next {
 		if i == index1 {
-			prev1, n1 = prev, cur
+			prev1, n1 = prev, curr
 		}
 
 		if i == index2 {
-			prev2, n2 = prev, cur
+			prev2, n2 = prev, curr
 			break
 		}
 
 		i++
-		prev = cur
+		prev = curr
 	}
 
 	if n1 == nil || n2 == nil {
@@ -589,9 +589,9 @@ func (l Singly[T]) String() string {
 	var sb strings.Builder
 	sb.WriteString("[(head) ")
 
-	for cur := l.head; cur != nil; cur = cur.next {
-		fmt.Fprintf(&sb, "%v", cur.Value)
-		if cur.next != nil {
+	for curr := l.head; curr != nil; curr = curr.next {
+		fmt.Fprintf(&sb, "%v", curr.Value)
+		if curr.next != nil {
 			sb.WriteString(" -> ")
 		} else {
 			sb.WriteString(" (tail) -> nil]")
