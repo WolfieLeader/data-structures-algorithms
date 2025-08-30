@@ -1,6 +1,6 @@
 package bst
 
-func (t BST[T]) Contains(value T) bool {
+func (t BST[T]) IterContains(value T) bool {
 	curr := t.root
 	for curr != nil {
 		switch {
@@ -15,26 +15,26 @@ func (t BST[T]) Contains(value T) bool {
 	return false
 }
 
-func (t BST[T]) RecursiveContains(value T) bool {
-	return t.root.nodeContains(value)
+func (t BST[T]) RecContains(value T) bool {
+	return t.root.contains(value)
 }
 
-func (n *Node[T]) nodeContains(value T) bool {
+func (n *Node[T]) contains(value T) bool {
 	if n == nil {
 		return false
 	}
 
 	switch {
 	case value < n.Value:
-		return (n.left).nodeContains(value)
+		return (n.left).contains(value)
 	case value > n.Value:
-		return (n.right).nodeContains(value)
+		return (n.right).contains(value)
 	default: // Equal
 		return true
 	}
 }
 
-func (t *BST[T]) Insert(value T) bool {
+func (t *BST[T]) IterInsert(value T) bool {
 	if t.root == nil {
 		t.root = &Node[T]{Value: value}
 		t.size = 1
@@ -66,8 +66,8 @@ func (t *BST[T]) Insert(value T) bool {
 	}
 }
 
-func (t *BST[T]) RecursiveInsert(value T) bool {
-	newRoot, ok := t.root.nodeInsert(value)
+func (t *BST[T]) RecInsert(value T) bool {
+	newRoot, ok := t.root.insert(value)
 	t.root = newRoot
 	if ok {
 		t.size++
@@ -75,19 +75,19 @@ func (t *BST[T]) RecursiveInsert(value T) bool {
 	return ok
 }
 
-func (n *Node[T]) nodeInsert(value T) (*Node[T], bool) {
+func (n *Node[T]) insert(value T) (*Node[T], bool) {
 	if n == nil {
 		return &Node[T]{Value: value}, true
 	}
 
 	switch {
 	case value < n.Value:
-		newLeft, ok := (n.left).nodeInsert(value)
+		newLeft, ok := (n.left).insert(value)
 		n.left = newLeft
 		return n, ok
 
 	case value > n.Value:
-		newRight, ok := (n.right).nodeInsert(value)
+		newRight, ok := (n.right).insert(value)
 		n.right = newRight
 		return n, ok
 
@@ -96,7 +96,7 @@ func (n *Node[T]) nodeInsert(value T) (*Node[T], bool) {
 	}
 }
 
-func (t *BST[T]) Delete(value T) bool {
+func (t *BST[T]) IterDelete(value T) bool {
 	curr, ptr := t.root, &t.root
 	for curr != nil && curr.Value != value {
 		if value < curr.Value {
@@ -133,8 +133,8 @@ func (t *BST[T]) Delete(value T) bool {
 	return true
 }
 
-func (t *BST[T]) RecursiveDelete(value T) bool {
-	newRoot, ok := t.root.nodeDelete(value)
+func (t *BST[T]) RecDelete(value T) bool {
+	newRoot, ok := t.root.delete(value)
 	t.root = newRoot
 	if ok {
 		t.size--
@@ -142,19 +142,19 @@ func (t *BST[T]) RecursiveDelete(value T) bool {
 	return ok
 }
 
-func (n *Node[T]) nodeDelete(value T) (*Node[T], bool) {
+func (n *Node[T]) delete(value T) (*Node[T], bool) {
 	if n == nil {
 		return nil, false
 	}
 
 	switch {
 	case value < n.Value:
-		newLeft, ok := (n.left).nodeDelete(value)
+		newLeft, ok := (n.left).delete(value)
 		n.left = newLeft
 		return n, ok
 
 	case value > n.Value:
-		newRight, ok := (n.right).nodeDelete(value)
+		newRight, ok := (n.right).delete(value)
 		n.right = newRight
 		return n, ok
 
@@ -172,7 +172,7 @@ func (n *Node[T]) nodeDelete(value T) (*Node[T], bool) {
 		}
 
 		n.Value = succ.Value
-		newRight, ok := (n.right).nodeDelete(succ.Value)
+		newRight, ok := (n.right).delete(succ.Value)
 		n.right = newRight
 		return n, ok
 	}
@@ -216,4 +216,96 @@ func (t BST[T]) Max() (T, bool) {
 		curr = curr.right
 	}
 	return curr.Value, true
+}
+
+func (t BST[T]) RecTraverseInOrder(fn func(value T))   { t.root.inOrder(fn) }
+func (t BST[T]) RecTraversePreOrder(fn func(value T))  { t.root.preOrder(fn) }
+func (t BST[T]) RecTraversePostOrder(fn func(value T)) { t.root.postOrder(fn) }
+
+func (n *Node[T]) inOrder(fn func(value T)) {
+	if n == nil {
+		return
+	}
+	(n.left).inOrder(fn)
+	fn(n.Value)
+	(n.right).inOrder(fn)
+}
+
+func (n *Node[T]) preOrder(fn func(value T)) {
+	if n == nil {
+		return
+	}
+	fn(n.Value)
+	(n.left).preOrder(fn)
+	(n.right).preOrder(fn)
+}
+
+func (n *Node[T]) postOrder(fn func(value T)) {
+	if n == nil {
+		return
+	}
+	(n.left).postOrder(fn)
+	(n.right).postOrder(fn)
+	fn(n.Value)
+}
+
+func (t BST[T]) IterTraverseInOrder(fn func(value T)) {
+	if t.root == nil {
+		return
+	}
+	stack := newStack[*Node[T]]()
+	curr := t.root
+	for curr != nil || !stack.IsEmpty() {
+		for curr != nil {
+			stack.Push(curr)
+			curr = curr.left
+		}
+
+		curr = stack.Pop()
+		fn(curr.Value)
+		curr = curr.right
+	}
+}
+
+func (t BST[T]) IterTraversePreOrder(fn func(value T)) {
+	if t.root == nil {
+		return
+	}
+	stack := newStack[*Node[T]](t.root)
+	for !stack.IsEmpty() {
+		curr := stack.Pop()
+		fn(curr.Value)
+		if curr.right != nil {
+			stack.Push(curr.right)
+		}
+		if curr.left != nil {
+			stack.Push(curr.left)
+		}
+	}
+}
+
+func (t BST[T]) IterTraversePostOrder(fn func(value T)) {
+	if t.root == nil {
+		return
+	}
+	var visited *Node[T]
+	stack := newStack[*Node[T]]()
+	curr := t.root
+	for curr != nil || !stack.IsEmpty() {
+		if curr != nil {
+			stack.Push(curr)
+			curr = curr.left
+			continue
+		}
+
+		top := stack.Peek()
+		if top.right != nil && top.right != visited {
+			curr = top.right
+			continue
+		}
+
+		fn(top.Value)
+		visited = top
+		stack.Pop()
+	}
 }
