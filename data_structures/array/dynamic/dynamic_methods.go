@@ -6,7 +6,7 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 )
 
-func (a Dynamic[T]) Get(index int) (T, bool) {
+func (a *Dynamic[T]) Get(index int) (T, bool) {
 	if index < 0 || index >= len(a.data) {
 		var zero T
 		return zero, false
@@ -73,15 +73,15 @@ func (a *Dynamic[T]) Clear() {
 	*a = Dynamic[T]{}
 }
 
-func (a Dynamic[T]) Length() int {
+func (a *Dynamic[T]) Length() int {
 	return len(a.data)
 }
 
-func (a Dynamic[T]) Capacity() int {
+func (a *Dynamic[T]) Capacity() int {
 	return cap(a.data)
 }
 
-func (a Dynamic[T]) IsSorted() bool {
+func (a *Dynamic[T]) IsSorted() bool {
 	for i := 1; i < len(a.data); i++ {
 		if a.data[i-1] > a.data[i] {
 			return false
@@ -90,26 +90,26 @@ func (a Dynamic[T]) IsSorted() bool {
 	return true
 }
 
-func (a Dynamic[T]) IsEmpty() bool {
+func (a *Dynamic[T]) IsEmpty() bool {
 	return len(a.data) == 0
 }
 
-func (a Dynamic[T]) Search(value T) int {
+func (a *Dynamic[T]) Search(value T) int {
 	return searching.LinearSearch(a.data, value)
 }
 
-func (a Dynamic[T]) BinarySearch(value T) int {
+func (a *Dynamic[T]) BinarySearch(value T) int {
 	if !a.IsSorted() {
 		return -1 // Binary search requires sorted array
 	}
 	return searching.BinarySearch(a.data, value)
 }
 
-func (a Dynamic[T]) Contains(value T) bool {
+func (a *Dynamic[T]) Contains(value T) bool {
 	return a.Search(value) != -1
 }
 
-func (a Dynamic[T]) Traverse(fn func(index int, value T)) {
+func (a *Dynamic[T]) Traverse(fn func(index int, value T)) {
 	for i, value := range a.data {
 		fn(i, value)
 	}
@@ -129,11 +129,11 @@ func (a *Dynamic[T]) Swap(index1, index2 int) bool {
 	return true
 }
 
-func (a Dynamic[T]) Copy() Dynamic[T] {
+func (a *Dynamic[T]) Copy() Dynamic[T] {
 	return Dynamic[T]{data: a.ToSlice()}
 }
 
-func (a Dynamic[T]) Between(start, end int) (Dynamic[T], bool) {
+func (a *Dynamic[T]) Between(start, end int) (Dynamic[T], bool) {
 	if start < 0 || end > len(a.data) || start > end {
 		return Dynamic[T]{}, false
 	}
@@ -143,7 +143,7 @@ func (a Dynamic[T]) Between(start, end int) (Dynamic[T], bool) {
 	return Dynamic[T]{data: out}, true
 }
 
-func (a Dynamic[T]) Reverse() Dynamic[T] {
+func (a *Dynamic[T]) Reverse() Dynamic[T] {
 	out := a.ToSlice()
 	left, right := 0, len(out)-1
 	for left < right {
@@ -154,12 +154,12 @@ func (a Dynamic[T]) Reverse() Dynamic[T] {
 	return Dynamic[T]{data: out}
 }
 
-func (a Dynamic[T]) ToSlice() []T {
+func (a *Dynamic[T]) ToSlice() []T {
 	out := make([]T, len(a.data))
 	copy(out, a.data)
 	return out
 }
 
-func (a Dynamic[T]) String() string {
+func (a *Dynamic[T]) String() string {
 	return fmt.Sprintf("%v", a.data)
 }
