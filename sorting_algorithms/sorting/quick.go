@@ -19,8 +19,8 @@ func lomutoQuickSort[T cmp.Ordered](array arrayType[T], low int, high int) {
 		return
 	}
 	pivot := lomutoPartition(array, low, high)
-	lomutoQuickSort(array, low, pivot-1)
-	lomutoQuickSort(array, pivot+1, high)
+	lomutoQuickSort[T](array, low, pivot-1)
+	lomutoQuickSort[T](array, pivot+1, high)
 }
 
 func lomutoPartition[T cmp.Ordered](array arrayType[T], low int, high int) int {
@@ -58,8 +58,8 @@ func hoareQuickSort[T cmp.Ordered](array arrayType[T], low int, high int) {
 	}
 
 	pivot := hoarePartition(array, low, high)
-	hoareQuickSort(array, low, pivot)
-	hoareQuickSort(array, pivot+1, high)
+	hoareQuickSort[T](array, low, pivot)
+	hoareQuickSort[T](array, pivot+1, high)
 }
 
 func hoarePartition[T cmp.Ordered](array arrayType[T], low int, high int) int {
@@ -101,8 +101,8 @@ func threeWayQuickSort[T cmp.Ordered](array arrayType[T], low int, high int) {
 	}
 
 	lesser, greater := threeWayPartition(array, low, high)
-	threeWayQuickSort(array, low, lesser-1)
-	threeWayQuickSort(array, greater+1, high)
+	threeWayQuickSort[T](array, low, lesser-1)
+	threeWayQuickSort[T](array, greater+1, high)
 }
 
 func threeWayPartition[T cmp.Ordered](array arrayType[T], low int, high int) (int, int) {

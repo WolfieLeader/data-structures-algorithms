@@ -1,6 +1,6 @@
 package bst
 
-func (t BST[T]) IterContains(value T) bool {
+func (t BST[T]) ContainsI(value T) bool {
 	curr := t.root
 	for curr != nil {
 		switch {
@@ -15,7 +15,7 @@ func (t BST[T]) IterContains(value T) bool {
 	return false
 }
 
-func (t BST[T]) RecContains(value T) bool {
+func (t BST[T]) ContainsR(value T) bool {
 	return t.root.contains(value)
 }
 
@@ -34,7 +34,7 @@ func (n *Node[T]) contains(value T) bool {
 	}
 }
 
-func (t *BST[T]) IterInsert(value T) bool {
+func (t *BST[T]) InsertI(value T) bool {
 	if t.root == nil {
 		t.root = &Node[T]{Value: value}
 		t.size = 1
@@ -66,7 +66,7 @@ func (t *BST[T]) IterInsert(value T) bool {
 	}
 }
 
-func (t *BST[T]) RecInsert(value T) bool {
+func (t *BST[T]) InsertR(value T) bool {
 	newRoot, ok := t.root.insert(value)
 	t.root = newRoot
 	if ok {
@@ -96,7 +96,7 @@ func (n *Node[T]) insert(value T) (*Node[T], bool) {
 	}
 }
 
-func (t *BST[T]) IterDelete(value T) bool {
+func (t *BST[T]) DeleteI(value T) bool {
 	curr, ptr := t.root, &t.root
 	for curr != nil && curr.Value != value {
 		if value < curr.Value {
@@ -133,7 +133,7 @@ func (t *BST[T]) IterDelete(value T) bool {
 	return true
 }
 
-func (t *BST[T]) RecDelete(value T) bool {
+func (t *BST[T]) DeleteR(value T) bool {
 	newRoot, ok := t.root.delete(value)
 	t.root = newRoot
 	if ok {
@@ -194,7 +194,7 @@ func (t BST[T]) Root() (T, bool) {
 	return t.root.Value, true
 }
 
-func (t BST[T]) Min() (T, bool) {
+func (t BST[T]) MinI() (T, bool) {
 	var zero T
 	if t.root == nil {
 		return zero, false
@@ -206,7 +206,22 @@ func (t BST[T]) Min() (T, bool) {
 	return curr.Value, true
 }
 
-func (t BST[T]) Max() (T, bool) {
+func (t BST[T]) MinR() (T, bool) {
+	var zero T
+	if t.root == nil {
+		return zero, false
+	}
+	return t.root.min(), true
+}
+
+func (n *Node[T]) min() T {
+	if n.left == nil {
+		return n.Value
+	}
+	return n.left.min()
+}
+
+func (t BST[T]) MaxI() (T, bool) {
 	var zero T
 	if t.root == nil {
 		return zero, false
@@ -218,9 +233,24 @@ func (t BST[T]) Max() (T, bool) {
 	return curr.Value, true
 }
 
-func (t BST[T]) RecTraverseInOrder(fn func(value T))   { t.root.inOrder(fn) }
-func (t BST[T]) RecTraversePreOrder(fn func(value T))  { t.root.preOrder(fn) }
-func (t BST[T]) RecTraversePostOrder(fn func(value T)) { t.root.postOrder(fn) }
+func (t BST[T]) MaxR() (T, bool) {
+	var zero T
+	if t.root == nil {
+		return zero, false
+	}
+	return t.root.max(), true
+}
+
+func (n *Node[T]) max() T {
+	if n.right == nil {
+		return n.Value
+	}
+	return n.right.max()
+}
+
+func (t BST[T]) TraverseInOrderR(fn func(value T))   { t.root.inOrder(fn) }
+func (t BST[T]) TraversePreOrderR(fn func(value T))  { t.root.preOrder(fn) }
+func (t BST[T]) TraversePostOrderR(fn func(value T)) { t.root.postOrder(fn) }
 
 func (n *Node[T]) inOrder(fn func(value T)) {
 	if n == nil {
@@ -249,7 +279,7 @@ func (n *Node[T]) postOrder(fn func(value T)) {
 	fn(n.Value)
 }
 
-func (t BST[T]) IterTraverseInOrder(fn func(value T)) {
+func (t BST[T]) TraverseInOrderI(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
@@ -267,7 +297,7 @@ func (t BST[T]) IterTraverseInOrder(fn func(value T)) {
 	}
 }
 
-func (t BST[T]) IterTraversePreOrder(fn func(value T)) {
+func (t BST[T]) TraversePreOrderI(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
@@ -284,7 +314,7 @@ func (t BST[T]) IterTraversePreOrder(fn func(value T)) {
 	}
 }
 
-func (t BST[T]) IterTraversePostOrder(fn func(value T)) {
+func (t BST[T]) TraversePostOrderI(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
@@ -307,5 +337,22 @@ func (t BST[T]) IterTraversePostOrder(fn func(value T)) {
 		fn(top.Value)
 		visited = top
 		stack.Pop()
+	}
+}
+
+func (t BST[T]) TraverseBreadthFirstI(fn func(value T)) {
+	if t.root == nil {
+		return
+	}
+	queue := newQueue[*Node[T]](t.root)
+	for !queue.IsEmpty() {
+		n := queue.Dequeue()
+		fn(n.Value)
+		if n.left != nil {
+			queue.Enqueue(n.left)
+		}
+		if n.right != nil {
+			queue.Enqueue(n.right)
+		}
 	}
 }

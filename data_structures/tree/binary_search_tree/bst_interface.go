@@ -3,25 +3,28 @@ package bst
 import "cmp"
 
 type BinarySearchTree[T cmp.Ordered] interface {
-	Contains(value T) bool
-	Insert(value T) bool
-	Delete(value T) bool
-	RecursiveContains(value T) bool
-	RecursiveInsert(value T) bool
-	RecursiveDelete(value T) bool
+	ContainsI(value T) bool
+	InsertI(value T) bool
+	DeleteI(value T) bool
+	ContainsR(value T) bool
+	InsertR(value T) bool
+	DeleteR(value T) bool
 
-	TraverseDFSInOrder(fn func(value T))
-	TraverseDFSPreOrder(fn func(value T))
-	TraverseDFSPostOrder(fn func(value T))
-	IterativeTraverseDFSInOrder(fn func(value T))
-	IterativeTraverseDFSPreOrder(fn func(value T))
-	IterativeTraverseDFSPostOrder(fn func(value T))
+	TraverseInOrderI(fn func(value T))
+	TraversePreOrderI(fn func(value T))
+	TraversePostOrderI(fn func(value T))
+	TraverseBreadthFirstI(fn func(value T))
+	TraverseInOrderR(fn func(value T))
+	TraversePreOrderR(fn func(value T))
+	TraversePostOrderR(fn func(value T))
 
 	Size() int
 	IsEmpty() bool
 	Root() (T, bool)
-	Min() (T, bool)
-	Max() (T, bool)
+	MinI() (T, bool)
+	MaxI() (T, bool)
+	MinR() (T, bool)
+	MaxR() (T, bool)
 	Height() int
 	IsBalanced() bool
 	Clear()
