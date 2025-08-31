@@ -20,16 +20,16 @@ func (s *Set[T]) Delete(value T) bool {
 	return false
 }
 
-func (s Set[T]) Contains(value T) bool {
+func (s *Set[T]) Contains(value T) bool {
 	_, ok := s.data[value]
 	return ok
 }
 
-func (s Set[T]) Size() int {
+func (s *Set[T]) Size() int {
 	return len(s.data)
 }
 
-func (s Set[T]) IsEmpty() bool {
+func (s *Set[T]) IsEmpty() bool {
 	return len(s.data) == 0
 }
 
@@ -37,7 +37,7 @@ func (s *Set[T]) Clear() {
 	s.data = make(map[T]struct{})
 }
 
-func (s Set[T]) ToSlice() []T {
+func (s *Set[T]) ToSlice() []T {
 	out := make([]T, 0, len(s.data))
 	for k := range s.data {
 		out = append(out, k)
@@ -45,7 +45,7 @@ func (s Set[T]) ToSlice() []T {
 	return out
 }
 
-func (s Set[T]) Traverse(fn func(value T) bool) {
+func (s *Set[T]) Traverse(fn func(value T) bool) {
 	for k := range s.data {
 		if !fn(k) {
 			return
@@ -53,7 +53,7 @@ func (s Set[T]) Traverse(fn func(value T) bool) {
 	}
 }
 
-func (s Set[T]) Copy() *Set[T] {
+func (s *Set[T]) Copy() *Set[T] {
 	out := New[T]()
 	for k := range s.data {
 		out.data[k] = struct{}{}
@@ -61,7 +61,7 @@ func (s Set[T]) Copy() *Set[T] {
 	return out
 }
 
-func (s Set[T]) String() string {
+func (s *Set[T]) String() string {
 	if s.Size() == 0 {
 		return "[]"
 	}
