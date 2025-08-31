@@ -1,6 +1,13 @@
 package hashmap
 
-import "fmt"
+import (
+	"fmt"
+	"maps"
+)
+
+func (m *Map[K, V]) Size() int     { return len(m.data) }
+func (m *Map[K, V]) IsEmpty() bool { return len(m.data) == 0 }
+func (m *Map[K, V]) Clear()        { m.data = make(map[K]V) }
 
 func (m *Map[K, V]) Set(key K, value V) {
 	m.data[key] = value
@@ -34,23 +41,9 @@ func (m *Map[K, V]) ContainsValue(value V) bool {
 	return false
 }
 
-func (m *Map[K, V]) Size() int {
-	return len(m.data)
-}
-
-func (m *Map[K, V]) IsEmpty() bool {
-	return len(m.data) == 0
-}
-
-func (m *Map[K, V]) Clear() {
-	m.data = make(map[K]V)
-}
-
 func (m *Map[K, V]) ToMap() map[K]V {
 	out := make(map[K]V, len(m.data))
-	for k, v := range m.data {
-		out[k] = v
-	}
+	maps.Copy(out, m.data)
 	return out
 }
 
@@ -72,9 +65,7 @@ func (m *Map[K, V]) Values() []V {
 
 func (m *Map[K, V]) Copy() *Map[K, V] {
 	out := New[K, V]()
-	for k, v := range m.data {
-		out.data[k] = v
-	}
+	maps.Copy(out.data, m.data)
 	return out
 }
 

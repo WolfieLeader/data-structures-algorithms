@@ -6,6 +6,15 @@ import (
 	"strings"
 )
 
+func (a *Matrix[T]) Rows() int              { return a.rows }
+func (a *Matrix[T]) Cols() int              { return a.cols }
+func (a *Matrix[T]) Dimensions() (int, int) { return a.rows, a.cols }
+func (a *Matrix[T]) IsEmpty() bool          { return a.rows == 0 || a.cols == 0 }
+func (a *Matrix[T]) Clear() {
+	var zero T
+	a.Fill(zero)
+}
+
 func (a *Matrix[T]) Get(row int, col int) (T, bool) {
 	if row < 0 || row >= a.rows || col < 0 || col >= a.cols {
 		var zero T
@@ -71,27 +80,6 @@ func (a *Matrix[T]) Fill(value T) {
 			a.data[i][j] = value
 		}
 	}
-}
-
-func (a *Matrix[T]) Clear() {
-	var zero T
-	a.Fill(zero)
-}
-
-func (a *Matrix[T]) Rows() int {
-	return a.rows
-}
-
-func (a *Matrix[T]) Cols() int {
-	return a.cols
-}
-
-func (a *Matrix[T]) Dimensions() (int, int) {
-	return a.rows, a.cols
-}
-
-func (a *Matrix[T]) IsEmpty() bool {
-	return a.rows == 0 || a.cols == 0
 }
 
 func (a *Matrix[T]) Search(value T) (int, int) {

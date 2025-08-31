@@ -5,19 +5,9 @@ import (
 	"strings"
 )
 
-func (l Doubly[T]) Size() int {
-	return l.size
-}
-
-func (l Doubly[T]) IsEmpty() bool {
-	return l.size == 0
-}
-
-func (l *Doubly[T]) Clear() {
-	l.size = 0
-	l.head = nil
-	l.tail = nil
-}
+func (l Doubly[T]) Size() int     { return l.size }
+func (l Doubly[T]) IsEmpty() bool { return l.size == 0 }
+func (l *Doubly[T]) Clear()       { *l = Doubly[T]{} }
 
 func (l Doubly[T]) Copy() *Doubly[T] {
 	if l.size == 0 {

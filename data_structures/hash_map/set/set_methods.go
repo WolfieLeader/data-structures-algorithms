@@ -2,9 +2,14 @@ package hashset
 
 import (
 	"fmt"
+	"maps"
 	"sort"
 	"strings"
 )
+
+func (s *Set[T]) Size() int     { return len(s.data) }
+func (s *Set[T]) IsEmpty() bool { return len(s.data) == 0 }
+func (s *Set[T]) Clear()        { s.data = make(map[T]struct{}) }
 
 func (s *Set[T]) Add(values ...T) {
 	for _, value := range values {
@@ -25,18 +30,6 @@ func (s *Set[T]) Contains(value T) bool {
 	return ok
 }
 
-func (s *Set[T]) Size() int {
-	return len(s.data)
-}
-
-func (s *Set[T]) IsEmpty() bool {
-	return len(s.data) == 0
-}
-
-func (s *Set[T]) Clear() {
-	s.data = make(map[T]struct{})
-}
-
 func (s *Set[T]) ToSlice() []T {
 	out := make([]T, 0, len(s.data))
 	for k := range s.data {
@@ -55,9 +48,7 @@ func (s *Set[T]) Traverse(fn func(value T) bool) {
 
 func (s *Set[T]) Copy() *Set[T] {
 	out := New[T]()
-	for k := range s.data {
-		out.data[k] = struct{}{}
-	}
+	maps.Copy(out.data, s.data)
 	return out
 }
 

@@ -6,6 +6,9 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 )
 
+func (a *Static[T]) Length() int { return len(a.data) }
+func (a *Static[T]) Clear()      { *a = Static[T]{} }
+
 func (a *Static[T]) Get(index int) (T, bool) {
 	if index < 0 || index >= len(a.data) {
 		var zero T
@@ -38,14 +41,6 @@ func (a *Static[T]) Fill(value T) {
 	for i := range a.data {
 		a.data[i] = value
 	}
-}
-
-func (a *Static[T]) Clear() {
-	*a = Static[T]{}
-}
-
-func (a *Static[T]) Length() int {
-	return len(a.data)
 }
 
 func (a *Static[T]) IsSorted() bool {

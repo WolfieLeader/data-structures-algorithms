@@ -5,29 +5,9 @@ import (
 	"strings"
 )
 
-func (l Singly[T]) Size() int {
-	return l.size
-}
-
-func (l Singly[T]) IsEmpty() bool {
-	return l.size == 0
-}
-
-func (l *Singly[T]) Clear() {
-	l.size = 0
-	l.head = nil
-	l.tail = nil
-}
-
-func (l Singly[T]) Copy() *Singly[T] {
-	if l.size == 0 {
-		return New[T]()
-	}
-
-	out := New[T]()
-	l.Traverse(func(index int, value T) { out.AddLast(value) })
-	return out
-}
+func (l Singly[T]) Size() int     { return l.size }
+func (l Singly[T]) IsEmpty() bool { return l.size == 0 }
+func (l *Singly[T]) Clear()       { *l = Singly[T]{} }
 
 func (l *Singly[T]) AddFirst(values ...T) {
 	for _, value := range values {
@@ -458,6 +438,16 @@ func (l Singly[T]) GetNode(index int) *Node[T] {
 	}
 
 	return curr
+}
+
+func (l Singly[T]) Copy() *Singly[T] {
+	if l.size == 0 {
+		return New[T]()
+	}
+
+	out := New[T]()
+	l.Traverse(func(index int, value T) { out.AddLast(value) })
+	return out
 }
 
 func (l Singly[T]) ToSlice() []T {

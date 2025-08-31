@@ -6,6 +6,11 @@ import (
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 )
 
+func (a *Dynamic[T]) Length() int   { return len(a.data) }
+func (a *Dynamic[T]) Capacity() int { return cap(a.data) }
+func (a *Dynamic[T]) IsEmpty() bool { return len(a.data) == 0 }
+func (a *Dynamic[T]) Clear()        { *a = Dynamic[T]{} }
+
 func (a *Dynamic[T]) Get(index int) (T, bool) {
 	if index < 0 || index >= len(a.data) {
 		var zero T
@@ -69,18 +74,6 @@ func (a *Dynamic[T]) Fill(value T) {
 	}
 }
 
-func (a *Dynamic[T]) Clear() {
-	*a = Dynamic[T]{}
-}
-
-func (a *Dynamic[T]) Length() int {
-	return len(a.data)
-}
-
-func (a *Dynamic[T]) Capacity() int {
-	return cap(a.data)
-}
-
 func (a *Dynamic[T]) IsSorted() bool {
 	for i := 1; i < len(a.data); i++ {
 		if a.data[i-1] > a.data[i] {
@@ -88,10 +81,6 @@ func (a *Dynamic[T]) IsSorted() bool {
 		}
 	}
 	return true
-}
-
-func (a *Dynamic[T]) IsEmpty() bool {
-	return len(a.data) == 0
 }
 
 func (a *Dynamic[T]) Search(value T) int {
