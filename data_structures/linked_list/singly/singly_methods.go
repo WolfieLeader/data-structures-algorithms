@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-func (l Singly[T]) Size() int     { return l.size }
-func (l Singly[T]) IsEmpty() bool { return l.size == 0 }
-func (l *Singly[T]) Clear()       { *l = Singly[T]{} }
+func (l *Singly[T]) Size() int     { return l.size }
+func (l *Singly[T]) IsEmpty() bool { return l.size == 0 }
+func (l *Singly[T]) Clear()        { *l = Singly[T]{} }
 
 func (l *Singly[T]) AddFirst(values ...T) {
 	for _, value := range values {
@@ -38,7 +38,7 @@ func (l *Singly[T]) AddLast(values ...T) {
 	}
 }
 
-func (l Singly[T]) GetFirst() (T, bool) {
+func (l *Singly[T]) GetFirst() (T, bool) {
 	var zero T
 	if l.head == nil {
 		return zero, false
@@ -46,11 +46,11 @@ func (l Singly[T]) GetFirst() (T, bool) {
 	return l.head.Value, true
 }
 
-func (l Singly[T]) GetFirstNode() *Node[T] {
+func (l *Singly[T]) GetFirstNode() *Node[T] {
 	return l.head
 }
 
-func (l Singly[T]) GetLast() (T, bool) {
+func (l *Singly[T]) GetLast() (T, bool) {
 	var zero T
 	if l.tail == nil {
 		return zero, false
@@ -58,7 +58,7 @@ func (l Singly[T]) GetLast() (T, bool) {
 	return l.tail.Value, true
 }
 
-func (l Singly[T]) GetLastNode() *Node[T] {
+func (l *Singly[T]) GetLastNode() *Node[T] {
 	return l.tail
 }
 
@@ -407,7 +407,7 @@ func (l *Singly[T]) DeleteValue(value T) bool {
 	return false
 }
 
-func (l Singly[T]) Get(index int) (T, bool) {
+func (l *Singly[T]) Get(index int) (T, bool) {
 	var zero T
 	if index < 0 || index >= l.size {
 		return zero, false
@@ -426,7 +426,7 @@ func (l Singly[T]) Get(index int) (T, bool) {
 	return curr.Value, true
 }
 
-func (l Singly[T]) GetNode(index int) *Node[T] {
+func (l *Singly[T]) GetNode(index int) *Node[T] {
 	if index < 0 || index >= l.size {
 		return nil
 	}
@@ -440,7 +440,7 @@ func (l Singly[T]) GetNode(index int) *Node[T] {
 	return curr
 }
 
-func (l Singly[T]) Copy() *Singly[T] {
+func (l *Singly[T]) Copy() *Singly[T] {
 	if l.size == 0 {
 		return New[T]()
 	}
@@ -450,13 +450,13 @@ func (l Singly[T]) Copy() *Singly[T] {
 	return out
 }
 
-func (l Singly[T]) ToSlice() []T {
+func (l *Singly[T]) ToSlice() []T {
 	out := make([]T, 0, l.size)
 	l.Traverse(func(index int, value T) { out = append(out, value) })
 	return out
 }
 
-func (l Singly[T]) Search(value T) int {
+func (l *Singly[T]) Search(value T) int {
 	i := 0
 	for curr := l.head; curr != nil; curr = curr.next {
 		if curr.Value == value {
@@ -467,11 +467,11 @@ func (l Singly[T]) Search(value T) int {
 	return -1
 }
 
-func (l Singly[T]) Contains(value T) bool {
+func (l *Singly[T]) Contains(value T) bool {
 	return l.Search(value) != -1
 }
 
-func (l Singly[T]) Traverse(fn func(index int, value T)) {
+func (l *Singly[T]) Traverse(fn func(index int, value T)) {
 	i := 0
 	for curr := l.head; curr != nil; curr = curr.next {
 		fn(i, curr.Value)
@@ -479,7 +479,7 @@ func (l Singly[T]) Traverse(fn func(index int, value T)) {
 	}
 }
 
-func (l Singly[T]) Reverse() *Singly[T] {
+func (l *Singly[T]) Reverse() *Singly[T] {
 	var prev, next *Node[T]
 	out := l.Copy()
 	curr := out.head
@@ -494,7 +494,7 @@ func (l Singly[T]) Reverse() *Singly[T] {
 	return out
 }
 
-func (l Singly[T]) IsSorted() bool {
+func (l *Singly[T]) IsSorted() bool {
 	if l.size <= 1 {
 		return true
 	}
@@ -571,7 +571,7 @@ func (l *Singly[T]) Swap(index1, index2 int) bool {
 	return true
 }
 
-func (l Singly[T]) String() string {
+func (l *Singly[T]) String() string {
 	if l.head == nil {
 		return "[nil]"
 	}
