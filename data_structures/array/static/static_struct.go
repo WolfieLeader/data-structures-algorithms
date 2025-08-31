@@ -8,7 +8,7 @@ type Static[T cmp.Ordered] struct {
 	data [SIZE]T
 }
 
-func New[T cmp.Ordered](values ...T) Static[T] {
+func New[T cmp.Ordered](values ...T) *Static[T] {
 	var data [SIZE]T
 
 	if len(values) > SIZE {
@@ -16,5 +16,5 @@ func New[T cmp.Ordered](values ...T) Static[T] {
 	}
 
 	copy(data[:], values)
-	return Static[T]{data: data}
+	return &Static[T]{data: data}
 }

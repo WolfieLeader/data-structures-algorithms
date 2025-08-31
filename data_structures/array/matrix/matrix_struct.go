@@ -11,7 +11,7 @@ type Matrix[T cmp.Ordered] struct {
 	cols int
 }
 
-func New[T cmp.Ordered](rows, cols int) Matrix[T] {
+func New[T cmp.Ordered](rows, cols int) *Matrix[T] {
 	if rows < 0 || cols < 0 {
 		panic(fmt.Sprintf("negative dimensions: rows=%d cols=%d", rows, cols))
 	}
@@ -19,23 +19,23 @@ func New[T cmp.Ordered](rows, cols int) Matrix[T] {
 	for i := range data {
 		data[i] = make([]T, cols)
 	}
-	return Matrix[T]{data: data, rows: rows, cols: cols}
+	return &Matrix[T]{data: data, rows: rows, cols: cols}
 }
 
-func NewFromValues[T cmp.Ordered](values ...[]T) (Matrix[T], error) {
+func NewFromValues[T cmp.Ordered](values ...[]T) (*Matrix[T], error) {
 	if len(values) == 0 {
-		return Matrix[T]{}, fmt.Errorf("no rows provided")
+		return nil, fmt.Errorf("no rows provided")
 	}
 	rows, cols := len(values), len(values[0])
 
 	data := make([][]T, rows)
 	for i, row := range values {
 		if len(row) != cols {
-			return Matrix[T]{}, fmt.Errorf("ragged rows: row %d len=%d, want %d", i, len(row), cols)
+			return nil, fmt.Errorf("ragged rows: row %d len=%d, want %d", i, len(row), cols)
 		}
 		cp := make([]T, len(row))
 		copy(cp, row)
 		data[i] = cp
 	}
-	return Matrix[T]{data: data, rows: rows, cols: cols}, nil
+	return &Matrix[T]{data: data, rows: rows, cols: cols}, nil
 }

@@ -41,7 +41,7 @@ func dynamicExample() {
 	fmt.Printf("Array after swapping 1 and 5: %v\n", d)
 	d.Append(70, 80, 90)
 	d.Prepend(0, -10, -20)
-	b, _ := d.Between(4, 7)
+	b := d.Between(4, 7)
 	fmt.Printf("Array: %v, Between 4 and 7: %v\n", d, b)
 }
 

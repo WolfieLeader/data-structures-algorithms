@@ -93,13 +93,13 @@ func (a *Static[T]) ToSlice() []T {
 	return out
 }
 
-func (a *Static[T]) Copy() Static[T] {
+func (a *Static[T]) Copy() *Static[T] {
 	var out Static[T]
 	copy(out.data[:], a.data[:])
-	return out
+	return &out
 }
 
-func (a *Static[T]) Reverse() Static[T] {
+func (a *Static[T]) Reverse() *Static[T] {
 	out := a.data
 	left, right := 0, len(out)-1
 	for left < right {
@@ -107,7 +107,7 @@ func (a *Static[T]) Reverse() Static[T] {
 		left++
 		right--
 	}
-	return Static[T]{data: out}
+	return &Static[T]{data: out}
 }
 
 func (a *Static[T]) String() string {

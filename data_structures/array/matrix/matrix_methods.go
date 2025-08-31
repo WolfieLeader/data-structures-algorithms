@@ -136,13 +136,13 @@ func (a *Matrix[T]) SwapCol(col1, col2 int) bool {
 	return true
 }
 
-func (a *Matrix[T]) Copy() Matrix[T] {
+func (a *Matrix[T]) Copy() *Matrix[T] {
 	out := make([][]T, a.rows)
 	for i := 0; i < a.rows; i++ {
 		out[i] = make([]T, a.cols)
 		copy(out[i], a.data[i])
 	}
-	return Matrix[T]{data: out, rows: a.rows, cols: a.cols}
+	return &Matrix[T]{data: out, rows: a.rows, cols: a.cols}
 }
 
 func (a *Matrix[T]) String() string {

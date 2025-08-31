@@ -7,7 +7,7 @@ import (
 )
 
 type ArrayStack[T cmp.Ordered] struct {
-	data dynamic.Dynamic[T]
+	data *dynamic.Dynamic[T]
 }
 
 func New[T cmp.Ordered]() *ArrayStack[T] {

@@ -18,8 +18,8 @@ type StaticArray[T cmp.Ordered] interface {
 	Swap(index1, index2 int) bool
 
 	ToSlice() []T
-	Copy() Static[T]
-	Reverse() Static[T]
+	Copy() *Static[T]
+	Reverse() *Static[T]
 	String() string
 }
 

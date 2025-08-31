@@ -118,21 +118,21 @@ func (a *Dynamic[T]) Swap(index1, index2 int) bool {
 	return true
 }
 
-func (a *Dynamic[T]) Copy() Dynamic[T] {
-	return Dynamic[T]{data: a.ToSlice()}
+func (a *Dynamic[T]) Copy() *Dynamic[T] {
+	return &Dynamic[T]{data: a.ToSlice()}
 }
 
-func (a *Dynamic[T]) Between(start, end int) (Dynamic[T], bool) {
+func (a *Dynamic[T]) Between(start, end int) *Dynamic[T] {
 	if start < 0 || end > len(a.data) || start > end {
-		return Dynamic[T]{}, false
+		return &Dynamic[T]{}
 	}
 
 	out := make([]T, end-start)
 	copy(out, a.data[start:end])
-	return Dynamic[T]{data: out}, true
+	return &Dynamic[T]{data: out}
 }
 
-func (a *Dynamic[T]) Reverse() Dynamic[T] {
+func (a *Dynamic[T]) Reverse() *Dynamic[T] {
 	out := a.ToSlice()
 	left, right := 0, len(out)-1
 	for left < right {
@@ -140,7 +140,7 @@ func (a *Dynamic[T]) Reverse() Dynamic[T] {
 		left++
 		right--
 	}
-	return Dynamic[T]{data: out}
+	return &Dynamic[T]{data: out}
 }
 
 func (a *Dynamic[T]) ToSlice() []T {
