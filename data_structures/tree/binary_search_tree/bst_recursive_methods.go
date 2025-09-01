@@ -1,6 +1,10 @@
 package bst
 
-import "math"
+import (
+	"fmt"
+	"math"
+	"strings"
+)
 
 func (t *BST[T]) ContainsR(value T) bool { return t.root.contains(value) }
 func (n *Node[T]) contains(value T) bool {
@@ -209,4 +213,63 @@ func (n *Node[T]) symmetric(other *Node[T]) bool {
 		return false
 	}
 	return (n.left).symmetric(other.right) && (n.right).symmetric(other.left)
+}
+
+func (t *BST[T]) String() string {
+	var sb strings.Builder
+	if t.root == nil {
+		return "BST{size=0}\n"
+	}
+	fmt.Fprintf(&sb, "BST{size=%d}\n", t.size)
+	t.root.draw(&sb, "", 0, "", true)
+	return sb.String()
+}
+
+func (n *Node[T]) draw(sb *strings.Builder, prefix string, level int, label string, isTail bool) {
+	if n == nil {
+		return
+	}
+
+	// current line with branch
+	sb.WriteString(prefix)
+	switch {
+	case prefix == "":
+		sb.WriteString("└── ")
+	case isTail:
+		sb.WriteString("└── ")
+	default:
+		sb.WriteString("├── ")
+	}
+
+	if prefix == "" {
+		fmt.Fprintf(sb, "(%v\n", n.Value)
+	} else {
+		fmt.Fprintf(sb, "(%d%s)%v\n", level, label, n.Value)
+	}
+
+	type labeled struct {
+		node  *Node[T]
+		label string
+	}
+
+	children := make([]labeled, 0, 2)
+	if n.left != nil {
+		children = append(children, labeled{n.left, "L"})
+	}
+	if n.right != nil {
+		children = append(children, labeled{n.right, "R"})
+	}
+
+	for i, child := range children {
+		var nextPrefix string
+		switch {
+		case prefix == "":
+			nextPrefix = "    "
+		case isTail:
+			nextPrefix = prefix + "    "
+		default:
+			nextPrefix = prefix + "│   "
+		}
+		child.node.draw(sb, nextPrefix, level+1, child.label, i == len(children)-1)
+	}
 }

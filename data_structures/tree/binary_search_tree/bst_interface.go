@@ -33,6 +33,7 @@ type recursiveBST[T cmp.Ordered] interface {
 	IsBalanced() bool
 	IsSymmetric() bool
 	CopyR() *BST[T]
+	String() string
 }
 
 type BinarySearchTree[T cmp.Ordered] interface {
