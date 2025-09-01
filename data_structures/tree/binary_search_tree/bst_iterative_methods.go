@@ -15,11 +15,17 @@ func (t *BST[T]) ContainsI(value T) bool {
 	return false
 }
 
-func (t *BST[T]) InsertI(value T) bool {
+func (t *BST[T]) InsertI(values ...T) {
+	for _, v := range values {
+		t.insertI(v)
+	}
+}
+
+func (t *BST[T]) insertI(value T) {
 	if t.root == nil {
 		t.root = &Node[T]{Value: value}
 		t.size = 1
-		return true
+		return
 	}
 
 	curr := t.root
@@ -29,7 +35,7 @@ func (t *BST[T]) InsertI(value T) bool {
 			if curr.left == nil {
 				curr.left = &Node[T]{Value: value}
 				t.size++
-				return true
+				return
 			}
 			curr = curr.left
 
@@ -37,12 +43,12 @@ func (t *BST[T]) InsertI(value T) bool {
 			if curr.right == nil {
 				curr.right = &Node[T]{Value: value}
 				t.size++
-				return true
+				return
 			}
 			curr = curr.right
 
 		default: // Equal
-			return false
+			return
 		}
 	}
 }
@@ -130,7 +136,7 @@ func (t *BST[T]) TraversePreOrderI(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
-	stack := newStack[*Node[T]](t.root)
+	stack := newStack(t.root)
 	for !stack.IsEmpty() {
 		n := stack.Pop()
 		fn(n.Value)
@@ -173,7 +179,7 @@ func (t *BST[T]) TraverseBreadthFirst(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
-	queue := newQueue[*Node[T]](t.root)
+	queue := newQueue(t.root)
 	for !queue.IsEmpty() {
 		n := queue.Dequeue()
 		fn(n.Value)
@@ -190,10 +196,11 @@ func (t *BST[T]) HeightI() int {
 	if t.root == nil {
 		return 0
 	}
-	queue := newQueue[*Node[T]](t.root)
+	queue := newQueue(t.root)
 	height := 0
 	for !queue.IsEmpty() {
-		for range queue.Size() {
+		levelSize := queue.Size()
+		for range levelSize {
 			n := queue.Dequeue()
 			if n.left != nil {
 				queue.Enqueue(n.left)
@@ -205,6 +212,76 @@ func (t *BST[T]) HeightI() int {
 		height++
 	}
 	return height
+}
+
+func (t *BST[T]) SuccessorI(value T) (T, bool) {
+	var zero T
+	var succ *Node[T]
+
+	curr := t.root
+	for curr != nil {
+		switch {
+		case value < curr.Value:
+			succ = curr
+			curr = curr.left
+
+		case value > curr.Value:
+			curr = curr.right
+
+		default: // Equal
+			if r := curr.right; r != nil {
+				for r.left != nil {
+					r = r.left
+				}
+				return r.Value, true
+			}
+
+			if succ != nil {
+				return succ.Value, true
+			}
+
+			return zero, false
+		}
+	}
+	if succ != nil {
+		return succ.Value, true
+	}
+	return zero, false
+}
+
+func (t *BST[T]) PredecessorI(value T) (T, bool) {
+	var zero T
+	var pred *Node[T]
+
+	curr := t.root
+	for curr != nil {
+		switch {
+		case value < curr.Value:
+			curr = curr.left
+
+		case value > curr.Value:
+			pred = curr
+			curr = curr.right
+
+		default: // Equal
+			if l := curr.left; l != nil {
+				for l.right != nil {
+					l = l.right
+				}
+				return l.Value, true
+			}
+
+			if pred != nil {
+				return pred.Value, true
+			}
+
+			return zero, false
+		}
+	}
+	if pred != nil {
+		return pred.Value, true
+	}
+	return zero, false
 }
 
 func (t *BST[T]) CopyI() *BST[T] {
@@ -221,7 +298,7 @@ func (t *BST[T]) CopyI() *BST[T] {
 	newTree.size = t.size
 	newTree.root = &Node[T]{Value: t.root.Value}
 
-	stack := newStack[pair](pair{src: t.root, dst: newTree.root})
+	stack := newStack(pair{src: t.root, dst: newTree.root})
 	for !stack.IsEmpty() {
 		n := stack.Pop()
 		if r := n.src.right; r != nil {

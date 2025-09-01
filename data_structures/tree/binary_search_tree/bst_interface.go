@@ -4,7 +4,7 @@ import "cmp"
 
 type iterativeBST[T cmp.Ordered] interface {
 	ContainsI(value T) bool
-	InsertI(value T) bool
+	InsertI(values ...T)
 	DeleteI(value T) bool
 
 	TraverseInOrderI(fn func(value T))
@@ -15,12 +15,14 @@ type iterativeBST[T cmp.Ordered] interface {
 	MinI() (T, bool)
 	MaxI() (T, bool)
 	HeightI() int
+	PredecessorI(value T) (T, bool)
+	SuccessorI(value T) (T, bool)
 	CopyI() *BST[T]
 }
 
 type recursiveBST[T cmp.Ordered] interface {
 	ContainsR(value T) bool
-	InsertR(value T) bool
+	InsertR(values ...T)
 	DeleteR(value T) bool
 
 	TraverseInOrderR(fn func(value T))
@@ -30,8 +32,9 @@ type recursiveBST[T cmp.Ordered] interface {
 	MinR() (T, bool)
 	MaxR() (T, bool)
 	HeightR() int
+	PredecessorR(value T) (T, bool)
+	SuccessorR(value T) (T, bool)
 	IsBalanced() bool
-	IsSymmetric() bool
 	CopyR() *BST[T]
 	String() string
 }

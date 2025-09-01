@@ -22,13 +22,18 @@ func (n *Node[T]) contains(value T) bool {
 	}
 }
 
-func (t *BST[T]) InsertR(value T) bool {
+func (t *BST[T]) InsertR(values ...T) {
+	for _, v := range values {
+		t.insertR(v)
+	}
+}
+
+func (t *BST[T]) insertR(value T) {
 	newRoot, ok := t.root.insert(value)
 	t.root = newRoot
 	if ok {
 		t.size++
 	}
-	return ok
 }
 
 func (n *Node[T]) insert(value T) (*Node[T], bool) {
@@ -165,6 +170,64 @@ func (n *Node[T]) height() int {
 	return max((n.left).height(), (n.right).height()) + 1
 }
 
+func (t *BST[T]) SuccessorR(value T) (T, bool) { return t.root.successor(value, nil) }
+func (n *Node[T]) successor(value T, succ *Node[T]) (T, bool) {
+	var zero T
+	if n == nil {
+		if succ != nil {
+			return succ.Value, true
+		}
+		return zero, false
+	}
+
+	switch {
+	case value < n.Value:
+		return (n.left).successor(value, n)
+	case value > n.Value:
+		return (n.right).successor(value, succ)
+	default: // Equal
+		if r := n.right; r != nil {
+			for r.left != nil {
+				r = r.left
+			}
+			return r.Value, true
+		}
+		if succ != nil {
+			return succ.Value, true
+		}
+		return zero, false
+	}
+}
+
+func (t *BST[T]) PredecessorR(value T) (T, bool) { return t.root.predecessor(value, nil) }
+func (n *Node[T]) predecessor(value T, pred *Node[T]) (T, bool) {
+	var zero T
+	if n == nil {
+		if pred != nil {
+			return pred.Value, true
+		}
+		return zero, false
+	}
+
+	switch {
+	case value < n.Value:
+		return (n.left).predecessor(value, pred)
+	case value > n.Value:
+		return (n.right).predecessor(value, n)
+	default: // Equal
+		if l := n.left; l != nil {
+			for l.right != nil {
+				l = l.right
+			}
+			return l.Value, true
+		}
+		if pred != nil {
+			return pred.Value, true
+		}
+		return zero, false
+	}
+}
+
 func (t *BST[T]) IsBalanced() bool { _, ok := t.root.balanced(); return ok }
 func (n *Node[T]) balanced() (int, bool) {
 	if n == nil {
@@ -198,22 +261,23 @@ func (n *Node[T]) copy() *Node[T] {
 	return &Node[T]{Value: n.Value, left: (n.left).copy(), right: (n.right).copy()}
 }
 
-func (t *BST[T]) IsSymmetric() bool {
-	if t.root == nil {
-		return true
-	}
-	return t.root.symmetric(t.root)
-}
+// Cannot be used in BST only in Binary Tree
+// func (t *BST[T]) IsSymmetric() bool {
+// 	if t.root == nil {
+// 		return true
+// 	}
+// 	return t.root.left.symmetric(t.root.right)
+// }
 
-func (n *Node[T]) symmetric(other *Node[T]) bool {
-	if n == nil || other == nil {
-		return n == nil && other == nil
-	}
-	if n.Value != other.Value {
-		return false
-	}
-	return (n.left).symmetric(other.right) && (n.right).symmetric(other.left)
-}
+// func (n *Node[T]) symmetric(other *Node[T]) bool {
+// 	if n == nil || other == nil {
+// 		return n == nil && other == nil
+// 	}
+// 	if n.Value != other.Value {
+// 		return false
+// 	}
+// 	return (n.left).symmetric(other.right) && (n.right).symmetric(other.left)
+// }
 
 func (t *BST[T]) String() string {
 	var sb strings.Builder
@@ -242,9 +306,9 @@ func (n *Node[T]) draw(sb *strings.Builder, prefix string, level int, label stri
 	}
 
 	if prefix == "" {
-		fmt.Fprintf(sb, "(%v\n", n.Value)
+		fmt.Fprintf(sb, "%v\n", n.Value)
 	} else {
-		fmt.Fprintf(sb, "(%d%s)%v\n", level, label, n.Value)
+		fmt.Fprintf(sb, "%v(%s%d)\n", n.Value, label, level)
 	}
 
 	type labeled struct {
@@ -253,11 +317,11 @@ func (n *Node[T]) draw(sb *strings.Builder, prefix string, level int, label stri
 	}
 
 	children := make([]labeled, 0, 2)
-	if n.left != nil {
-		children = append(children, labeled{n.left, "L"})
-	}
 	if n.right != nil {
 		children = append(children, labeled{n.right, "R"})
+	}
+	if n.left != nil {
+		children = append(children, labeled{n.left, "L"})
 	}
 
 	for i, child := range children {
