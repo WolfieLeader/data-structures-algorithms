@@ -430,6 +430,26 @@ func (l Doubly[T]) Contains(value T) bool {
 	return l.Search(value) != -1
 }
 
+func (l *Doubly[T]) Equal(other *Doubly[T]) bool {
+	if l == other {
+		return true
+	}
+	if l == nil || other == nil {
+		return false
+	}
+	if l.size != other.size {
+		return false
+	}
+	curr1, curr2 := l.head, other.head
+	for curr1 != nil && curr2 != nil {
+		if curr1.Value != curr2.Value {
+			return false
+		}
+		curr1, curr2 = curr1.next, curr2.next
+	}
+	return curr1 == nil && curr2 == nil
+}
+
 func (l Doubly[T]) Traverse(fn func(index int, value T)) {
 	i := 0
 	for curr := l.head; curr != nil; curr = curr.next {

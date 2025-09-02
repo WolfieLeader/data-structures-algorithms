@@ -36,6 +36,7 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	Search(value T) int
 	Contains(value T) bool
 
+	Equal(other *Doubly[T]) bool
 	Traverse(fn func(index int, value T))
 	Reverse() *Doubly[T]
 	IsSorted() bool

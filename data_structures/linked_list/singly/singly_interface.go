@@ -36,6 +36,7 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	Search(value T) int
 	Contains(value T) bool
 
+	Equal(other *Singly[T]) bool
 	Traverse(fn func(index int, value T))
 	Reverse() *Singly[T]
 	IsSorted() bool
