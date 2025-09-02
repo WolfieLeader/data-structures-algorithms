@@ -7,58 +7,68 @@ import (
 	"strings"
 )
 
-func (s *Set[T]) Size() int     { return len(s.data) }
-func (s *Set[T]) IsEmpty() bool { return len(s.data) == 0 }
-func (s *Set[T]) Clear()        { s.data = make(map[T]struct{}) }
+func (m *Set[T]) Size() int     { return len(m.data) }
+func (m *Set[T]) IsEmpty() bool { return len(m.data) == 0 }
+func (m *Set[T]) Clear()        { m.data = make(map[T]struct{}) }
 
-func (s *Set[T]) Add(values ...T) {
+func (m *Set[T]) Add(values ...T) {
 	for _, value := range values {
-		s.data[value] = struct{}{}
+		m.data[value] = struct{}{}
 	}
 }
 
-func (s *Set[T]) Delete(value T) bool {
-	if _, ok := s.data[value]; ok {
-		delete(s.data, value)
+func (m *Set[T]) Delete(value T) bool {
+	if _, ok := m.data[value]; ok {
+		delete(m.data, value)
 		return true
 	}
 	return false
 }
 
-func (s *Set[T]) Contains(value T) bool {
-	_, ok := s.data[value]
+func (m *Set[T]) Contains(value T) bool {
+	_, ok := m.data[value]
 	return ok
 }
 
-func (s *Set[T]) ToSlice() []T {
-	out := make([]T, 0, len(s.data))
-	for k := range s.data {
+func (m *Set[T]) ToSlice() []T {
+	out := make([]T, 0, len(m.data))
+	for k := range m.data {
 		out = append(out, k)
 	}
 	return out
 }
 
-func (s *Set[T]) Traverse(fn func(value T) bool) {
-	for k := range s.data {
+func (m *Set[T]) Equal(other *Set[T]) bool {
+	if m == other {
+		return true
+	}
+	if m == nil || other == nil {
+		return false
+	}
+	return maps.Equal(m.data, other.data)
+}
+
+func (m *Set[T]) Traverse(fn func(value T) bool) {
+	for k := range m.data {
 		if !fn(k) {
 			return
 		}
 	}
 }
 
-func (s *Set[T]) Copy() *Set[T] {
+func (m *Set[T]) Copy() *Set[T] {
 	out := New[T]()
-	maps.Copy(out.data, s.data)
+	maps.Copy(out.data, m.data)
 	return out
 }
 
-func (s *Set[T]) String() string {
-	if s.Size() == 0 {
+func (m *Set[T]) String() string {
+	if m.Size() == 0 {
 		return "[]"
 	}
 
-	values := make([]string, 0, len(s.data))
-	for k := range s.data {
+	values := make([]string, 0, len(m.data))
+	for k := range m.data {
 		values = append(values, fmt.Sprintf("%v", k))
 	}
 

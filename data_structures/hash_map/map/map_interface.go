@@ -12,6 +12,7 @@ type HashMap[K comparable, V comparable] interface {
 	ToMap() map[K]V
 	Keys() []K
 	Values() []V
+	Equal(other *Map[K, V]) bool
 	Traverse(func(key K, value V) bool)
 	Copy() *Map[K, V]
 	String() string

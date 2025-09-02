@@ -69,6 +69,16 @@ func (m *Map[K, V]) Copy() *Map[K, V] {
 	return out
 }
 
+func (m *Map[K, V]) Equal(other *Map[K, V]) bool {
+	if m == other {
+		return true
+	}
+	if m == nil || other == nil {
+		return false
+	}
+	return maps.Equal(m.data, other.data)
+}
+
 func (m *Map[K, V]) Traverse(fn func(K, V) bool) {
 	for k, v := range m.data {
 		if !fn(k, v) {

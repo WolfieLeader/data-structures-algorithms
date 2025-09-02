@@ -8,6 +8,7 @@ type HashSet[T comparable] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
+	Equal(other *Set[T]) bool
 	Traverse(func(value T) bool)
 	Copy() *Set[T]
 	String() string

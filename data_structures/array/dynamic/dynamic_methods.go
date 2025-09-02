@@ -124,6 +124,12 @@ func (a *Dynamic[T]) Copy() *Dynamic[T] {
 }
 
 func (a *Dynamic[T]) Equal(other *Dynamic[T]) bool {
+	if a == other {
+		return true
+	}
+	if a == nil || other == nil {
+		return false
+	}
 	return slices.Equal(a.data, other.data)
 }
 

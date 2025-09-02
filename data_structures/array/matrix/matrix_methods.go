@@ -137,6 +137,12 @@ func (a *Matrix[T]) SwapCol(col1, col2 int) bool {
 }
 
 func (a *Matrix[T]) Equal(other *Matrix[T]) bool {
+	if a == other {
+		return true
+	}
+	if a == nil || other == nil {
+		return false
+	}
 	return slices.EqualFunc(a.data, other.data, func(x, y []T) bool { return slices.Equal(x, y) })
 }
 

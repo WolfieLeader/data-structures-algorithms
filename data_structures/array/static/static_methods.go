@@ -94,6 +94,12 @@ func (a *Static[T]) ToSlice() []T {
 }
 
 func (a *Static[T]) Equal(other *Static[T]) bool {
+	if a == other {
+		return true
+	}
+	if a == nil || other == nil {
+		return false
+	}
 	return a.data == other.data
 }
 
