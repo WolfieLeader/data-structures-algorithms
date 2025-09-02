@@ -284,15 +284,70 @@ func (t *BST[T]) PredecessorI(value T) (T, bool) {
 	return zero, false
 }
 
+func (t *BST[T]) EqualI(other *BST[T]) bool {
+	if t == other {
+		return true
+	}
+	if t == nil || other == nil {
+		return false
+	}
+	if t.size != other.size {
+		return false
+	}
+
+	type pair struct{ t1, t2 *Node[T] }
+	stack := newStack(pair{t1: t.root, t2: other.root})
+
+	for !stack.IsEmpty() {
+		n := stack.Pop()
+		if n.t1.Value != n.t2.Value {
+			return false
+		}
+		l1, l2 := n.t1.left, n.t2.left
+		if (l1 == nil) != (l2 == nil) {
+			return false
+		}
+		if l1 != nil {
+			stack.Push(pair{t1: l1, t2: l2})
+		}
+		r1, r2 := n.t1.right, n.t2.right
+		if (r1 == nil) != (r2 == nil) {
+			return false
+		}
+		if r1 != nil {
+			stack.Push(pair{t1: r1, t2: r2})
+		}
+	}
+	return true
+}
+
+func (t *BST[T]) ToSliceI() []T {
+	if t.root == nil {
+		return nil
+	}
+
+	out := make([]T, 0, t.size)
+	stack := newStack[*Node[T]]()
+	curr := t.root
+	for curr != nil || !stack.IsEmpty() {
+		for curr != nil {
+			stack.Push(curr)
+			curr = curr.left
+		}
+
+		curr = stack.Pop()
+		out = append(out, curr.Value)
+		curr = curr.right
+	}
+	return out
+}
+
 func (t *BST[T]) CopyI() *BST[T] {
 	if t.root == nil {
 		return New[T]()
 	}
 
-	type pair struct {
-		src *Node[T]
-		dst *Node[T]
-	}
+	type pair struct{ src, dst *Node[T] }
 
 	newTree := New[T]()
 	newTree.size = t.size

@@ -17,6 +17,8 @@ type iterativeBST[T cmp.Ordered] interface {
 	HeightI() int
 	PredecessorI(value T) (T, bool)
 	SuccessorI(value T) (T, bool)
+	ToSliceI() []T
+	EqualI(other *BST[T]) bool
 	CopyI() *BST[T]
 }
 
@@ -35,6 +37,8 @@ type recursiveBST[T cmp.Ordered] interface {
 	PredecessorR(value T) (T, bool)
 	SuccessorR(value T) (T, bool)
 	IsBalanced() bool
+	ToSliceR() []T
+	EqualR(other *BST[T]) bool
 	CopyR() *BST[T]
 	String() string
 }

@@ -244,6 +244,45 @@ func (n *Node[T]) balanced() (int, bool) {
 	return max(leftHeight, rightHeight) + 1, math.Abs(float64(leftHeight-rightHeight)) <= 1
 }
 
+func (t *BST[T]) EqualR(other *BST[T]) bool {
+	if t == other {
+		return true
+	}
+	if t == nil || other == nil {
+		return false
+	}
+	if t.size != other.size {
+		return false
+	}
+	return t.root.equal(other.root)
+}
+func (n *Node[T]) equal(other *Node[T]) bool {
+	if n == nil || other == nil {
+		return n == nil && other == nil
+	}
+	if n.Value != other.Value {
+		return false
+	}
+	return (n.left).equal(other.left) && (n.right).equal(other.right)
+}
+
+func (t *BST[T]) ToSliceR() []T {
+	if t.root == nil {
+		return nil
+	}
+	out := make([]T, 0, t.size)
+	t.root.toSlice(&out)
+	return out
+}
+func (n *Node[T]) toSlice(out *[]T) {
+	if n == nil {
+		return
+	}
+	(n.left).toSlice(out)
+	*out = append(*out, n.Value)
+	(n.right).toSlice(out)
+}
+
 func (t *BST[T]) CopyR() *BST[T] {
 	if t.root == nil {
 		return New[T]()
