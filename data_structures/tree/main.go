@@ -45,10 +45,14 @@ func bstExample() {
 		succI, succIOk := tree.SuccessorI(v)
 		succR, succROk := tree.SuccessorR(v)
 		if predIOk && predROk {
-			fmt.Printf("- %d Predecessor: %v(ok=%t)\n", v, predI, predI == predR)
+			fmt.Printf("- %d Predecessor: %v(ok=%t), ", v, predI, predI == predR)
+		} else {
+			fmt.Printf("- %d Predecessor: none, ", v)
 		}
 		if succIOk && succROk {
-			fmt.Printf("- %d Successor: %v(ok=%t)\n", v, succI, succI == succR)
+			fmt.Printf("%d Successor: %v(ok=%t)\n", v, succI, succI == succR)
+		} else {
+			fmt.Printf("%d Successor: none\n", v)
 		}
 	}
 
