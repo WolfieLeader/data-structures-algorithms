@@ -15,6 +15,15 @@ func (d *LinkedListDeque[T]) Size() int                { return d.data.Size() }
 func (d *LinkedListDeque[T]) IsEmpty() bool            { return d.data.IsEmpty() }
 func (d *LinkedListDeque[T]) Clear()                   { d.data.Clear() }
 func (d *LinkedListDeque[T]) ToSlice() []T             { return d.data.ToSlice() }
+func (d *LinkedListDeque[T]) Equal(other *LinkedListDeque[T]) bool {
+	if d == other {
+		return true
+	}
+	if d == nil || other == nil {
+		return false
+	}
+	return d.data.Equal(other.data)
+}
 func (d *LinkedListDeque[T]) Copy() *LinkedListDeque[T] {
 	return &LinkedListDeque[T]{data: d.data.Copy()}
 }

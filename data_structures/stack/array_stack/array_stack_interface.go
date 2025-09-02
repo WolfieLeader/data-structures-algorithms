@@ -11,6 +11,7 @@ type Stack[T cmp.Ordered] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
+	Equal(other *ArrayStack[T]) bool
 	Copy() *ArrayStack[T]
 	String() string
 }

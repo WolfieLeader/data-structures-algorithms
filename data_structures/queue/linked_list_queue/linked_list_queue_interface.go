@@ -11,6 +11,7 @@ type Queue[T cmp.Ordered] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
+	Equal(other *LinkedListQueue[T]) bool
 	Copy() *LinkedListQueue[T]
 	String() string
 }

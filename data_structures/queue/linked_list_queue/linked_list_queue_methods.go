@@ -12,6 +12,15 @@ func (q *LinkedListQueue[T]) Size() int           { return q.data.Size() }
 func (q *LinkedListQueue[T]) IsEmpty() bool       { return q.data.IsEmpty() }
 func (q *LinkedListQueue[T]) Clear()              { q.data.Clear() }
 func (q *LinkedListQueue[T]) ToSlice() []T        { return q.data.ToSlice() }
+func (q *LinkedListQueue[T]) Equal(other *LinkedListQueue[T]) bool {
+	if q == other {
+		return true
+	}
+	if q == nil || other == nil {
+		return false
+	}
+	return q.data.Equal(other.data)
+}
 func (q *LinkedListQueue[T]) Copy() *LinkedListQueue[T] {
 	return &LinkedListQueue[T]{data: q.data.Copy()}
 }

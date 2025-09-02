@@ -14,6 +14,7 @@ type Deque[T cmp.Ordered] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
+	Equal(other *ArrayDeque[T]) bool
 	Copy() *ArrayDeque[T]
 	String() string
 }

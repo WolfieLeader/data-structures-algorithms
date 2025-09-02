@@ -15,7 +15,16 @@ func (d *ArrayDeque[T]) Size() int                { return d.data.Length() }
 func (d *ArrayDeque[T]) IsEmpty() bool            { return d.data.IsEmpty() }
 func (d *ArrayDeque[T]) Clear()                   { d.data.Clear() }
 func (d *ArrayDeque[T]) ToSlice() []T             { return d.data.ToSlice() }
-func (d *ArrayDeque[T]) Copy() *ArrayDeque[T]     { return &ArrayDeque[T]{data: d.data.Copy()} }
+func (d *ArrayDeque[T]) Equal(other *ArrayDeque[T]) bool {
+	if d == other {
+		return true
+	}
+	if d == nil || other == nil {
+		return false
+	}
+	return d.data.Equal(other.data)
+}
+func (d *ArrayDeque[T]) Copy() *ArrayDeque[T] { return &ArrayDeque[T]{data: d.data.Copy()} }
 func (d *ArrayDeque[T]) String() string {
 	if d.IsEmpty() {
 		return "[]"
