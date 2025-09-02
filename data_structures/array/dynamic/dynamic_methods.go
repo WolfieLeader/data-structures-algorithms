@@ -2,6 +2,7 @@ package dynamic
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/WolfieLeader/data-structures-algorithms/searching_algorithms/searching"
 )
@@ -120,6 +121,10 @@ func (a *Dynamic[T]) Swap(index1, index2 int) bool {
 
 func (a *Dynamic[T]) Copy() *Dynamic[T] {
 	return &Dynamic[T]{data: a.ToSlice()}
+}
+
+func (a *Dynamic[T]) Equal(other *Dynamic[T]) bool {
+	return slices.Equal(a.data, other.data)
 }
 
 func (a *Dynamic[T]) Between(start, end int) *Dynamic[T] {

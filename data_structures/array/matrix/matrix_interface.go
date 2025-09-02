@@ -22,6 +22,7 @@ type MatrixArray[T cmp.Ordered] interface {
 	SwapRow(row1, row2 int) bool
 	SwapCol(col1, col2 int) bool
 
+	Equal(other *Matrix[T]) bool
 	Copy() *Matrix[T]
 	String() string
 }

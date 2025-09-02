@@ -3,7 +3,7 @@ package matrix
 import (
 	"cmp"
 	"fmt"
-	"strings"
+	"slices"
 )
 
 func (a *Matrix[T]) Rows() int              { return a.rows }
@@ -136,6 +136,10 @@ func (a *Matrix[T]) SwapCol(col1, col2 int) bool {
 	return true
 }
 
+func (a *Matrix[T]) Equal(other *Matrix[T]) bool {
+	return slices.EqualFunc(a.data, other.data, func(x, y []T) bool { return slices.Equal(x, y) })
+}
+
 func (a *Matrix[T]) Copy() *Matrix[T] {
 	out := make([][]T, a.rows)
 	for i := 0; i < a.rows; i++ {
@@ -146,15 +150,5 @@ func (a *Matrix[T]) Copy() *Matrix[T] {
 }
 
 func (a *Matrix[T]) String() string {
-	var sb strings.Builder
-	for i := 0; i < a.rows; i++ {
-		for j := 0; j < a.cols; j++ {
-			if j > 0 {
-				sb.WriteString(" ")
-			}
-			sb.WriteString(fmt.Sprintf("%v", a.data[i][j]))
-		}
-		sb.WriteString("\n")
-	}
-	return sb.String()
+	return fmt.Sprintf("%v", a.data)
 }

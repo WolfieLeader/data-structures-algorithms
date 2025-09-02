@@ -93,6 +93,10 @@ func (a *Static[T]) ToSlice() []T {
 	return out
 }
 
+func (a *Static[T]) Equal(other *Static[T]) bool {
+	return a.data == other.data
+}
+
 func (a *Static[T]) Copy() *Static[T] {
 	var out Static[T]
 	copy(out.data[:], a.data[:])

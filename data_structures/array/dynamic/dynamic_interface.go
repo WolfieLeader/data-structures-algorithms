@@ -27,6 +27,7 @@ type DynamicArray[T cmp.Ordered] interface {
 	Copy() *Dynamic[T]
 	Reverse() *Dynamic[T]
 	ToSlice() []T
+	Equal(other *Dynamic[T]) bool
 	String() string
 }
 
