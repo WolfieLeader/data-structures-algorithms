@@ -14,6 +14,7 @@ type Deque[T cmp.Ordered] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
+	Equal(other *LinkedListDeque[T]) bool
 	Copy() *LinkedListDeque[T]
 	String() string
 }
