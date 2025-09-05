@@ -6,16 +6,16 @@ import (
 	"slices"
 )
 
-func (a *Matrix[T]) Rows() int              { return a.rows }
-func (a *Matrix[T]) Cols() int              { return a.cols }
-func (a *Matrix[T]) Dimensions() (int, int) { return a.rows, a.cols }
-func (a *Matrix[T]) IsEmpty() bool          { return a.rows == 0 || a.cols == 0 }
-func (a *Matrix[T]) Clear() {
+func (a *MatrixArray[T]) Rows() int              { return a.rows }
+func (a *MatrixArray[T]) Cols() int              { return a.cols }
+func (a *MatrixArray[T]) Dimensions() (int, int) { return a.rows, a.cols }
+func (a *MatrixArray[T]) IsEmpty() bool          { return a.rows == 0 || a.cols == 0 }
+func (a *MatrixArray[T]) Clear() {
 	var zero T
 	a.Fill(zero)
 }
 
-func (a *Matrix[T]) Get(row int, col int) (T, bool) {
+func (a *MatrixArray[T]) Get(row int, col int) (T, bool) {
 	if row < 0 || row >= a.rows || col < 0 || col >= a.cols {
 		var zero T
 		return zero, false
@@ -23,7 +23,7 @@ func (a *Matrix[T]) Get(row int, col int) (T, bool) {
 	return a.data[row][col], true
 }
 
-func (a *Matrix[T]) GetRow(row int) []T {
+func (a *MatrixArray[T]) GetRow(row int) []T {
 	if row < 0 || row >= a.rows {
 		return nil
 	}
@@ -33,7 +33,7 @@ func (a *Matrix[T]) GetRow(row int) []T {
 	return out
 }
 
-func (a *Matrix[T]) GetCol(col int) []T {
+func (a *MatrixArray[T]) GetCol(col int) []T {
 	if col < 0 || col >= a.cols {
 		return nil
 	}
@@ -45,7 +45,7 @@ func (a *Matrix[T]) GetCol(col int) []T {
 	return out
 }
 
-func (a *Matrix[T]) Set(row int, col int, value T) bool {
+func (a *MatrixArray[T]) Set(row int, col int, value T) bool {
 	if row < 0 || row >= a.rows || col < 0 || col >= a.cols {
 		return false
 	}
@@ -54,7 +54,7 @@ func (a *Matrix[T]) Set(row int, col int, value T) bool {
 	return true
 }
 
-func (a *Matrix[T]) Replace(values ...[]T) bool {
+func (a *MatrixArray[T]) Replace(values ...[]T) bool {
 	if len(values) > a.rows {
 		return false
 	}
@@ -74,7 +74,7 @@ func (a *Matrix[T]) Replace(values ...[]T) bool {
 	return true
 }
 
-func (a *Matrix[T]) Fill(value T) {
+func (a *MatrixArray[T]) Fill(value T) {
 	for i := 0; i < a.rows; i++ {
 		for j := 0; j < a.cols; j++ {
 			a.data[i][j] = value
@@ -82,7 +82,7 @@ func (a *Matrix[T]) Fill(value T) {
 	}
 }
 
-func (a *Matrix[T]) Search(value T) (int, int) {
+func (a *MatrixArray[T]) Search(value T) (int, int) {
 	for row := 0; row < a.rows; row++ {
 		for col := 0; col < a.cols; col++ {
 			if cmp.Compare(a.data[row][col], value) == 0 {
@@ -93,12 +93,12 @@ func (a *Matrix[T]) Search(value T) (int, int) {
 	return -1, -1
 }
 
-func (a *Matrix[T]) Contains(value T) bool {
+func (a *MatrixArray[T]) Contains(value T) bool {
 	row, col := a.Search(value)
 	return row != -1 && col != -1
 }
 
-func (a *Matrix[T]) Traverse(fn func(row int, col int, value T)) {
+func (a *MatrixArray[T]) Traverse(fn func(row int, col int, value T)) {
 	for i := 0; i < a.rows; i++ {
 		for j := 0; j < a.cols; j++ {
 			fn(i, j, a.data[i][j])
@@ -106,7 +106,7 @@ func (a *Matrix[T]) Traverse(fn func(row int, col int, value T)) {
 	}
 }
 
-func (a *Matrix[T]) Swap(row1, col1, row2, col2 int) bool {
+func (a *MatrixArray[T]) Swap(row1, col1, row2, col2 int) bool {
 	if row1 < 0 || row1 >= a.rows || col1 < 0 || col1 >= a.cols ||
 		row2 < 0 || row2 >= a.rows || col2 < 0 || col2 >= a.cols {
 		return false
@@ -116,7 +116,7 @@ func (a *Matrix[T]) Swap(row1, col1, row2, col2 int) bool {
 	return true
 }
 
-func (a *Matrix[T]) SwapRow(row1, row2 int) bool {
+func (a *MatrixArray[T]) SwapRow(row1, row2 int) bool {
 	if row1 < 0 || row1 >= a.rows || row2 < 0 || row2 >= a.rows {
 		return false
 	}
@@ -125,7 +125,7 @@ func (a *Matrix[T]) SwapRow(row1, row2 int) bool {
 	return true
 }
 
-func (a *Matrix[T]) SwapCol(col1, col2 int) bool {
+func (a *MatrixArray[T]) SwapCol(col1, col2 int) bool {
 	if col1 < 0 || col1 >= a.cols || col2 < 0 || col2 >= a.cols {
 		return false
 	}
@@ -136,7 +136,7 @@ func (a *Matrix[T]) SwapCol(col1, col2 int) bool {
 	return true
 }
 
-func (a *Matrix[T]) Equal(other *Matrix[T]) bool {
+func (a *MatrixArray[T]) Equal(other *MatrixArray[T]) bool {
 	if a == other {
 		return true
 	}
@@ -146,15 +146,15 @@ func (a *Matrix[T]) Equal(other *Matrix[T]) bool {
 	return slices.EqualFunc(a.data, other.data, func(x, y []T) bool { return slices.Equal(x, y) })
 }
 
-func (a *Matrix[T]) Copy() *Matrix[T] {
+func (a *MatrixArray[T]) Copy() *MatrixArray[T] {
 	out := make([][]T, a.rows)
 	for i := 0; i < a.rows; i++ {
 		out[i] = make([]T, a.cols)
 		copy(out[i], a.data[i])
 	}
-	return &Matrix[T]{data: out, rows: a.rows, cols: a.cols}
+	return &MatrixArray[T]{data: out, rows: a.rows, cols: a.cols}
 }
 
-func (a *Matrix[T]) String() string {
+func (a *MatrixArray[T]) String() string {
 	return fmt.Sprintf("%v", a.data)
 }

@@ -2,7 +2,7 @@ package dynamic
 
 import "cmp"
 
-type DynamicArray[T cmp.Ordered] interface {
+type dynamicArray[T cmp.Ordered] interface {
 	Get(index int) (T, bool)
 	Set(index int, value T) bool
 	Replace(values ...T)
@@ -23,12 +23,12 @@ type DynamicArray[T cmp.Ordered] interface {
 	Traverse(fn func(index int, value T))
 	Swap(index1, index2 int) bool
 
-	Between(start, end int) *Dynamic[T]
-	Copy() *Dynamic[T]
-	Reverse() *Dynamic[T]
+	Between(start, end int) *DynamicArray[T]
+	Copy() *DynamicArray[T]
+	Reverse() *DynamicArray[T]
 	ToSlice() []T
-	Equal(other *Dynamic[T]) bool
+	Equal(other *DynamicArray[T]) bool
 	String() string
 }
 
-var _ DynamicArray[int] = (*Dynamic[int])(nil)
+var _ dynamicArray[int] = (*DynamicArray[int])(nil)

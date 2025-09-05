@@ -2,7 +2,7 @@ package static
 
 import "cmp"
 
-type StaticArray[T cmp.Ordered] interface {
+type staticArray[T cmp.Ordered] interface {
 	Get(index int) (T, bool)
 	Set(index int, value T) bool
 	Replace(values ...T)
@@ -18,10 +18,10 @@ type StaticArray[T cmp.Ordered] interface {
 	Swap(index1, index2 int) bool
 
 	ToSlice() []T
-	Equal(other *Static[T]) bool
-	Copy() *Static[T]
-	Reverse() *Static[T]
+	Equal(other *StaticArray[T]) bool
+	Copy() *StaticArray[T]
+	Reverse() *StaticArray[T]
 	String() string
 }
 
-var _ StaticArray[int] = (*Static[int])(nil)
+var _ staticArray[int] = (*StaticArray[int])(nil)

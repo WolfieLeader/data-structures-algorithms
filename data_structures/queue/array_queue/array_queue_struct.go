@@ -7,7 +7,7 @@ import (
 )
 
 type ArrayQueue[T cmp.Ordered] struct {
-	data *dynamic.Dynamic[T]
+	data *dynamic.DynamicArray[T]
 }
 
 func New[T cmp.Ordered]() *ArrayQueue[T] {

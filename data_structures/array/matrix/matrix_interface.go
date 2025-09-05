@@ -2,7 +2,7 @@ package matrix
 
 import "cmp"
 
-type MatrixArray[T cmp.Ordered] interface {
+type matrixArray[T cmp.Ordered] interface {
 	Get(row int, col int) (T, bool)
 	GetRow(row int) []T
 	GetCol(col int) []T
@@ -22,9 +22,9 @@ type MatrixArray[T cmp.Ordered] interface {
 	SwapRow(row1, row2 int) bool
 	SwapCol(col1, col2 int) bool
 
-	Equal(other *Matrix[T]) bool
-	Copy() *Matrix[T]
+	Equal(other *MatrixArray[T]) bool
+	Copy() *MatrixArray[T]
 	String() string
 }
 
-var _ MatrixArray[int] = (*Matrix[int])(nil)
+var _ matrixArray[int] = (*MatrixArray[int])(nil)
