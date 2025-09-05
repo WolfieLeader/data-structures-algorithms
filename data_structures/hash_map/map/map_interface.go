@@ -1,6 +1,6 @@
 package hashmap
 
-type HashMap[K comparable, V comparable] interface {
+type hashMap[K comparable, V comparable] interface {
 	Set(key K, value V)
 	Get(key K) (V, bool)
 	Delete(key K) (V, bool)
@@ -12,10 +12,10 @@ type HashMap[K comparable, V comparable] interface {
 	ToMap() map[K]V
 	Keys() []K
 	Values() []V
-	Equal(other *Map[K, V]) bool
+	Equal(other *HashMap[K, V]) bool
 	Traverse(func(key K, value V) bool)
-	Copy() *Map[K, V]
+	Copy() *HashMap[K, V]
 	String() string
 }
 
-var _ HashMap[string, int] = (*Map[string, int])(nil)
+var _ hashMap[string, int] = (*HashMap[string, int])(nil)

@@ -7,68 +7,68 @@ import (
 	"strings"
 )
 
-func (m *Set[T]) Size() int     { return len(m.data) }
-func (m *Set[T]) IsEmpty() bool { return len(m.data) == 0 }
-func (m *Set[T]) Clear()        { m.data = make(map[T]struct{}) }
+func (s *HashSet[T]) Size() int     { return len(s.data) }
+func (s *HashSet[T]) IsEmpty() bool { return len(s.data) == 0 }
+func (s *HashSet[T]) Clear()        { s.data = make(map[T]struct{}) }
 
-func (m *Set[T]) Add(values ...T) {
+func (s *HashSet[T]) Add(values ...T) {
 	for _, value := range values {
-		m.data[value] = struct{}{}
+		s.data[value] = struct{}{}
 	}
 }
 
-func (m *Set[T]) Delete(value T) bool {
-	if _, ok := m.data[value]; ok {
-		delete(m.data, value)
+func (s *HashSet[T]) Delete(value T) bool {
+	if _, ok := s.data[value]; ok {
+		delete(s.data, value)
 		return true
 	}
 	return false
 }
 
-func (m *Set[T]) Contains(value T) bool {
-	_, ok := m.data[value]
+func (s *HashSet[T]) Contains(value T) bool {
+	_, ok := s.data[value]
 	return ok
 }
 
-func (m *Set[T]) ToSlice() []T {
-	out := make([]T, 0, len(m.data))
-	for k := range m.data {
+func (s *HashSet[T]) ToSlice() []T {
+	out := make([]T, 0, len(s.data))
+	for k := range s.data {
 		out = append(out, k)
 	}
 	return out
 }
 
-func (m *Set[T]) Equal(other *Set[T]) bool {
-	if m == other {
+func (s *HashSet[T]) Equal(other *HashSet[T]) bool {
+	if s == other {
 		return true
 	}
-	if m == nil || other == nil {
+	if s == nil || other == nil {
 		return false
 	}
-	return maps.Equal(m.data, other.data)
+	return maps.Equal(s.data, other.data)
 }
 
-func (m *Set[T]) Traverse(fn func(value T) bool) {
-	for k := range m.data {
+func (s *HashSet[T]) Traverse(fn func(value T) bool) {
+	for k := range s.data {
 		if !fn(k) {
 			return
 		}
 	}
 }
 
-func (m *Set[T]) Copy() *Set[T] {
+func (s *HashSet[T]) Copy() *HashSet[T] {
 	out := New[T]()
-	maps.Copy(out.data, m.data)
+	maps.Copy(out.data, s.data)
 	return out
 }
 
-func (m *Set[T]) String() string {
-	if m.Size() == 0 {
+func (s *HashSet[T]) String() string {
+	if s.Size() == 0 {
 		return "[]"
 	}
 
-	values := make([]string, 0, len(m.data))
-	for k := range m.data {
+	values := make([]string, 0, len(s.data))
+	for k := range s.data {
 		values = append(values, fmt.Sprintf("%v", k))
 	}
 

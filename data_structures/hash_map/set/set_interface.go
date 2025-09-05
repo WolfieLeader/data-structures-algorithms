@@ -1,6 +1,6 @@
 package hashset
 
-type HashSet[T comparable] interface {
+type hashSet[T comparable] interface {
 	Add(values ...T)
 	Delete(value T) bool
 	Contains(value T) bool
@@ -8,10 +8,10 @@ type HashSet[T comparable] interface {
 	IsEmpty() bool
 	Clear()
 	ToSlice() []T
-	Equal(other *Set[T]) bool
+	Equal(other *HashSet[T]) bool
 	Traverse(func(value T) bool)
-	Copy() *Set[T]
+	Copy() *HashSet[T]
 	String() string
 }
 
-var _ HashSet[string] = (*Set[string])(nil)
+var _ hashSet[string] = (*HashSet[string])(nil)
