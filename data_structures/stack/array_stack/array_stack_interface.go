@@ -2,7 +2,7 @@ package arraystack
 
 import "cmp"
 
-type Stack[T cmp.Ordered] interface {
+type arrayStack[T cmp.Ordered] interface {
 	Push(values ...T)
 	Pop() (T, bool)
 	Peek() (T, bool)
@@ -16,4 +16,4 @@ type Stack[T cmp.Ordered] interface {
 	String() string
 }
 
-var _ Stack[int] = (*ArrayStack[int])(nil)
+var _ arrayStack[int] = (*ArrayStack[int])(nil)
