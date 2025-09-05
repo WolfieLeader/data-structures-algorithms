@@ -8,12 +8,12 @@ type Node[T cmp.Ordered] struct {
 	prev  *Node[T]
 }
 
-type Doubly[T cmp.Ordered] struct {
+type DoublyLinkedList[T cmp.Ordered] struct {
 	size int
 	head *Node[T]
 	tail *Node[T]
 }
 
-func New[T cmp.Ordered]() *Doubly[T] {
-	return &Doubly[T]{}
+func New[T cmp.Ordered]() *DoublyLinkedList[T] {
+	return &DoublyLinkedList[T]{}
 }

@@ -2,11 +2,11 @@ package singly
 
 import "cmp"
 
-type SinglyLinkedList[T cmp.Ordered] interface {
+type singlyLinkedList[T cmp.Ordered] interface {
 	Size() int
 	IsEmpty() bool
 	Clear()
-	Copy() *Singly[T]
+	Copy() *SinglyLinkedList[T]
 
 	AddFirst(values ...T)
 	AddLast(values ...T)
@@ -36,12 +36,12 @@ type SinglyLinkedList[T cmp.Ordered] interface {
 	Search(value T) int
 	Contains(value T) bool
 
-	Equal(other *Singly[T]) bool
+	Equal(other *SinglyLinkedList[T]) bool
 	Traverse(fn func(index int, value T))
-	Reverse() *Singly[T]
+	Reverse() *SinglyLinkedList[T]
 	IsSorted() bool
 	Swap(index1, index2 int) bool
 	String() string
 }
 
-var _ SinglyLinkedList[int] = (*Singly[int])(nil)
+var _ singlyLinkedList[int] = (*SinglyLinkedList[int])(nil)

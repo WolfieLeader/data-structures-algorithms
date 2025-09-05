@@ -7,7 +7,7 @@ import (
 )
 
 type LinkedListQueue[T cmp.Ordered] struct {
-	data *singly.Singly[T]
+	data *singly.SinglyLinkedList[T]
 }
 
 func New[T cmp.Ordered]() *LinkedListQueue[T] {

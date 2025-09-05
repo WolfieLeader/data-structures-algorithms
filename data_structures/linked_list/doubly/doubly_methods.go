@@ -5,11 +5,11 @@ import (
 	"strings"
 )
 
-func (l Doubly[T]) Size() int     { return l.size }
-func (l Doubly[T]) IsEmpty() bool { return l.size == 0 }
-func (l *Doubly[T]) Clear()       { *l = Doubly[T]{} }
+func (l DoublyLinkedList[T]) Size() int     { return l.size }
+func (l DoublyLinkedList[T]) IsEmpty() bool { return l.size == 0 }
+func (l *DoublyLinkedList[T]) Clear()       { *l = DoublyLinkedList[T]{} }
 
-func (l Doubly[T]) Copy() *Doubly[T] {
+func (l DoublyLinkedList[T]) Copy() *DoublyLinkedList[T] {
 	if l.size == 0 {
 		return New[T]()
 	}
@@ -19,7 +19,7 @@ func (l Doubly[T]) Copy() *Doubly[T] {
 	return out
 }
 
-func (l *Doubly[T]) AddFirst(values ...T) {
+func (l *DoublyLinkedList[T]) AddFirst(values ...T) {
 	for _, value := range values {
 		n := &Node[T]{Value: value, next: l.head}
 
@@ -34,7 +34,7 @@ func (l *Doubly[T]) AddFirst(values ...T) {
 	}
 }
 
-func (l *Doubly[T]) AddLast(values ...T) {
+func (l *DoublyLinkedList[T]) AddLast(values ...T) {
 	for _, value := range values {
 		n := &Node[T]{Value: value, prev: l.tail}
 
@@ -50,7 +50,7 @@ func (l *Doubly[T]) AddLast(values ...T) {
 	}
 }
 
-func (l Doubly[T]) GetFirst() (T, bool) {
+func (l DoublyLinkedList[T]) GetFirst() (T, bool) {
 	var zero T
 	if l.head == nil {
 		return zero, false
@@ -58,11 +58,11 @@ func (l Doubly[T]) GetFirst() (T, bool) {
 	return l.head.Value, true
 }
 
-func (l Doubly[T]) GetFirstNode() *Node[T] {
+func (l DoublyLinkedList[T]) GetFirstNode() *Node[T] {
 	return l.head
 }
 
-func (l Doubly[T]) GetLast() (T, bool) {
+func (l DoublyLinkedList[T]) GetLast() (T, bool) {
 	var zero T
 	if l.tail == nil {
 		return zero, false
@@ -70,11 +70,11 @@ func (l Doubly[T]) GetLast() (T, bool) {
 	return l.tail.Value, true
 }
 
-func (l Doubly[T]) GetLastNode() *Node[T] {
+func (l DoublyLinkedList[T]) GetLastNode() *Node[T] {
 	return l.tail
 }
 
-func (l *Doubly[T]) DeleteFirst() (T, bool) {
+func (l *DoublyLinkedList[T]) DeleteFirst() (T, bool) {
 	var zero T
 	if l.head == nil {
 		return zero, false
@@ -93,7 +93,7 @@ func (l *Doubly[T]) DeleteFirst() (T, bool) {
 	return value, true
 }
 
-func (l *Doubly[T]) DeleteLast() (T, bool) {
+func (l *DoublyLinkedList[T]) DeleteLast() (T, bool) {
 	var zero T
 	if l.tail == nil {
 		return zero, false
@@ -112,7 +112,7 @@ func (l *Doubly[T]) DeleteLast() (T, bool) {
 	return value, true
 }
 
-func (l Doubly[T]) shortestPath(index int) *Node[T] {
+func (l DoublyLinkedList[T]) shortestPath(index int) *Node[T] {
 	var curr *Node[T]
 	if index <= (l.size-1)/2 {
 		curr = l.head
@@ -131,7 +131,7 @@ func (l Doubly[T]) shortestPath(index int) *Node[T] {
 	return curr
 }
 
-func (l *Doubly[T]) SetAt(index int, value T) bool {
+func (l *DoublyLinkedList[T]) SetAt(index int, value T) bool {
 	if index < 0 || index >= l.size {
 		return false
 	}
@@ -145,7 +145,7 @@ func (l *Doubly[T]) SetAt(index int, value T) bool {
 	return true
 }
 
-func (l *Doubly[T]) SetAtNode(node *Node[T], value T) bool {
+func (l *DoublyLinkedList[T]) SetAtNode(node *Node[T], value T) bool {
 	if node == nil {
 		return false
 	}
@@ -163,7 +163,7 @@ func (l *Doubly[T]) SetAtNode(node *Node[T], value T) bool {
 	return true
 }
 
-func (l *Doubly[T]) InsertAt(index int, value T) bool {
+func (l *DoublyLinkedList[T]) InsertAt(index int, value T) bool {
 	if index < 0 || index > l.size {
 		return false
 	}
@@ -190,7 +190,7 @@ func (l *Doubly[T]) InsertAt(index int, value T) bool {
 	return true
 }
 
-func (l *Doubly[T]) InsertAtNode(node *Node[T], value T) bool {
+func (l *DoublyLinkedList[T]) InsertAtNode(node *Node[T], value T) bool {
 	if node == nil {
 		return false
 	}
@@ -212,7 +212,7 @@ func (l *Doubly[T]) InsertAtNode(node *Node[T], value T) bool {
 	return true
 }
 
-func (l *Doubly[T]) InsertAfter(index int, value T) bool {
+func (l *DoublyLinkedList[T]) InsertAfter(index int, value T) bool {
 	if index < 0 || index >= l.size {
 		return false
 	}
@@ -240,7 +240,7 @@ func (l *Doubly[T]) InsertAfter(index int, value T) bool {
 	return true
 }
 
-func (l *Doubly[T]) InsertAfterNode(node *Node[T], value T) bool {
+func (l *DoublyLinkedList[T]) InsertAfterNode(node *Node[T], value T) bool {
 	if node == nil {
 		return false
 	}
@@ -267,7 +267,7 @@ func (l *Doubly[T]) InsertAfterNode(node *Node[T], value T) bool {
 	return true
 }
 
-func (l *Doubly[T]) unlink(curr *Node[T]) (T, bool) {
+func (l *DoublyLinkedList[T]) unlink(curr *Node[T]) (T, bool) {
 	var zero T
 	if curr == nil {
 		return zero, false
@@ -289,7 +289,7 @@ func (l *Doubly[T]) unlink(curr *Node[T]) (T, bool) {
 	return curr.Value, true
 }
 
-func (l *Doubly[T]) DeleteAt(index int) (T, bool) {
+func (l *DoublyLinkedList[T]) DeleteAt(index int) (T, bool) {
 	var zero T
 	if index < 0 || index >= l.size {
 		return zero, false
@@ -306,7 +306,7 @@ func (l *Doubly[T]) DeleteAt(index int) (T, bool) {
 	return l.unlink(curr)
 }
 
-func (l *Doubly[T]) DeleteAfter(index int) (T, bool) {
+func (l *DoublyLinkedList[T]) DeleteAfter(index int) (T, bool) {
 	var zero T
 	if index < 0 || index >= l.size {
 		return zero, false
@@ -320,7 +320,7 @@ func (l *Doubly[T]) DeleteAfter(index int) (T, bool) {
 	return l.unlink(curr.next)
 }
 
-func (l *Doubly[T]) DeleteAtNode(node *Node[T]) (T, bool) {
+func (l *DoublyLinkedList[T]) DeleteAtNode(node *Node[T]) (T, bool) {
 	var zero T
 	if node == nil {
 		return zero, false
@@ -341,7 +341,7 @@ func (l *Doubly[T]) DeleteAtNode(node *Node[T]) (T, bool) {
 	return l.unlink(node)
 }
 
-func (l *Doubly[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
+func (l *DoublyLinkedList[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
 	var zero T
 
 	if node == nil {
@@ -360,7 +360,7 @@ func (l *Doubly[T]) DeleteAfterNode(node *Node[T]) (T, bool) {
 	return l.unlink(curr.next)
 }
 
-func (l *Doubly[T]) DeleteValue(value T) bool {
+func (l *DoublyLinkedList[T]) DeleteValue(value T) bool {
 	if l.head == nil {
 		return false
 	}
@@ -386,7 +386,7 @@ func (l *Doubly[T]) DeleteValue(value T) bool {
 	return false
 }
 
-func (l Doubly[T]) Get(index int) (T, bool) {
+func (l DoublyLinkedList[T]) Get(index int) (T, bool) {
 	var zero T
 	if index < 0 || index >= l.size {
 		return zero, false
@@ -400,7 +400,7 @@ func (l Doubly[T]) Get(index int) (T, bool) {
 	return curr.Value, true
 }
 
-func (l Doubly[T]) GetNode(index int) *Node[T] {
+func (l DoublyLinkedList[T]) GetNode(index int) *Node[T] {
 	if index < 0 || index >= l.size {
 		return nil
 	}
@@ -409,13 +409,13 @@ func (l Doubly[T]) GetNode(index int) *Node[T] {
 
 }
 
-func (l Doubly[T]) ToSlice() []T {
+func (l DoublyLinkedList[T]) ToSlice() []T {
 	out := make([]T, 0, l.size)
 	l.Traverse(func(index int, value T) { out = append(out, value) })
 	return out
 }
 
-func (l Doubly[T]) Search(value T) int {
+func (l DoublyLinkedList[T]) Search(value T) int {
 	i := 0
 	for curr := l.head; curr != nil; curr = curr.next {
 		if curr.Value == value {
@@ -426,11 +426,11 @@ func (l Doubly[T]) Search(value T) int {
 	return -1
 }
 
-func (l Doubly[T]) Contains(value T) bool {
+func (l DoublyLinkedList[T]) Contains(value T) bool {
 	return l.Search(value) != -1
 }
 
-func (l *Doubly[T]) Equal(other *Doubly[T]) bool {
+func (l *DoublyLinkedList[T]) Equal(other *DoublyLinkedList[T]) bool {
 	if l == other {
 		return true
 	}
@@ -450,7 +450,7 @@ func (l *Doubly[T]) Equal(other *Doubly[T]) bool {
 	return curr1 == nil && curr2 == nil
 }
 
-func (l Doubly[T]) Traverse(fn func(index int, value T)) {
+func (l DoublyLinkedList[T]) Traverse(fn func(index int, value T)) {
 	i := 0
 	for curr := l.head; curr != nil; curr = curr.next {
 		fn(i, curr.Value)
@@ -458,7 +458,7 @@ func (l Doubly[T]) Traverse(fn func(index int, value T)) {
 	}
 }
 
-func (l Doubly[T]) Reverse() *Doubly[T] {
+func (l DoublyLinkedList[T]) Reverse() *DoublyLinkedList[T] {
 	out := l.Copy()
 	curr := out.head
 	for curr != nil {
@@ -469,7 +469,7 @@ func (l Doubly[T]) Reverse() *Doubly[T] {
 	return out
 }
 
-func (l Doubly[T]) IsSorted() bool {
+func (l DoublyLinkedList[T]) IsSorted() bool {
 	if l.size <= 1 {
 		return true
 	}
@@ -484,7 +484,7 @@ func (l Doubly[T]) IsSorted() bool {
 	return true
 }
 
-func (l *Doubly[T]) Swap(index1, index2 int) bool {
+func (l *DoublyLinkedList[T]) Swap(index1, index2 int) bool {
 	if index1 < 0 || index2 < 0 || index1 >= l.size || index2 >= l.size {
 		return false
 	}
@@ -560,7 +560,7 @@ func (l *Doubly[T]) Swap(index1, index2 int) bool {
 	return true
 }
 
-func (l Doubly[T]) String() string {
+func (l DoublyLinkedList[T]) String() string {
 	if l.head == nil {
 		return "[nil]"
 	}

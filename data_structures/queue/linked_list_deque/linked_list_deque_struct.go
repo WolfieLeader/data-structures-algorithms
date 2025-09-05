@@ -7,7 +7,7 @@ import (
 )
 
 type LinkedListDeque[T cmp.Ordered] struct {
-	data *doubly.Doubly[T]
+	data *doubly.DoublyLinkedList[T]
 }
 
 func New[T cmp.Ordered]() *LinkedListDeque[T] {

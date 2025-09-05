@@ -2,11 +2,11 @@ package doubly
 
 import "cmp"
 
-type DoublyLinkedList[T cmp.Ordered] interface {
+type doublyLinkedList[T cmp.Ordered] interface {
 	Size() int
 	IsEmpty() bool
 	Clear()
-	Copy() *Doubly[T]
+	Copy() *DoublyLinkedList[T]
 
 	AddFirst(values ...T)
 	AddLast(values ...T)
@@ -36,12 +36,12 @@ type DoublyLinkedList[T cmp.Ordered] interface {
 	Search(value T) int
 	Contains(value T) bool
 
-	Equal(other *Doubly[T]) bool
+	Equal(other *DoublyLinkedList[T]) bool
 	Traverse(fn func(index int, value T))
-	Reverse() *Doubly[T]
+	Reverse() *DoublyLinkedList[T]
 	IsSorted() bool
 	Swap(index1, index2 int) bool
 	String() string
 }
 
-var _ DoublyLinkedList[int] = (*Doubly[int])(nil)
+var _ doublyLinkedList[int] = (*DoublyLinkedList[int])(nil)
