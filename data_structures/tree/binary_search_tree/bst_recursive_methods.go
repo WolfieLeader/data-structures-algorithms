@@ -241,7 +241,10 @@ func (n *Node[T]) balanced() (int, bool) {
 	if !rightBalanced {
 		return 0, false
 	}
-	return max(leftHeight, rightHeight) + 1, math.Abs(float64(leftHeight-rightHeight)) <= 1
+
+	height := max(leftHeight, rightHeight) + 1
+	isBalanced := math.Abs(float64(leftHeight-rightHeight)) <= 1
+	return height, isBalanced
 }
 
 func (t *BinarySearchTree[T]) EqualR(other *BinarySearchTree[T]) bool {
