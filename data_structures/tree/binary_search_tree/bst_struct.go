@@ -8,11 +8,11 @@ type Node[T cmp.Ordered] struct {
 	right *Node[T]
 }
 
-type BST[T cmp.Ordered] struct {
+type BinarySearchTree[T cmp.Ordered] struct {
 	root *Node[T]
 	size int
 }
 
-func New[T cmp.Ordered]() *BST[T] {
-	return &BST[T]{}
+func New[T cmp.Ordered]() *BinarySearchTree[T] {
+	return &BinarySearchTree[T]{}
 }

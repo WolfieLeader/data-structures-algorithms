@@ -1,6 +1,6 @@
 package bst
 
-func (t *BST[T]) ContainsI(value T) bool {
+func (t *BinarySearchTree[T]) ContainsI(value T) bool {
 	curr := t.root
 	for curr != nil {
 		switch {
@@ -15,13 +15,13 @@ func (t *BST[T]) ContainsI(value T) bool {
 	return false
 }
 
-func (t *BST[T]) InsertI(values ...T) {
+func (t *BinarySearchTree[T]) InsertI(values ...T) {
 	for _, v := range values {
 		t.insertI(v)
 	}
 }
 
-func (t *BST[T]) insertI(value T) {
+func (t *BinarySearchTree[T]) insertI(value T) {
 	if t.root == nil {
 		t.root = &Node[T]{Value: value}
 		t.size = 1
@@ -53,7 +53,7 @@ func (t *BST[T]) insertI(value T) {
 	}
 }
 
-func (t *BST[T]) DeleteI(value T) bool {
+func (t *BinarySearchTree[T]) DeleteI(value T) bool {
 	curr, ptr := t.root, &t.root
 	for curr != nil && curr.Value != value {
 		if value < curr.Value {
@@ -90,7 +90,7 @@ func (t *BST[T]) DeleteI(value T) bool {
 	return true
 }
 
-func (t *BST[T]) MinI() (T, bool) {
+func (t *BinarySearchTree[T]) MinI() (T, bool) {
 	var zero T
 	if t.root == nil {
 		return zero, false
@@ -102,7 +102,7 @@ func (t *BST[T]) MinI() (T, bool) {
 	return curr.Value, true
 }
 
-func (t *BST[T]) MaxI() (T, bool) {
+func (t *BinarySearchTree[T]) MaxI() (T, bool) {
 	var zero T
 	if t.root == nil {
 		return zero, false
@@ -114,7 +114,7 @@ func (t *BST[T]) MaxI() (T, bool) {
 	return curr.Value, true
 }
 
-func (t *BST[T]) TraverseInOrderI(fn func(value T)) {
+func (t *BinarySearchTree[T]) TraverseInOrderI(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
@@ -132,7 +132,7 @@ func (t *BST[T]) TraverseInOrderI(fn func(value T)) {
 	}
 }
 
-func (t *BST[T]) TraversePreOrderI(fn func(value T)) {
+func (t *BinarySearchTree[T]) TraversePreOrderI(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
@@ -149,7 +149,7 @@ func (t *BST[T]) TraversePreOrderI(fn func(value T)) {
 	}
 }
 
-func (t *BST[T]) TraversePostOrderI(fn func(value T)) {
+func (t *BinarySearchTree[T]) TraversePostOrderI(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
@@ -175,7 +175,7 @@ func (t *BST[T]) TraversePostOrderI(fn func(value T)) {
 	}
 }
 
-func (t *BST[T]) TraverseBreadthFirst(fn func(value T)) {
+func (t *BinarySearchTree[T]) TraverseBreadthFirst(fn func(value T)) {
 	if t.root == nil {
 		return
 	}
@@ -192,7 +192,7 @@ func (t *BST[T]) TraverseBreadthFirst(fn func(value T)) {
 	}
 }
 
-func (t *BST[T]) HeightI() int {
+func (t *BinarySearchTree[T]) HeightI() int {
 	if t.root == nil {
 		return 0
 	}
@@ -214,7 +214,7 @@ func (t *BST[T]) HeightI() int {
 	return height
 }
 
-func (t *BST[T]) SuccessorI(value T) (T, bool) {
+func (t *BinarySearchTree[T]) SuccessorI(value T) (T, bool) {
 	var zero T
 	var succ *Node[T]
 
@@ -249,7 +249,7 @@ func (t *BST[T]) SuccessorI(value T) (T, bool) {
 	return zero, false
 }
 
-func (t *BST[T]) PredecessorI(value T) (T, bool) {
+func (t *BinarySearchTree[T]) PredecessorI(value T) (T, bool) {
 	var zero T
 	var pred *Node[T]
 
@@ -284,7 +284,7 @@ func (t *BST[T]) PredecessorI(value T) (T, bool) {
 	return zero, false
 }
 
-func (t *BST[T]) EqualI(other *BST[T]) bool {
+func (t *BinarySearchTree[T]) EqualI(other *BinarySearchTree[T]) bool {
 	if t == other {
 		return true
 	}
@@ -321,7 +321,7 @@ func (t *BST[T]) EqualI(other *BST[T]) bool {
 	return true
 }
 
-func (t *BST[T]) ToSliceI() []T {
+func (t *BinarySearchTree[T]) ToSliceI() []T {
 	if t.root == nil {
 		return nil
 	}
@@ -342,7 +342,7 @@ func (t *BST[T]) ToSliceI() []T {
 	return out
 }
 
-func (t *BST[T]) CopyI() *BST[T] {
+func (t *BinarySearchTree[T]) CopyI() *BinarySearchTree[T] {
 	if t.root == nil {
 		return New[T]()
 	}

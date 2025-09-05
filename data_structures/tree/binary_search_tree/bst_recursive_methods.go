@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func (t *BST[T]) ContainsR(value T) bool { return t.root.contains(value) }
+func (t *BinarySearchTree[T]) ContainsR(value T) bool { return t.root.contains(value) }
 func (n *Node[T]) contains(value T) bool {
 	if n == nil {
 		return false
@@ -22,13 +22,13 @@ func (n *Node[T]) contains(value T) bool {
 	}
 }
 
-func (t *BST[T]) InsertR(values ...T) {
+func (t *BinarySearchTree[T]) InsertR(values ...T) {
 	for _, v := range values {
 		t.insertR(v)
 	}
 }
 
-func (t *BST[T]) insertR(value T) {
+func (t *BinarySearchTree[T]) insertR(value T) {
 	newRoot, ok := t.root.insert(value)
 	t.root = newRoot
 	if ok {
@@ -57,7 +57,7 @@ func (n *Node[T]) insert(value T) (*Node[T], bool) {
 	}
 }
 
-func (t *BST[T]) DeleteR(value T) bool {
+func (t *BinarySearchTree[T]) DeleteR(value T) bool {
 	newRoot, ok := t.root.delete(value)
 	t.root = newRoot
 	if ok {
@@ -102,7 +102,7 @@ func (n *Node[T]) delete(value T) (*Node[T], bool) {
 	}
 }
 
-func (t *BST[T]) MinR() (T, bool) {
+func (t *BinarySearchTree[T]) MinR() (T, bool) {
 	var zero T
 	if t.root == nil {
 		return zero, false
@@ -117,7 +117,7 @@ func (n *Node[T]) min() T {
 	return n.left.min()
 }
 
-func (t *BST[T]) MaxR() (T, bool) {
+func (t *BinarySearchTree[T]) MaxR() (T, bool) {
 	var zero T
 	if t.root == nil {
 		return zero, false
@@ -132,7 +132,7 @@ func (n *Node[T]) max() T {
 	return n.right.max()
 }
 
-func (t *BST[T]) TraverseInOrderR(fn func(value T)) { t.root.inOrder(fn) }
+func (t *BinarySearchTree[T]) TraverseInOrderR(fn func(value T)) { t.root.inOrder(fn) }
 func (n *Node[T]) inOrder(fn func(value T)) {
 	if n == nil {
 		return
@@ -142,7 +142,7 @@ func (n *Node[T]) inOrder(fn func(value T)) {
 	(n.right).inOrder(fn)
 }
 
-func (t *BST[T]) TraversePreOrderR(fn func(value T)) { t.root.preOrder(fn) }
+func (t *BinarySearchTree[T]) TraversePreOrderR(fn func(value T)) { t.root.preOrder(fn) }
 func (n *Node[T]) preOrder(fn func(value T)) {
 	if n == nil {
 		return
@@ -152,7 +152,7 @@ func (n *Node[T]) preOrder(fn func(value T)) {
 	(n.right).preOrder(fn)
 }
 
-func (t *BST[T]) TraversePostOrderR(fn func(value T)) { t.root.postOrder(fn) }
+func (t *BinarySearchTree[T]) TraversePostOrderR(fn func(value T)) { t.root.postOrder(fn) }
 func (n *Node[T]) postOrder(fn func(value T)) {
 	if n == nil {
 		return
@@ -162,7 +162,7 @@ func (n *Node[T]) postOrder(fn func(value T)) {
 	fn(n.Value)
 }
 
-func (t *BST[T]) HeightR() int { return t.root.height() }
+func (t *BinarySearchTree[T]) HeightR() int { return t.root.height() }
 func (n *Node[T]) height() int {
 	if n == nil {
 		return 0
@@ -170,7 +170,7 @@ func (n *Node[T]) height() int {
 	return max((n.left).height(), (n.right).height()) + 1
 }
 
-func (t *BST[T]) SuccessorR(value T) (T, bool) { return t.root.successor(value, nil) }
+func (t *BinarySearchTree[T]) SuccessorR(value T) (T, bool) { return t.root.successor(value, nil) }
 func (n *Node[T]) successor(value T, succ *Node[T]) (T, bool) {
 	var zero T
 	if n == nil {
@@ -199,7 +199,7 @@ func (n *Node[T]) successor(value T, succ *Node[T]) (T, bool) {
 	}
 }
 
-func (t *BST[T]) PredecessorR(value T) (T, bool) { return t.root.predecessor(value, nil) }
+func (t *BinarySearchTree[T]) PredecessorR(value T) (T, bool) { return t.root.predecessor(value, nil) }
 func (n *Node[T]) predecessor(value T, pred *Node[T]) (T, bool) {
 	var zero T
 	if n == nil {
@@ -228,7 +228,7 @@ func (n *Node[T]) predecessor(value T, pred *Node[T]) (T, bool) {
 	}
 }
 
-func (t *BST[T]) IsBalanced() bool { _, ok := t.root.balanced(); return ok }
+func (t *BinarySearchTree[T]) IsBalanced() bool { _, ok := t.root.balanced(); return ok }
 func (n *Node[T]) balanced() (int, bool) {
 	if n == nil {
 		return 0, true
@@ -244,7 +244,7 @@ func (n *Node[T]) balanced() (int, bool) {
 	return max(leftHeight, rightHeight) + 1, math.Abs(float64(leftHeight-rightHeight)) <= 1
 }
 
-func (t *BST[T]) EqualR(other *BST[T]) bool {
+func (t *BinarySearchTree[T]) EqualR(other *BinarySearchTree[T]) bool {
 	if t == other {
 		return true
 	}
@@ -266,7 +266,7 @@ func (n *Node[T]) equal(other *Node[T]) bool {
 	return (n.left).equal(other.left) && (n.right).equal(other.right)
 }
 
-func (t *BST[T]) ToSliceR() []T {
+func (t *BinarySearchTree[T]) ToSliceR() []T {
 	if t.root == nil {
 		return nil
 	}
@@ -283,7 +283,7 @@ func (n *Node[T]) toSlice(out *[]T) {
 	(n.right).toSlice(out)
 }
 
-func (t *BST[T]) CopyR() *BST[T] {
+func (t *BinarySearchTree[T]) CopyR() *BinarySearchTree[T] {
 	if t.root == nil {
 		return New[T]()
 	}
@@ -318,7 +318,7 @@ func (n *Node[T]) copy() *Node[T] {
 // 	return (n.left).symmetric(other.right) && (n.right).symmetric(other.left)
 // }
 
-func (t *BST[T]) String() string {
+func (t *BinarySearchTree[T]) String() string {
 	var sb strings.Builder
 	if t.root == nil {
 		return "BST{size=0}\n"

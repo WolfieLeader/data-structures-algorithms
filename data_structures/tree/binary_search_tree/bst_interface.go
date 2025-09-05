@@ -2,7 +2,7 @@ package bst
 
 import "cmp"
 
-type iterativeBST[T cmp.Ordered] interface {
+type iterativeBinarySearchTree[T cmp.Ordered] interface {
 	ContainsI(value T) bool
 	InsertI(values ...T)
 	DeleteI(value T) bool
@@ -18,11 +18,11 @@ type iterativeBST[T cmp.Ordered] interface {
 	PredecessorI(value T) (T, bool)
 	SuccessorI(value T) (T, bool)
 	ToSliceI() []T
-	EqualI(other *BST[T]) bool
-	CopyI() *BST[T]
+	EqualI(other *BinarySearchTree[T]) bool
+	CopyI() *BinarySearchTree[T]
 }
 
-type recursiveBST[T cmp.Ordered] interface {
+type recursiveBinarySearchTree[T cmp.Ordered] interface {
 	ContainsR(value T) bool
 	InsertR(values ...T)
 	DeleteR(value T) bool
@@ -38,18 +38,18 @@ type recursiveBST[T cmp.Ordered] interface {
 	SuccessorR(value T) (T, bool)
 	IsBalanced() bool
 	ToSliceR() []T
-	EqualR(other *BST[T]) bool
-	CopyR() *BST[T]
+	EqualR(other *BinarySearchTree[T]) bool
+	CopyR() *BinarySearchTree[T]
 	String() string
 }
 
-type BinarySearchTree[T cmp.Ordered] interface {
-	iterativeBST[T]
-	recursiveBST[T]
+type binarySearchTree[T cmp.Ordered] interface {
+	iterativeBinarySearchTree[T]
+	recursiveBinarySearchTree[T]
 	Size() int
 	IsEmpty() bool
 	Root() (T, bool)
 	Clear()
 }
 
-var _ BinarySearchTree[int] = (*BST[int])(nil)
+var _ binarySearchTree[int] = (*BinarySearchTree[int])(nil)
