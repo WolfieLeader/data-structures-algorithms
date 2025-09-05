@@ -2,7 +2,7 @@ package listqueue
 
 import "cmp"
 
-type Queue[T cmp.Ordered] interface {
+type linkedListQueue[T cmp.Ordered] interface {
 	Enqueue(values ...T)
 	Dequeue() (T, bool)
 	Peek() (T, bool)
@@ -16,4 +16,4 @@ type Queue[T cmp.Ordered] interface {
 	String() string
 }
 
-var _ Queue[int] = (*LinkedListQueue[int])(nil)
+var _ linkedListQueue[int] = (*LinkedListQueue[int])(nil)

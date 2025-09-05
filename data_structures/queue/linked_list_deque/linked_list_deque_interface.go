@@ -2,7 +2,7 @@ package listdeque
 
 import "cmp"
 
-type Deque[T cmp.Ordered] interface {
+type linkedListDeque[T cmp.Ordered] interface {
 	EnqueueFirst(values ...T)
 	EnqueueLast(values ...T)
 	DequeueFirst() (T, bool)
@@ -19,4 +19,4 @@ type Deque[T cmp.Ordered] interface {
 	String() string
 }
 
-var _ Deque[int] = (*LinkedListDeque[int])(nil)
+var _ linkedListDeque[int] = (*LinkedListDeque[int])(nil)

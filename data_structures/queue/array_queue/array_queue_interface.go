@@ -2,7 +2,7 @@ package arrayqueue
 
 import "cmp"
 
-type Queue[T cmp.Ordered] interface {
+type arrayQueue[T cmp.Ordered] interface {
 	Enqueue(values ...T)
 	Dequeue() (T, bool)
 	Peek() (T, bool)
@@ -16,4 +16,4 @@ type Queue[T cmp.Ordered] interface {
 	String() string
 }
 
-var _ Queue[int] = (*ArrayQueue[int])(nil)
+var _ arrayQueue[int] = (*ArrayQueue[int])(nil)

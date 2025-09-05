@@ -2,7 +2,7 @@ package arraydeque
 
 import "cmp"
 
-type Deque[T cmp.Ordered] interface {
+type arrayDeque[T cmp.Ordered] interface {
 	EnqueueFirst(values ...T)
 	EnqueueLast(values ...T)
 	DequeueFirst() (T, bool)
@@ -19,4 +19,4 @@ type Deque[T cmp.Ordered] interface {
 	String() string
 }
 
-var _ Deque[int] = (*ArrayDeque[int])(nil)
+var _ arrayDeque[int] = (*ArrayDeque[int])(nil)
