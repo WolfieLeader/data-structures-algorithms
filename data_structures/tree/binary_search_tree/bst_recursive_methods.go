@@ -24,15 +24,11 @@ func (n *Node[T]) contains(value T) bool {
 
 func (t *BinarySearchTree[T]) InsertR(values ...T) {
 	for _, v := range values {
-		t.insertR(v)
-	}
-}
-
-func (t *BinarySearchTree[T]) insertR(value T) {
-	newRoot, ok := t.root.insert(value)
-	t.root = newRoot
-	if ok {
-		t.size++
+		var inserted bool
+		t.root, inserted = t.root.insert(v)
+		if inserted {
+			t.size++
+		}
 	}
 }
 
@@ -41,20 +37,16 @@ func (n *Node[T]) insert(value T) (*Node[T], bool) {
 		return &Node[T]{Value: value}, true
 	}
 
+	var inserted bool
 	switch {
 	case value < n.Value:
-		newLeft, ok := (n.left).insert(value)
-		n.left = newLeft
-		return n, ok
-
+		n.left, inserted = n.left.insert(value)
 	case value > n.Value:
-		newRight, ok := (n.right).insert(value)
-		n.right = newRight
-		return n, ok
-
-	default: // Equal
+		n.right, inserted = n.right.insert(value)
+	default: // duplicate
 		return n, false
 	}
+	return n, inserted
 }
 
 func (t *BinarySearchTree[T]) DeleteR(value T) bool {
