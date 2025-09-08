@@ -15,17 +15,21 @@ func (t *BinarySearchTree[T]) ContainsI(value T) bool {
 	return false
 }
 
-func (t *BinarySearchTree[T]) InsertI(values ...T) {
+func (t *BinarySearchTree[T]) InsertI(values ...T) int {
+	inserts := 0
 	for _, v := range values {
-		t.insertI(v)
+		if t.insertI(v) {
+			inserts++
+		}
 	}
+	return inserts
 }
 
-func (t *BinarySearchTree[T]) insertI(value T) {
+func (t *BinarySearchTree[T]) insertI(value T) bool {
 	if t.root == nil {
 		t.root = &Node[T]{Value: value}
 		t.size = 1
-		return
+		return true
 	}
 
 	curr := t.root
@@ -35,7 +39,7 @@ func (t *BinarySearchTree[T]) insertI(value T) {
 			if curr.left == nil {
 				curr.left = &Node[T]{Value: value}
 				t.size++
-				return
+				return true
 			}
 			curr = curr.left
 
@@ -43,17 +47,27 @@ func (t *BinarySearchTree[T]) insertI(value T) {
 			if curr.right == nil {
 				curr.right = &Node[T]{Value: value}
 				t.size++
-				return
+				return true
 			}
 			curr = curr.right
 
 		default: // Equal
-			return
+			return false
 		}
 	}
 }
 
-func (t *BinarySearchTree[T]) DeleteI(value T) bool {
+func (t *BinarySearchTree[T]) DeleteI(values ...T) int {
+	deletes := 0
+	for _, v := range values {
+		if t.deleteI(v) {
+			deletes++
+		}
+	}
+	return deletes
+}
+
+func (t *BinarySearchTree[T]) deleteI(value T) bool {
 	curr, ptr := t.root, &t.root
 	for curr != nil && curr.Value != value {
 		if value < curr.Value {

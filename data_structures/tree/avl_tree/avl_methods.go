@@ -44,7 +44,7 @@ func (n *Node[T]) balanceFactor() int {
 //           \
 //            6
 
-func (t *AVLTree[T]) leftRotate(n *Node[T]) *Node[T] {
+func (n *Node[T]) leftRotate() *Node[T] {
 	if n == nil || n.right == nil {
 		return n
 	}
@@ -68,7 +68,7 @@ func (t *AVLTree[T]) leftRotate(n *Node[T]) *Node[T] {
 //	  /
 //  X(1)
 
-func (t *AVLTree[T]) rightRotate(n *Node[T]) *Node[T] {
+func (n *Node[T]) rightRotate() *Node[T] {
 	if n == nil || n.left == nil {
 		return n
 	}
@@ -84,45 +84,103 @@ func (t *AVLTree[T]) rightRotate(n *Node[T]) *Node[T] {
 	return pivot
 }
 
-func (t *AVLTree[T]) rebalance(n *Node[T]) *Node[T] {
+func (n *Node[T]) rebalance() *Node[T] {
+	if n == nil {
+		return nil
+	}
+
 	bf := n.balanceFactor()
 	if bf > 1 {
 		if n.left.balanceFactor() < 0 {
-			n.left = t.leftRotate(n.left)
+			n.left = n.left.leftRotate()
 		}
-		return t.rightRotate(n)
+		return n.rightRotate()
 	}
 
 	if bf < -1 {
 		if n.right.balanceFactor() > 0 {
-			n.right = t.rightRotate(n.right)
+			n.right = n.right.rightRotate()
 		}
-		return t.leftRotate(n)
+		return n.leftRotate()
 	}
 
 	n.updateHeight()
 	return n
 }
 
-func (t *AVLTree[T]) Insert(values ...T) {
+func (t *AVLTree[T]) Insert(values ...T) int {
+	inserts := 0
 	for _, v := range values {
-		t.root = t.insert(t.root, v)
+		var inserted bool
+		if t.root, inserted = t.root.insert(v); inserted {
+			t.size++
+			inserts++
+		}
 	}
+	return inserts
 }
 
-func (t *AVLTree[T]) insert(n *Node[T], v T) *Node[T] {
+func (n *Node[T]) insert(value T) (*Node[T], bool) {
 	if n == nil {
-		t.size++
-		return &Node[T]{Value: v, height: 1}
+		return &Node[T]{Value: value, height: 1}, true
 	}
 
+	var inserted bool
 	switch {
-	case v < n.Value:
-		n.left = t.insert(n.left, v)
-	case v > n.Value:
-		n.right = t.insert(n.right, v)
+	case value < n.Value:
+		n.left, inserted = n.left.insert(value)
+	case value > n.Value:
+		n.right, inserted = n.right.insert(value)
 	default: // Equal
-		return n
+		return n, false
 	}
-	return t.rebalance(n)
+	return n.rebalance(), inserted
+}
+
+func (t *AVLTree[T]) Delete(values ...T) int {
+	deletes := 0
+	for _, v := range values {
+		var deleted bool
+		if t.root, deleted = t.root.delete(v); deleted {
+			t.size--
+			deletes++
+		}
+	}
+	return deletes
+}
+
+func (n *Node[T]) delete(value T) (*Node[T], bool) {
+	if n == nil {
+		return nil, false
+	}
+
+	var ok bool
+	switch {
+	case value < n.Value:
+		if n.left, ok = n.left.delete(value); !ok {
+			return n, false
+		}
+
+	case value > n.Value:
+		if n.right, ok = n.right.delete(value); !ok {
+			return n, false
+		}
+
+	default: // Equal
+		if n.left == nil {
+			return n.right, true
+		}
+		if n.right == nil {
+			return n.left, true
+		}
+
+		succ := n.right
+		for succ.left != nil {
+			succ = succ.left
+		}
+
+		n.Value = succ.Value
+		n.right, _ = n.right.delete(succ.Value)
+	}
+	return n.rebalance(), ok
 }

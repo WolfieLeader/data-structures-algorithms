@@ -4,8 +4,8 @@ import "cmp"
 
 type iterativeBinarySearchTree[T cmp.Ordered] interface {
 	ContainsI(value T) bool
-	InsertI(values ...T)
-	DeleteI(value T) bool
+	InsertI(values ...T) int
+	DeleteI(values ...T) int
 
 	TraverseInOrderI(fn func(value T))
 	TraversePreOrderI(fn func(value T))
@@ -24,8 +24,8 @@ type iterativeBinarySearchTree[T cmp.Ordered] interface {
 
 type recursiveBinarySearchTree[T cmp.Ordered] interface {
 	ContainsR(value T) bool
-	InsertR(values ...T)
-	DeleteR(value T) bool
+	InsertR(values ...T) int
+	DeleteR(values ...T) int
 
 	TraverseInOrderR(fn func(value T))
 	TraversePreOrderR(fn func(value T))

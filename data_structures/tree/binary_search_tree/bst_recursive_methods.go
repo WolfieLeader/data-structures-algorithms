@@ -14,22 +14,24 @@ func (n *Node[T]) contains(value T) bool {
 
 	switch {
 	case value < n.Value:
-		return (n.left).contains(value)
+		return n.left.contains(value)
 	case value > n.Value:
-		return (n.right).contains(value)
+		return n.right.contains(value)
 	default: // Equal
 		return true
 	}
 }
 
-func (t *BinarySearchTree[T]) InsertR(values ...T) {
+func (t *BinarySearchTree[T]) InsertR(values ...T) int {
+	inserts := 0
 	for _, v := range values {
-		var inserted bool
-		t.root, inserted = t.root.insert(v)
-		if inserted {
+		var ok bool
+		if t.root, ok = t.root.insert(v); ok {
 			t.size++
+			inserts++
 		}
 	}
+	return inserts
 }
 
 func (n *Node[T]) insert(value T) (*Node[T], bool) {
@@ -37,25 +39,28 @@ func (n *Node[T]) insert(value T) (*Node[T], bool) {
 		return &Node[T]{Value: value}, true
 	}
 
-	var inserted bool
+	var ok bool
 	switch {
 	case value < n.Value:
-		n.left, inserted = n.left.insert(value)
+		n.left, ok = n.left.insert(value)
 	case value > n.Value:
-		n.right, inserted = n.right.insert(value)
+		n.right, ok = n.right.insert(value)
 	default: // duplicate
 		return n, false
 	}
-	return n, inserted
+	return n, ok
 }
 
-func (t *BinarySearchTree[T]) DeleteR(value T) bool {
-	newRoot, ok := t.root.delete(value)
-	t.root = newRoot
-	if ok {
-		t.size--
+func (t *BinarySearchTree[T]) DeleteR(values ...T) int {
+	deletes := 0
+	for _, v := range values {
+		var ok bool
+		if t.root, ok = t.root.delete(v); ok {
+			t.size--
+			deletes++
+		}
 	}
-	return ok
+	return deletes
 }
 
 func (n *Node[T]) delete(value T) (*Node[T], bool) {
@@ -63,17 +68,12 @@ func (n *Node[T]) delete(value T) (*Node[T], bool) {
 		return nil, false
 	}
 
+	var ok bool
 	switch {
 	case value < n.Value:
-		newLeft, ok := (n.left).delete(value)
-		n.left = newLeft
-		return n, ok
-
+		n.left, ok = n.left.delete(value)
 	case value > n.Value:
-		newRight, ok := (n.right).delete(value)
-		n.right = newRight
-		return n, ok
-
+		n.right, ok = n.right.delete(value)
 	default: //Equal
 		if n.left == nil {
 			return n.right, true
@@ -88,10 +88,9 @@ func (n *Node[T]) delete(value T) (*Node[T], bool) {
 		}
 
 		n.Value = succ.Value
-		newRight, ok := (n.right).delete(succ.Value)
-		n.right = newRight
-		return n, ok
+		n.right, ok = n.right.delete(succ.Value)
 	}
+	return n, ok
 }
 
 func (t *BinarySearchTree[T]) MinR() (T, bool) {
@@ -129,9 +128,9 @@ func (n *Node[T]) inOrder(fn func(value T)) {
 	if n == nil {
 		return
 	}
-	(n.left).inOrder(fn)
+	n.left.inOrder(fn)
 	fn(n.Value)
-	(n.right).inOrder(fn)
+	n.right.inOrder(fn)
 }
 
 func (t *BinarySearchTree[T]) TraversePreOrderR(fn func(value T)) { t.root.preOrder(fn) }
@@ -140,8 +139,8 @@ func (n *Node[T]) preOrder(fn func(value T)) {
 		return
 	}
 	fn(n.Value)
-	(n.left).preOrder(fn)
-	(n.right).preOrder(fn)
+	n.left.preOrder(fn)
+	n.right.preOrder(fn)
 }
 
 func (t *BinarySearchTree[T]) TraversePostOrderR(fn func(value T)) { t.root.postOrder(fn) }
@@ -149,8 +148,8 @@ func (n *Node[T]) postOrder(fn func(value T)) {
 	if n == nil {
 		return
 	}
-	(n.left).postOrder(fn)
-	(n.right).postOrder(fn)
+	n.left.postOrder(fn)
+	n.right.postOrder(fn)
 	fn(n.Value)
 }
 
@@ -159,7 +158,7 @@ func (n *Node[T]) height() int {
 	if n == nil {
 		return 0
 	}
-	return max((n.left).height(), (n.right).height()) + 1
+	return max(n.left.height(), n.right.height()) + 1
 }
 
 func (t *BinarySearchTree[T]) SuccessorR(value T) (T, bool) { return t.root.successor(value, nil) }
@@ -174,9 +173,9 @@ func (n *Node[T]) successor(value T, succ *Node[T]) (T, bool) {
 
 	switch {
 	case value < n.Value:
-		return (n.left).successor(value, n)
+		return n.left.successor(value, n)
 	case value > n.Value:
-		return (n.right).successor(value, succ)
+		return n.right.successor(value, succ)
 	default: // Equal
 		if r := n.right; r != nil {
 			for r.left != nil {
@@ -184,9 +183,11 @@ func (n *Node[T]) successor(value T, succ *Node[T]) (T, bool) {
 			}
 			return r.Value, true
 		}
+
 		if succ != nil {
 			return succ.Value, true
 		}
+
 		return zero, false
 	}
 }
@@ -203,9 +204,9 @@ func (n *Node[T]) predecessor(value T, pred *Node[T]) (T, bool) {
 
 	switch {
 	case value < n.Value:
-		return (n.left).predecessor(value, pred)
+		return n.left.predecessor(value, pred)
 	case value > n.Value:
-		return (n.right).predecessor(value, n)
+		return n.right.predecessor(value, n)
 	default: // Equal
 		if l := n.left; l != nil {
 			for l.right != nil {
@@ -213,9 +214,11 @@ func (n *Node[T]) predecessor(value T, pred *Node[T]) (T, bool) {
 			}
 			return l.Value, true
 		}
+
 		if pred != nil {
 			return pred.Value, true
 		}
+
 		return zero, false
 	}
 }
@@ -225,11 +228,11 @@ func (n *Node[T]) balanced() (int, bool) {
 	if n == nil {
 		return 0, true
 	}
-	leftHeight, leftBalanced := (n.left).balanced()
+	leftHeight, leftBalanced := n.left.balanced()
 	if !leftBalanced {
 		return 0, false
 	}
-	rightHeight, rightBalanced := (n.right).balanced()
+	rightHeight, rightBalanced := n.right.balanced()
 	if !rightBalanced {
 		return 0, false
 	}
@@ -258,7 +261,7 @@ func (n *Node[T]) equal(other *Node[T]) bool {
 	if n.Value != other.Value {
 		return false
 	}
-	return (n.left).equal(other.left) && (n.right).equal(other.right)
+	return n.left.equal(other.left) && n.right.equal(other.right)
 }
 
 func (t *BinarySearchTree[T]) ToSliceR() []T {
@@ -273,9 +276,9 @@ func (n *Node[T]) toSlice(out *[]T) {
 	if n == nil {
 		return
 	}
-	(n.left).toSlice(out)
+	n.left.toSlice(out)
 	*out = append(*out, n.Value)
-	(n.right).toSlice(out)
+	n.right.toSlice(out)
 }
 
 func (t *BinarySearchTree[T]) CopyR() *BinarySearchTree[T] {
@@ -292,7 +295,7 @@ func (n *Node[T]) copy() *Node[T] {
 	if n == nil {
 		return nil
 	}
-	return &Node[T]{Value: n.Value, left: (n.left).copy(), right: (n.right).copy()}
+	return &Node[T]{Value: n.Value, left: n.left.copy(), right: n.right.copy()}
 }
 
 // Cannot be used in BST only in Binary Tree
@@ -310,7 +313,7 @@ func (n *Node[T]) copy() *Node[T] {
 // 	if n.Value != other.Value {
 // 		return false
 // 	}
-// 	return (n.left).symmetric(other.right) && (n.right).symmetric(other.left)
+// 	return n.left.symmetric(other.right) && n.right.symmetric(other.left)
 // }
 
 func (t *BinarySearchTree[T]) String() string {

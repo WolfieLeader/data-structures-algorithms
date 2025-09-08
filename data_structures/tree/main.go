@@ -58,7 +58,7 @@ func bstExample() {
 		}
 	}
 
-	fmt.Printf("- Delete 17, 5, 10, 2: %v\n", t.DeleteI(17) && t.DeleteR(5) && t.DeleteI(10) && t.DeleteR(2))
+	fmt.Printf("- Delete 17, 5, 10, 2: %v\n", t.DeleteI(17, 5) == t.DeleteR(10, 2))
 	fmt.Printf("- After deletes:\n%v", t)
 	fmt.Printf("- Size: %d, Height: %d(ok=%t), Is Balanced: %t\n", t.Size(), t.HeightI(), t.HeightR() == t.HeightI(), t.IsBalanced())
 	t.Clear()
