@@ -82,15 +82,22 @@ func (n *Node[T]) delete(value T) (*Node[T], bool) {
 			return n.left, true
 		}
 
-		succ := n.right
-		for succ.left != nil {
-			succ = succ.left
-		}
-
+		succ := n.right.minNodeI()
 		n.Value = succ.Value
 		n.right, ok = n.right.delete(succ.Value)
 	}
 	return n, ok
+}
+
+func (n *Node[T]) minNodeI() *Node[T] {
+	if n == nil {
+		return nil
+	}
+	curr := n
+	for curr.left != nil {
+		curr = curr.left
+	}
+	return curr
 }
 
 func (t *BinarySearchTree[T]) MinR() (T, bool) {

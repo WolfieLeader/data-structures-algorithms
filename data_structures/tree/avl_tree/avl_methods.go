@@ -1,5 +1,21 @@
 package avl
 
+import (
+	"fmt"
+	"strings"
+)
+
+func (t *AVLTree[T]) Size() int     { return t.size }
+func (t *AVLTree[T]) IsEmpty() bool { return t.size == 0 }
+func (t *AVLTree[T]) Clear()        { *t = AVLTree[T]{} }
+func (t *AVLTree[T]) Root() (T, bool) {
+	var zero T
+	if t.root == nil {
+		return zero, false
+	}
+	return t.root.Value, true
+}
+
 func (t *AVLTree[T]) Contains(value T) bool {
 	curr := t.root
 	for curr != nil {
@@ -183,4 +199,261 @@ func (n *Node[T]) delete(value T) (*Node[T], bool) {
 		n.right, _ = n.right.delete(succ.Value)
 	}
 	return n.rebalance(), true
+}
+
+func (t *AVLTree[T]) BalanceFactor() int {
+	return t.root.balanceFactor()
+}
+
+func (t *AVLTree[T]) Height() int {
+	return t.root.getHeight()
+}
+
+func (t *AVLTree[T]) Min() (T, bool) {
+	var zero T
+	if t.root == nil {
+		return zero, false
+	}
+	curr := t.root
+	for curr.left != nil {
+		curr = curr.left
+	}
+	return curr.Value, true
+}
+
+func (t *AVLTree[T]) Max() (T, bool) {
+	var zero T
+	if t.root == nil {
+		return zero, false
+	}
+	curr := t.root
+	for curr.right != nil {
+		curr = curr.right
+	}
+	return curr.Value, true
+}
+
+func (t *AVLTree[T]) Copy() *AVLTree[T] {
+	if t.root == nil {
+		return New[T]()
+	}
+	newTree := New[T]()
+	newTree.root = t.root.copy()
+	newTree.size = t.size
+	return newTree
+}
+
+func (n *Node[T]) copy() *Node[T] {
+	if n == nil {
+		return nil
+	}
+	return &Node[T]{Value: n.Value, left: n.left.copy(), right: n.right.copy(), height: n.height}
+}
+
+func (t *AVLTree[T]) Equal(other *AVLTree[T]) bool {
+	if t == other {
+		return true
+	}
+	if t == nil || other == nil {
+		return false
+	}
+	if t.size != other.size {
+		return false
+	}
+	return t.root.equal(other.root)
+}
+func (n *Node[T]) equal(other *Node[T]) bool {
+	if n == nil || other == nil {
+		return n == nil && other == nil
+	}
+	if n.Value != other.Value || n.height != other.height {
+		return false
+	}
+	return n.left.equal(other.left) && n.right.equal(other.right)
+}
+
+func (t *AVLTree[T]) ToSlice() []T {
+	if t.root == nil {
+		return nil
+	}
+	out := make([]T, 0, t.size)
+	t.root.toSlice(&out)
+	return out
+}
+
+func (n *Node[T]) toSlice(out *[]T) {
+	if n == nil {
+		return
+	}
+	n.left.toSlice(out)
+	*out = append(*out, n.Value)
+	n.right.toSlice(out)
+}
+
+func (t *AVLTree[T]) Successor(value T) (T, bool) { return t.root.successor(value, nil) }
+func (n *Node[T]) successor(value T, succ *Node[T]) (T, bool) {
+	var zero T
+	if n == nil {
+		if succ != nil {
+			return succ.Value, true
+		}
+		return zero, false
+	}
+
+	switch {
+	case value < n.Value:
+		return n.left.successor(value, n)
+	case value > n.Value:
+		return n.right.successor(value, succ)
+	default: // Equal
+		if r := n.right; r != nil {
+			for r.left != nil {
+				r = r.left
+			}
+			return r.Value, true
+		}
+
+		if succ != nil {
+			return succ.Value, true
+		}
+
+		return zero, false
+	}
+}
+
+func (t *AVLTree[T]) Predecessor(value T) (T, bool) { return t.root.predecessor(value, nil) }
+func (n *Node[T]) predecessor(value T, pred *Node[T]) (T, bool) {
+	var zero T
+	if n == nil {
+		if pred != nil {
+			return pred.Value, true
+		}
+		return zero, false
+	}
+
+	switch {
+	case value < n.Value:
+		return n.left.predecessor(value, pred)
+	case value > n.Value:
+		return n.right.predecessor(value, n)
+	default: // Equal
+		if l := n.left; l != nil {
+			for l.right != nil {
+				l = l.right
+			}
+			return l.Value, true
+		}
+
+		if pred != nil {
+			return pred.Value, true
+		}
+
+		return zero, false
+	}
+}
+
+func (t *AVLTree[T]) TraverseInOrder(fn func(value T)) { t.root.inOrder(fn) }
+func (n *Node[T]) inOrder(fn func(value T)) {
+	if n == nil {
+		return
+	}
+	n.left.inOrder(fn)
+	fn(n.Value)
+	n.right.inOrder(fn)
+}
+
+func (t *AVLTree[T]) TraversePreOrder(fn func(value T)) { t.root.preOrder(fn) }
+func (n *Node[T]) preOrder(fn func(value T)) {
+	if n == nil {
+		return
+	}
+	fn(n.Value)
+	n.left.preOrder(fn)
+	n.right.preOrder(fn)
+}
+
+func (t *AVLTree[T]) TraversePostOrder(fn func(value T)) { t.root.postOrder(fn) }
+func (n *Node[T]) postOrder(fn func(value T)) {
+	if n == nil {
+		return
+	}
+	n.left.postOrder(fn)
+	n.right.postOrder(fn)
+	fn(n.Value)
+}
+
+func (t *AVLTree[T]) TraverseBreadthFirst(fn func(value T)) {
+	if t.root == nil {
+		return
+	}
+	queue := newQueue(t.root)
+	for !queue.IsEmpty() {
+		n := queue.Dequeue()
+		fn(n.Value)
+		if n.left != nil {
+			queue.Enqueue(n.left)
+		}
+		if n.right != nil {
+			queue.Enqueue(n.right)
+		}
+	}
+}
+
+func (t *AVLTree[T]) String() string {
+	var sb strings.Builder
+	if t.root == nil {
+		return "AVL{size=0}\n"
+	}
+	fmt.Fprintf(&sb, "AVL{size=%d}\n", t.size)
+	t.root.draw(&sb, "", "", true)
+	return sb.String()
+}
+
+func (n *Node[T]) draw(sb *strings.Builder, prefix string, label string, isTail bool) {
+	if n == nil {
+		return
+	}
+
+	// current line with branch
+	sb.WriteString(prefix)
+	switch {
+	case prefix == "":
+		sb.WriteString("└── ")
+	case isTail:
+		sb.WriteString("└── ")
+	default:
+		sb.WriteString("├── ")
+	}
+
+	if prefix == "" {
+		fmt.Fprintf(sb, "%v\n", n.Value)
+	} else {
+		fmt.Fprintf(sb, "%v(%s%d)\n", n.Value, label, n.height)
+	}
+
+	type labeled struct {
+		node  *Node[T]
+		label string
+	}
+
+	children := make([]labeled, 0, 2)
+	if n.right != nil {
+		children = append(children, labeled{n.right, "R"})
+	}
+	if n.left != nil {
+		children = append(children, labeled{n.left, "L"})
+	}
+
+	for i, child := range children {
+		var nextPrefix string
+		switch {
+		case prefix == "":
+			nextPrefix = "    "
+		case isTail:
+			nextPrefix = prefix + "    "
+		default:
+			nextPrefix = prefix + "│   "
+		}
+		child.node.draw(sb, nextPrefix, child.label, i == len(children)-1)
+	}
 }

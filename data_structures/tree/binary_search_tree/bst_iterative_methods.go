@@ -69,13 +69,19 @@ func (t *BinarySearchTree[T]) DeleteI(values ...T) int {
 
 func (t *BinarySearchTree[T]) deleteI(value T) bool {
 	curr, ptr := t.root, &t.root
-	for curr != nil && curr.Value != value {
-		if value < curr.Value {
+outer:
+	for curr != nil {
+		switch {
+		case value < curr.Value:
 			ptr = &curr.left
 			curr = curr.left
-		} else {
+
+		case value > curr.Value:
 			ptr = &curr.right
 			curr = curr.right
+
+		default: // Equal
+			break outer
 		}
 	}
 
@@ -84,12 +90,7 @@ func (t *BinarySearchTree[T]) deleteI(value T) bool {
 	}
 
 	if curr.left != nil && curr.right != nil {
-		succ, succPtr := curr.right, &curr.right
-		for succ.left != nil {
-			succPtr = &succ.left
-			succ = succ.left
-		}
-
+		succ, succPtr := curr.right.minNodeAndPtrI()
 		curr.Value = succ.Value
 		curr, ptr = succ, succPtr
 	}
@@ -102,6 +103,18 @@ func (t *BinarySearchTree[T]) deleteI(value T) bool {
 
 	t.size--
 	return true
+}
+
+func (n *Node[T]) minNodeAndPtrI() (*Node[T], **Node[T]) {
+	if n == nil {
+		return nil, nil
+	}
+	curr, ptr := n, &n
+	for curr.left != nil {
+		ptr = &curr.left
+		curr = curr.left
+	}
+	return curr, ptr
 }
 
 func (t *BinarySearchTree[T]) MinI() (T, bool) {
