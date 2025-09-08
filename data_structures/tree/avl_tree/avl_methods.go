@@ -125,16 +125,16 @@ func (n *Node[T]) insert(value T) (*Node[T], bool) {
 		return &Node[T]{Value: value, height: 1}, true
 	}
 
-	var inserted bool
+	var ok bool
 	switch {
 	case value < n.Value:
-		n.left, inserted = n.left.insert(value)
+		n.left, ok = n.left.insert(value)
 	case value > n.Value:
-		n.right, inserted = n.right.insert(value)
+		n.right, ok = n.right.insert(value)
 	default: // Equal
 		return n, false
 	}
-	return n.rebalance(), inserted
+	return n.rebalance(), ok
 }
 
 func (t *AVLTree[T]) Delete(values ...T) int {
@@ -182,5 +182,5 @@ func (n *Node[T]) delete(value T) (*Node[T], bool) {
 		n.Value = succ.Value
 		n.right, _ = n.right.delete(succ.Value)
 	}
-	return n.rebalance(), ok
+	return n.rebalance(), true
 }
