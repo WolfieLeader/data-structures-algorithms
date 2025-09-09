@@ -20,6 +20,7 @@ type avlTree[T cmp.Ordered] interface {
 	TraversePreOrder(fn func(value T))
 	TraversePostOrder(fn func(value T))
 	TraverseBreadthFirst(fn func(value T))
+	IsBalanced() bool
 	ToSlice() []T
 	Equal(other *AVLTree[T]) bool
 	Copy() *AVLTree[T]

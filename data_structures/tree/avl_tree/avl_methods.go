@@ -2,6 +2,7 @@ package avl
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -397,6 +398,25 @@ func (t *AVLTree[T]) TraverseBreadthFirst(fn func(value T)) {
 			queue.Enqueue(n.right)
 		}
 	}
+}
+
+func (t *AVLTree[T]) IsBalanced() bool { _, ok := t.root.balanced(); return ok }
+func (n *Node[T]) balanced() (int, bool) {
+	if n == nil {
+		return 0, true
+	}
+	leftHeight, leftBalanced := n.left.balanced()
+	if !leftBalanced {
+		return 0, false
+	}
+	rightHeight, rightBalanced := n.right.balanced()
+	if !rightBalanced {
+		return 0, false
+	}
+
+	height := max(leftHeight, rightHeight) + 1
+	isBalanced := math.Abs(float64(leftHeight-rightHeight)) <= 1
+	return height, isBalanced
 }
 
 func (t *AVLTree[T]) String() string {

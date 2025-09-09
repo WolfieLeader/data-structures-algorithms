@@ -6,12 +6,17 @@ import (
 	"slices"
 	"strings"
 
+	avl "github.com/WolfieLeader/data-structures-algorithms/data_structures/tree/avl_tree"
 	bst "github.com/WolfieLeader/data-structures-algorithms/data_structures/tree/binary_search_tree"
 )
 
 func main() {
 	fmt.Println("Binary Search Tree Example")
 	bstExample()
+	fmt.Println()
+
+	fmt.Println("AVL Tree Example")
+	avlExample()
 	fmt.Println()
 }
 
@@ -78,6 +83,60 @@ func bstExample() {
 	c1.DeleteI(0)
 	c2.DeleteR(7)
 	fmt.Printf("- Are BSTs equal? (skew tree) == (skew tree + 0 - 0) == (skew tree + 7 - 7): %t(ok=%t)\n", t.EqualI(c1) && t.EqualI(c2), t.EqualI(c1) && t.EqualI(c2) == t.EqualR(c1) && t.EqualR(c2))
+}
+
+func avlExample() {
+	t := avl.New[int]()
+	t.Insert(10, 5, 15, 2, 5, 7, 13, 17, 10)
+	fmt.Printf("- Tree:\n%v", t)
+
+	root, _ := t.Root()
+	min, _ := t.Min()
+	max, _ := t.Max()
+	fmt.Printf("- Size: %d, Root: %v, Height: %d\n", t.Size(), root, t.Height())
+	fmt.Printf("- Min: %v, Max: %v, Is Balanced: %t\n", min, max, t.IsBalanced())
+	fmt.Printf("- Contains 17: %t\n", t.Contains(17))
+	fmt.Printf("- Contains 0: %t\n", t.Contains(0))
+
+	fmt.Printf("- DFS In Order: %s\n", traverse(t.TraverseInOrder))
+	fmt.Printf("- DFS Pre Order: %s\n", traverse(t.TraversePreOrder))
+	fmt.Printf("- DFS Post Order: %s\n", traverse(t.TraversePostOrder))
+	fmt.Printf("- BFS: %s\n", traverse(t.TraverseBreadthFirst))
+
+	for _, v := range []int{6, 10, 13, 100, -1} {
+		if pred, ok := t.Predecessor(v); ok {
+			fmt.Printf("- %d Predecessor: %v, ", v, pred)
+		} else {
+			fmt.Printf("- %d Predecessor: none, ", v)
+		}
+
+		if succ, ok := t.Successor(v); ok {
+			fmt.Printf("%d Successor: %v\n", v, succ)
+		} else {
+			fmt.Printf("%d Successor: none\n", v)
+		}
+	}
+
+	fmt.Printf("- Delete 17, 5, 10, 2: %v\n", t.Delete(17, 5, 10, 2) == 4)
+	fmt.Printf("- After deletes:\n%v", t)
+	fmt.Printf("- Size: %d, Height: %d, Is Balanced: %t\n", t.Size(), t.Height(), t.IsBalanced())
+	t.Clear()
+	fmt.Printf("- After clear:\n%v", t)
+	fmt.Printf("- Size: %d, IsEmpty: %t, Is Balanced: %t\n", t.Size(), t.IsEmpty(), t.IsBalanced())
+
+	t.Insert(1, 2, 3, 4, 5, 6)
+	fmt.Printf("- Test if skewed:\n%v", t)
+	fmt.Printf("- To Slice: %v\n", t.ToSlice())
+	fmt.Printf("- Size: %d, Height: %d, Is Balanced: %t\n", t.Size(), t.Height(), t.IsBalanced())
+	c := t.Copy()
+	c.Insert(10)
+	fmt.Printf("- Are AVLs equal? (tree) == (tree + 10): %t\n", t.Equal(c))
+	c.Delete(10)
+	fmt.Printf("- After delete 10:\n%v", c)
+	fmt.Printf("- Are AVLs equal? (tree) == (tree + 10 - 10): %t\n", t.Equal(c))
+	t.Insert(10)
+	t.Delete(10)
+	fmt.Printf("- Are AVLs equal? (tree + 10 - 10) == (tree + 10 - 10): %t\n", t.Equal(c))
 }
 
 func traverse[T cmp.Ordered](method func(fn func(value T))) string {
