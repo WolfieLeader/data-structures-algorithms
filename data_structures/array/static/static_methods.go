@@ -63,7 +63,7 @@ func (a *StaticArray[T]) BinarySearch(value T) int {
 	return searching.BinarySearch(a.data[:], value)
 }
 
-func (a *StaticArray[T]) Contains(value T) bool {
+func (a *StaticArray[T]) Contain(value T) bool {
 	return a.Search(value) != -1
 }
 

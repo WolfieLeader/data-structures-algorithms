@@ -27,12 +27,12 @@ func (m *HashMap[K, V]) Delete(key K) (V, bool) {
 	return zero, false
 }
 
-func (m *HashMap[K, V]) Contains(key K) bool {
+func (m *HashMap[K, V]) Contain(key K) bool {
 	_, ok := m.data[key]
 	return ok
 }
 
-func (m *HashMap[K, V]) ContainsValue(value V) bool {
+func (m *HashMap[K, V]) ContainValue(value V) bool {
 	for _, v := range m.data {
 		if v == value {
 			return true

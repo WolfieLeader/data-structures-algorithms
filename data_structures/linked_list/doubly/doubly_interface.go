@@ -34,7 +34,7 @@ type doublyLinkedList[T cmp.Ordered] interface {
 	GetNode(index int) *Node[T]
 	ToSlice() []T
 	Search(value T) int
-	Contains(value T) bool
+	Contain(value T) bool
 
 	Equal(other *DoublyLinkedList[T]) bool
 	Traverse(fn func(index int, value T))

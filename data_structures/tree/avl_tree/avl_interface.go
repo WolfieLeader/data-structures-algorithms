@@ -3,7 +3,7 @@ package avl
 import "cmp"
 
 type avlTree[T cmp.Ordered] interface {
-	Contains(value T) bool
+	Contain(value T) bool
 	Insert(values ...T) int
 	Delete(values ...T) int
 	Size() int

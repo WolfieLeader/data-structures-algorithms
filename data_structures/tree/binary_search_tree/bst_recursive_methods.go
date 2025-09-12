@@ -6,17 +6,17 @@ import (
 	"strings"
 )
 
-func (t *BinarySearchTree[T]) ContainsR(value T) bool { return t.root.contains(value) }
-func (n *Node[T]) contains(value T) bool {
+func (t *BinarySearchTree[T]) ContainR(value T) bool { return t.root.Contain(value) }
+func (n *Node[T]) Contain(value T) bool {
 	if n == nil {
 		return false
 	}
 
 	switch {
 	case value < n.Value:
-		return n.left.contains(value)
+		return n.left.Contain(value)
 	case value > n.Value:
-		return n.right.contains(value)
+		return n.right.Contain(value)
 	default: // Equal
 		return true
 	}

@@ -93,7 +93,7 @@ func (a *MatrixArray[T]) Search(value T) (int, int) {
 	return -1, -1
 }
 
-func (a *MatrixArray[T]) Contains(value T) bool {
+func (a *MatrixArray[T]) Contain(value T) bool {
 	row, col := a.Search(value)
 	return row != -1 && col != -1
 }
