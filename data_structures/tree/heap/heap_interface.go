@@ -11,6 +11,7 @@ type heap[T any] interface {
 	Heapify(values ...T)
 	ToSlice() []T
 	Copy() *Heap[T]
+	TraverseBreadthFirst(fn func(value T))
 	Equal(other *Heap[T]) bool
 	String() string
 }
