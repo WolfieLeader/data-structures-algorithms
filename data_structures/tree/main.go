@@ -33,8 +33,8 @@ func bstExample() {
 	maxR, _ := t.MaxR()
 	fmt.Printf("- Size: %d, Root: %v, Height: %d(ok=%t)\n", t.Size(), root, t.HeightI(), t.HeightR() == t.HeightI())
 	fmt.Printf("- Min: %v(ok=%t), Max: %v(ok=%t), Is Balanced: %t\n", minI, minI == minR, maxI, maxI == maxR, t.IsBalanced())
-	fmt.Printf("- Contains 17: %t(ok=%t)\n", t.ContainI(17), t.ContainI(17) == t.ContainR(17))
-	fmt.Printf("- Contains 0: %t(ok=%t)\n", t.ContainI(0), t.ContainI(0) == t.ContainR(0))
+	fmt.Printf("- Contains 17: %t(ok=%t)\n", t.ContainsI(17), t.ContainsI(17) == t.ContainsR(17))
+	fmt.Printf("- Contains 0: %t(ok=%t)\n", t.ContainsI(0), t.ContainsI(0) == t.ContainsR(0))
 
 	dfsInOrderI, dfsInOrderR := traverse(t.TraverseInOrderI), traverse(t.TraverseInOrderR)
 	dfsPreOrderI, dfsPreOrderR := traverse(t.TraversePreOrderI), traverse(t.TraversePreOrderR)
