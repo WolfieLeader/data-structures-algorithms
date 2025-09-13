@@ -19,7 +19,7 @@ type dynamicArray[T cmp.Ordered] interface {
 	IsSorted() bool
 	Search(value T) int
 	BinarySearch(value T) int
-	Contain(value T) bool
+	Contains(value T) bool
 	Traverse(fn func(index int, value T))
 	Swap(index1, index2 int) bool
 

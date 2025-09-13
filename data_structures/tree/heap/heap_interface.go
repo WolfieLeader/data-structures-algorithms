@@ -7,7 +7,7 @@ type heap[T any] interface {
 	Peek() (T, bool)
 	Pop() (T, bool)
 	Push(values ...T)
-	Contain(value T) bool
+	Contains(value T) bool
 	Heapify(values ...T)
 	ToSlice() []T
 	Copy() *Heap[T]

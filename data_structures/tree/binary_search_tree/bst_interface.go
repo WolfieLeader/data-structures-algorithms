@@ -3,7 +3,7 @@ package bst
 import "cmp"
 
 type iterativeBinarySearchTree[T cmp.Ordered] interface {
-	ContainI(value T) bool
+	ContainsI(value T) bool
 	InsertI(values ...T) int
 	DeleteI(values ...T) int
 
@@ -23,7 +23,7 @@ type iterativeBinarySearchTree[T cmp.Ordered] interface {
 }
 
 type recursiveBinarySearchTree[T cmp.Ordered] interface {
-	ContainR(value T) bool
+	ContainsR(value T) bool
 	InsertR(values ...T) int
 	DeleteR(values ...T) int
 

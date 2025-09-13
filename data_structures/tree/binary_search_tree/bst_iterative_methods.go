@@ -1,6 +1,6 @@
 package bst
 
-func (t *BinarySearchTree[T]) ContainI(value T) bool {
+func (t *BinarySearchTree[T]) ContainsI(value T) bool {
 	curr := t.root
 	for curr != nil {
 		switch {

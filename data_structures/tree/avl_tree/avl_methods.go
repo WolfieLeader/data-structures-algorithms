@@ -17,7 +17,7 @@ func (t *AVLTree[T]) Root() (T, bool) {
 	return t.root.Value, true
 }
 
-func (t *AVLTree[T]) Contain(value T) bool {
+func (t *AVLTree[T]) Contains(value T) bool {
 	curr := t.root
 	for curr != nil {
 		switch {

@@ -25,7 +25,7 @@ func (s *HashSet[T]) Delete(value T) bool {
 	return false
 }
 
-func (s *HashSet[T]) Contain(value T) bool {
+func (s *HashSet[T]) Contains(value T) bool {
 	_, ok := s.data[value]
 	return ok
 }

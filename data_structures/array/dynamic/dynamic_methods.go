@@ -95,7 +95,7 @@ func (a *DynamicArray[T]) BinarySearch(value T) int {
 	return searching.BinarySearch(a.data, value)
 }
 
-func (a *DynamicArray[T]) Contain(value T) bool {
+func (a *DynamicArray[T]) Contains(value T) bool {
 	return a.Search(value) != -1
 }
 

@@ -467,7 +467,7 @@ func (l *SinglyLinkedList[T]) Search(value T) int {
 	return -1
 }
 
-func (l *SinglyLinkedList[T]) Contain(value T) bool {
+func (l *SinglyLinkedList[T]) Contains(value T) bool {
 	return l.Search(value) != -1
 }
 

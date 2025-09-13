@@ -4,7 +4,7 @@ type hashMap[K comparable, V comparable] interface {
 	Set(key K, value V)
 	Get(key K) (V, bool)
 	Delete(key K) (V, bool)
-	Contain(key K) bool
+	Contains(key K) bool
 	ContainValue(value V) bool
 	Size() int
 	IsEmpty() bool

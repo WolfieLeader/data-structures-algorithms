@@ -33,8 +33,8 @@ func bstExample() {
 	maxR, _ := t.MaxR()
 	fmt.Printf("- Size: %d, Root: %v, Height: %d(ok=%t)\n", t.Size(), root, t.HeightI(), t.HeightR() == t.HeightI())
 	fmt.Printf("- Min: %v(ok=%t), Max: %v(ok=%t), Is Balanced: %t\n", minI, minI == minR, maxI, maxI == maxR, t.IsBalanced())
-	fmt.Printf("- Contain 17: %t(ok=%t)\n", t.ContainI(17), t.ContainI(17) == t.ContainR(17))
-	fmt.Printf("- Contain 0: %t(ok=%t)\n", t.ContainI(0), t.ContainI(0) == t.ContainR(0))
+	fmt.Printf("- Contains 17: %t(ok=%t)\n", t.ContainI(17), t.ContainI(17) == t.ContainR(17))
+	fmt.Printf("- Contains 0: %t(ok=%t)\n", t.ContainI(0), t.ContainI(0) == t.ContainR(0))
 
 	dfsInOrderI, dfsInOrderR := traverse(t.TraverseInOrderI), traverse(t.TraverseInOrderR)
 	dfsPreOrderI, dfsPreOrderR := traverse(t.TraversePreOrderI), traverse(t.TraversePreOrderR)
@@ -95,8 +95,8 @@ func avlExample() {
 	max, _ := t.Max()
 	fmt.Printf("- Size: %d, Root: %v, Height: %d\n", t.Size(), root, t.Height())
 	fmt.Printf("- Min: %v, Max: %v, Is Balanced: %t\n", min, max, t.IsBalanced())
-	fmt.Printf("- Contain 17: %t\n", t.Contain(17))
-	fmt.Printf("- Contain 0: %t\n", t.Contain(0))
+	fmt.Printf("- Contains 17: %t\n", t.Contains(17))
+	fmt.Printf("- Contains 0: %t\n", t.Contains(0))
 
 	fmt.Printf("- DFS In Order: %s\n", traverse(t.TraverseInOrder))
 	fmt.Printf("- DFS Pre Order: %s\n", traverse(t.TraversePreOrder))

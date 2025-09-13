@@ -426,7 +426,7 @@ func (l DoublyLinkedList[T]) Search(value T) int {
 	return -1
 }
 
-func (l DoublyLinkedList[T]) Contain(value T) bool {
+func (l DoublyLinkedList[T]) Contains(value T) bool {
 	return l.Search(value) != -1
 }
 

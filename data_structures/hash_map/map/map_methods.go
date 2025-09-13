@@ -27,7 +27,7 @@ func (m *HashMap[K, V]) Delete(key K) (V, bool) {
 	return zero, false
 }
 
-func (m *HashMap[K, V]) Contain(key K) bool {
+func (m *HashMap[K, V]) Contains(key K) bool {
 	_, ok := m.data[key]
 	return ok
 }

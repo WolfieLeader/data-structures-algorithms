@@ -16,7 +16,7 @@ type matrixArray[T cmp.Ordered] interface {
 	Dimensions() (int, int)
 	IsEmpty() bool
 	Search(value T) (int, int)
-	Contain(value T) bool
+	Contains(value T) bool
 	Traverse(fn func(row int, col int, value T))
 	Swap(row1, col1, row2, col2 int) bool
 	SwapRow(row1, row2 int) bool

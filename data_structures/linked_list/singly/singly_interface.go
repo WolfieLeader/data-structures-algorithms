@@ -34,7 +34,7 @@ type singlyLinkedList[T cmp.Ordered] interface {
 	GetNode(index int) *Node[T]
 	ToSlice() []T
 	Search(value T) int
-	Contain(value T) bool
+	Contains(value T) bool
 
 	Equal(other *SinglyLinkedList[T]) bool
 	Traverse(fn func(index int, value T))
