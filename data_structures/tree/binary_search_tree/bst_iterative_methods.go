@@ -90,7 +90,12 @@ outer:
 	}
 
 	if curr.left != nil && curr.right != nil {
-		succ, succPtr := curr.right.minNodeAndPtrI()
+		succ, succPtr := curr.right, &curr.right
+		for succ.left != nil {
+			succPtr = &succ.left
+			succ = succ.left
+		}
+
 		curr.Value = succ.Value
 		curr, ptr = succ, succPtr
 	}
@@ -103,18 +108,6 @@ outer:
 
 	t.size--
 	return true
-}
-
-func (n *Node[T]) minNodeAndPtrI() (*Node[T], **Node[T]) {
-	if n == nil {
-		return nil, nil
-	}
-	curr, ptr := n, &n
-	for curr.left != nil {
-		ptr = &curr.left
-		curr = curr.left
-	}
-	return curr, ptr
 }
 
 func (t *BinarySearchTree[T]) MinI() (T, bool) {
@@ -373,23 +366,19 @@ func (t *BinarySearchTree[T]) CopyI() *BinarySearchTree[T] {
 	if t.root == nil {
 		return New[T]()
 	}
+	newTree := &BinarySearchTree[T]{root: &Node[T]{Value: t.root.Value}, size: t.size}
 
 	type pair struct{ src, dst *Node[T] }
-
-	newTree := New[T]()
-	newTree.size = t.size
-	newTree.root = &Node[T]{Value: t.root.Value}
-
 	stack := newStack(pair{src: t.root, dst: newTree.root})
 	for !stack.IsEmpty() {
 		n := stack.Pop()
-		if r := n.src.right; r != nil {
-			n.dst.right = &Node[T]{Value: r.Value}
-			stack.Push(pair{src: r, dst: n.dst.right})
+		if right := n.src.right; right != nil {
+			n.dst.right = &Node[T]{Value: right.Value}
+			stack.Push(pair{src: right, dst: n.dst.right})
 		}
-		if l := n.src.left; l != nil {
-			n.dst.left = &Node[T]{Value: l.Value}
-			stack.Push(pair{src: l, dst: n.dst.left})
+		if left := n.src.left; left != nil {
+			n.dst.left = &Node[T]{Value: left.Value}
+			stack.Push(pair{src: left, dst: n.dst.left})
 		}
 	}
 	return newTree

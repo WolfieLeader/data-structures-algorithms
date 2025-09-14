@@ -238,10 +238,7 @@ func (t *AVLTree[T]) Copy() *AVLTree[T] {
 	if t.root == nil {
 		return New[T]()
 	}
-	newTree := New[T]()
-	newTree.root = t.root.copy()
-	newTree.size = t.size
-	return newTree
+	return &AVLTree[T]{root: t.root.copy(), size: t.size}
 }
 
 func (n *Node[T]) copy() *Node[T] {
