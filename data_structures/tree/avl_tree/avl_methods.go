@@ -421,10 +421,10 @@ func (n *Node[T]) balanced() (int, bool) {
 
 func (t *AVLTree[T]) String() string {
 	var sb strings.Builder
-	if t.root == nil {
-		return "AVL{size=0}\n"
-	}
 	fmt.Fprintf(&sb, "AVL{size=%d}\n", t.size)
+	if t.root == nil {
+		return sb.String()
+	}
 	t.root.draw(&sb, "", "", true)
 	return sb.String()
 }
@@ -434,7 +434,6 @@ func (n *Node[T]) draw(sb *strings.Builder, prefix string, label string, isTail 
 		return
 	}
 
-	// current line with branch
 	sb.WriteString(prefix)
 	switch {
 	case prefix == "":

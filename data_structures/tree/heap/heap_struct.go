@@ -14,9 +14,6 @@ func New[T cmp.Ordered](isMinHeap bool) *Heap[T] {
 	return &Heap[T]{aboveFn: func(a, b T) bool { return a > b }}
 }
 
-func NewWithFunc[T any](aboveFn func(a, b T) bool, isMinHeap bool) *Heap[T] {
-	if isMinHeap {
-		return &Heap[T]{aboveFn: aboveFn}
-	}
-	return &Heap[T]{aboveFn: func(a, b T) bool { return aboveFn(b, a) }}
+func NewByFunc[T any](aboveFn func(a, b T) bool) *Heap[T] {
+	return &Heap[T]{aboveFn: aboveFn}
 }

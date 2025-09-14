@@ -8,6 +8,7 @@ import (
 
 	avl "github.com/WolfieLeader/data-structures-algorithms/data_structures/tree/avl_tree"
 	bst "github.com/WolfieLeader/data-structures-algorithms/data_structures/tree/binary_search_tree"
+	heap "github.com/WolfieLeader/data-structures-algorithms/data_structures/tree/heap"
 )
 
 func main() {
@@ -17,6 +18,10 @@ func main() {
 
 	fmt.Println("AVL Tree Example")
 	avlExample()
+	fmt.Println()
+
+	fmt.Println("Heap Example")
+	heapExample()
 	fmt.Println()
 }
 
@@ -137,6 +142,61 @@ func avlExample() {
 	t.Insert(10)
 	t.Delete(10)
 	fmt.Printf("- Are AVLs equal? (tree + 10 - 10) == (tree + 10 - 10): %t\n", t.Equal(c))
+}
+
+func heapExample() {
+	minH := heap.New[int](true)
+	minH.Push(5, 3, 8, 10, 4, 50, 6, 8, 3, 4, 2, 0, 1, -3, 7, 9)
+	fmt.Printf("- Min-Heap:\n%v", minH)
+
+	peek, _ := minH.Peek()
+	fmt.Printf("- Size: %d, IsEmpty: %t, Peek: %v\n", minH.Size(), minH.IsEmpty(), peek)
+	fmt.Printf("- BFS: %s\n", traverse(minH.TraverseBreadthFirst))
+	fmt.Printf("- To Slice: %v\n", minH.ToSlice())
+
+	popped := make([]int, 0, 5)
+	for range 5 {
+		if v, ok := minH.Pop(); ok {
+			popped = append(popped, v)
+		}
+	}
+	fmt.Printf("- Pop 5: %v\n", popped)
+	fmt.Printf("- After pops:\n%v", minH)
+
+	for _, q := range []int{-3, 42, 5} {
+		fmt.Printf("- Contains %d: %t\n", q, minH.Contains(q))
+	}
+
+	input := []int{7, 1, 9, 0, 5, 2, 8, 4, 6, 3, 11, 12, 21, 19}
+	maxH := heap.New[int](false)
+	maxH.Heapify(input...)
+	fmt.Printf("- Heapify %v:\n%v", input, maxH)
+
+	c := maxH.Copy()
+	fmt.Printf("- Equal (maxH, copy): %t\n", maxH.Equal(c))
+	_, _ = c.Pop()
+	fmt.Printf("- Equal after one pop: %t\n", maxH.Equal(c))
+
+	type person struct {
+		name string
+		age  int
+	}
+	byAgeThenName := func(a, b person) bool {
+		if a.age != b.age {
+			return a.age > b.age
+		}
+		return a.name < b.name
+	}
+	people := heap.NewByFunc(byAgeThenName)
+	people.Push(person{"Alice", 30}, person{"Bob", 25}, person{"Charlie", 30}, person{"Dave", 20})
+	fmt.Printf("- Max-Heap by age, then name:\n%v", people)
+	fmt.Printf("- Size: %d, IsEmpty: %t\n", people.Size(), people.IsEmpty())
+	fmt.Printf("- Pop order: ")
+	for !people.IsEmpty() {
+		p, _ := people.Pop()
+		fmt.Printf("%s(%d) ", p.name, p.age)
+	}
+	fmt.Println()
 }
 
 func traverse[T cmp.Ordered](method func(fn func(value T))) string {

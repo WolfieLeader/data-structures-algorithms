@@ -158,7 +158,8 @@ func (h *Heap[T]) Equal(other *Heap[T]) bool {
 		return false
 	}
 	for i := 0; i < len(h.data); i++ {
-		if !h.aboveFn(h.data[i], other.data[i]) && !h.aboveFn(other.data[i], h.data[i]) {
+		a, b := h.data[i], other.data[i]
+		if h.aboveFn(a, b) || h.aboveFn(b, a) {
 			return false
 		}
 	}
@@ -166,57 +167,44 @@ func (h *Heap[T]) Equal(other *Heap[T]) bool {
 }
 
 func (h *Heap[T]) String() string {
-	var sb strings.Builder
-	fmt.Fprintf(&sb, "Heap{len=%d}\n", len(h.data))
+	var b strings.Builder
+	fmt.Fprintf(&b, "Heap{size=%d}\n", len(h.data))
 	if len(h.data) == 0 {
-		return sb.String()
+		return b.String()
 	}
-	h.drawIndex(&sb, "", 0, true, 0)
-	return sb.String()
+	b.WriteString("└── ")
+	fmt.Fprintf(&b, "%v[0]\n", h.data[0])
+	h.writeChildren(&b, 0, "    ")
+	return b.String()
 }
 
-func (h *Heap[T]) drawIndex(sb *strings.Builder, prefix string, level int, isTail bool, i int) {
-	if i < 0 || i >= len(h.data) {
-		return
-	}
-
-	sb.WriteString(prefix)
-	switch {
-	case prefix == "":
-		sb.WriteString("└── ")
-	case isTail:
-		sb.WriteString("└── ")
-	default:
-		sb.WriteString("├── ")
-	}
-
-	if prefix == "" {
-		fmt.Fprintf(sb, "%v[%d]\n", h.data[i], i)
-	} else {
-		fmt.Fprintf(sb, "%v[%d](%d)\n", h.data[i], i, level)
-	}
-
-	right := 2*i + 2
-	left := 2*i + 1
-
+func (h *Heap[T]) writeChildren(b *strings.Builder, index int, prefix string) {
 	children := make([]int, 0, 2)
-	if right < len(h.data) {
-		children = append(children, right)
-	}
-	if left < len(h.data) {
+
+	if left := h.leftChildIndex(index); left != -1 {
 		children = append(children, left)
 	}
+	if right := h.rightChildIndex(index); right != -1 {
+		children = append(children, right)
+	}
 
-	for k, c := range children {
-		var nextPrefix string
-		switch {
-		case prefix == "":
-			nextPrefix = "    "
-		case isTail:
-			nextPrefix = prefix + "    "
-		default:
-			nextPrefix = prefix + "│   "
+	for i, child := range children {
+		last := i == len(children)-1
+
+		b.WriteString(prefix)
+		if last {
+			b.WriteString("└── ")
+		} else {
+			b.WriteString("├── ")
 		}
-		h.drawIndex(sb, nextPrefix, level+1, k == len(children)-1, c)
+		fmt.Fprintf(b, "%v[%d]\n", h.data[child], child)
+
+		nextPrefix := prefix
+		if last {
+			nextPrefix += "    "
+		} else {
+			nextPrefix += "│   "
+		}
+		h.writeChildren(b, child, nextPrefix)
 	}
 }

@@ -325,10 +325,10 @@ func (n *Node[T]) copy() *Node[T] {
 
 func (t *BinarySearchTree[T]) String() string {
 	var sb strings.Builder
-	if t.root == nil {
-		return "BST{size=0}\n"
-	}
 	fmt.Fprintf(&sb, "BST{size=%d}\n", t.size)
+	if t.root == nil {
+		return sb.String()
+	}
 	t.root.draw(&sb, "", 0, "", true)
 	return sb.String()
 }
@@ -338,7 +338,6 @@ func (n *Node[T]) draw(sb *strings.Builder, prefix string, level int, label stri
 		return
 	}
 
-	// current line with branch
 	sb.WriteString(prefix)
 	switch {
 	case prefix == "":
