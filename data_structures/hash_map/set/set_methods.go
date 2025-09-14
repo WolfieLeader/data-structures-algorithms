@@ -12,17 +12,20 @@ func (s *HashSet[T]) IsEmpty() bool { return len(s.data) == 0 }
 func (s *HashSet[T]) Clear()        { s.data = make(map[T]struct{}) }
 
 func (s *HashSet[T]) Add(values ...T) {
-	for _, value := range values {
-		s.data[value] = struct{}{}
+	for _, v := range values {
+		s.data[v] = struct{}{}
 	}
 }
 
-func (s *HashSet[T]) Delete(value T) bool {
-	if _, ok := s.data[value]; ok {
-		delete(s.data, value)
-		return true
+func (s *HashSet[T]) Delete(values ...T) int {
+	deletes := 0
+	for _, v := range values {
+		if _, ok := s.data[v]; ok {
+			delete(s.data, v)
+			deletes++
+		}
 	}
-	return false
+	return deletes
 }
 
 func (s *HashSet[T]) Contains(value T) bool {

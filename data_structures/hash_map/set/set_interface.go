@@ -2,7 +2,7 @@ package hashset
 
 type hashSet[T comparable] interface {
 	Add(values ...T)
-	Delete(value T) bool
+	Delete(values ...T) int
 	Contains(value T) bool
 	Size() int
 	IsEmpty() bool

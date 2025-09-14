@@ -15,14 +15,10 @@ func (t *BinarySearchTree[T]) ContainsI(value T) bool {
 	return false
 }
 
-func (t *BinarySearchTree[T]) InsertI(values ...T) int {
-	inserts := 0
+func (t *BinarySearchTree[T]) InsertI(values ...T) {
 	for _, v := range values {
-		if t.insertI(v) {
-			inserts++
-		}
+		t.insertI(v)
 	}
-	return inserts
 }
 
 func (t *BinarySearchTree[T]) insertI(value T) bool {

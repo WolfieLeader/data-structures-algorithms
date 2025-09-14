@@ -22,16 +22,13 @@ func (n *Node[T]) Contains(value T) bool {
 	}
 }
 
-func (t *BinarySearchTree[T]) InsertR(values ...T) int {
-	inserts := 0
+func (t *BinarySearchTree[T]) InsertR(values ...T) {
 	for _, v := range values {
 		var ok bool
 		if t.root, ok = t.root.insert(v); ok {
 			t.size++
-			inserts++
 		}
 	}
-	return inserts
 }
 
 func (n *Node[T]) insert(value T) (*Node[T], bool) {
