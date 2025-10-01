@@ -32,6 +32,6 @@ var cases = []Case{
 
 func TestTwoSum(t *testing.T) {
 	for _, c := range cases {
-		assert.Equal(t, twoSum(c.nums, c.target), c.expected)
+		assert.Equal(t, twoSum(c.nums, c.target), c.expected, "twoSum(%v, %d)", c.nums, c.target)
 	}
 }
