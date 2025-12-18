@@ -1,7 +1,5 @@
 package main
 
-import "strings"
-
 func isPalindrome(s string) bool {
 	left, right := 0, len(s)-1
 
@@ -14,7 +12,7 @@ func isPalindrome(s string) bool {
 		}
 
 		// compare lowercase versions
-		if strings.ToLower(string(s[left])) != strings.ToLower(string(s[left])) {
+		if toLower(s[left]) != toLower(s[right]) {
 			return false
 		}
 
@@ -28,4 +26,11 @@ func isAlphanumeric(b byte) bool {
 	return (b >= '0' && b <= '9') ||
 		(b >= 'a' && b <= 'z') ||
 		(b >= 'A' && b <= 'Z')
+}
+
+func toLower(b byte) byte {
+	if b >= 'A' && b <= 'Z' {
+		return b + ('a' - 'A')
+	}
+	return b
 }
