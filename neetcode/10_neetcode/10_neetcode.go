@@ -11,7 +11,6 @@ func isPalindrome(s string) bool {
 			right--
 		}
 
-		// compare lowercase versions
 		if toLower(s[left]) != toLower(s[right]) {
 			return false
 		}
