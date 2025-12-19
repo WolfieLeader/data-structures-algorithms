@@ -1,6 +1,6 @@
 package main
 
-func isPalindromeNC6(s string) bool {
+func isPalindrome125(s string) bool {
 	left, right := 0, len(s)-1
 
 	for left < right {
