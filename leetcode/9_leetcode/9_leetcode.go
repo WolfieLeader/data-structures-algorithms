@@ -1,6 +1,5 @@
 package main
 
-// O(n) time | O(1) space
 func isPalindrome(x int) bool {
 	if x == 0 {
 		return true

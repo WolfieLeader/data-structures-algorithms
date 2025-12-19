@@ -1,6 +1,5 @@
 package main
 
-// O(n) time | O(n) space
 func twoSum(nums []int, target int) []int {
 	numMap := make(map[int]int) // value -> index
 
