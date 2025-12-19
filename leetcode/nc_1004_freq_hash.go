@@ -1,8 +1,7 @@
 package main
 
-type Freq [26]byte
-
 func groupAnagrams(strs []string) [][]string {
+	type Freq [26]int16
 	groups := make(map[Freq][]string, len(strs))
 
 	for _, str := range strs {
