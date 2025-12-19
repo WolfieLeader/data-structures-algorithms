@@ -6,8 +6,8 @@ func groupAnagrams(strs []string) [][]string {
 
 	for _, str := range strs {
 		var freq Freq
-		for index := 0; index < len(str); index++ {
-			freq[str[index]-'a']++
+		for i := 0; i < len(str); i++ {
+			freq[str[i]-'a']++
 		}
 		groups[freq] = append(groups[freq], str)
 	}
