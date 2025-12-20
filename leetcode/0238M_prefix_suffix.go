@@ -11,10 +11,10 @@ func productExceptSelf(nums []int) []int {
 		out[i] = out[i-1] * nums[i-1]
 	}
 	// Suffix products
-	rightProduct := 1 // like a carry
+	prod := 1 // like a carry
 	for i := len(nums) - 1; i >= 0; i-- {
-		out[i] *= rightProduct
-		rightProduct *= nums[i]
+		out[i] *= prod
+		prod *= nums[i]
 	}
 	return out
 }

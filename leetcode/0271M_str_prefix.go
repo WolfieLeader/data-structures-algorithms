@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-type SolutionNC1006 struct{}
+type Solution struct{}
 
-func (s *SolutionNC1006) Encode(strs []string) string {
+func (s *Solution) Encode(strs []string) string {
 	var sb strings.Builder
 	for _, str := range strs {
 		sb.WriteString(strconv.Itoa(len(str)))
@@ -17,7 +17,7 @@ func (s *SolutionNC1006) Encode(strs []string) string {
 	return sb.String()
 }
 
-func (s *SolutionNC1006) Decode(encoded string) []string {
+func (s *Solution) Decode(encoded string) []string {
 	out := make([]string, 0)
 	i := 0
 
