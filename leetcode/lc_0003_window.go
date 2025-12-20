@@ -10,14 +10,14 @@ func lengthOfLongestSubstring(s string) int {
 	seenAt := make(map[rune]int)
 	longestLen := 0
 
-	left := 0
-	for right, ch := range []rune(s) {
-		if i, found := seenAt[ch]; found && i >= left {
-			left = i + 1
+	start := 0
+	for end, ch := range []rune(s) {
+		if index, found := seenAt[ch]; found && index >= start {
+			start = index + 1
 		}
-		seenAt[ch] = right
+		seenAt[ch] = end
 
-		if winLen := (right - left + 1); winLen > longestLen {
+		if winLen := (end - start + 1); winLen > longestLen {
 			longestLen = winLen
 		}
 	}

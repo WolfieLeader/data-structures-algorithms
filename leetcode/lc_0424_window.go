@@ -9,18 +9,18 @@ func characterReplacement(s string, k int) int {
 	var freq [26]int
 	best, maxFreq := 0, 0
 
-	left := 0
-	for right := 0; right < len(s); right++ {
-		freq[s[right]-'A']++
-		maxFreq = max(maxFreq, freq[s[right]-'A'])
+	start := 0
+	for end := 0; end < len(s); end++ {
+		freq[s[end]-'A']++
+		maxFreq = max(maxFreq, freq[s[end]-'A'])
 
 		// if replacements needed > k shrink window
-		for (right-left+1)-maxFreq > k {
-			freq[s[left]-'A']--
-			left++
+		for (end-start+1)-maxFreq > k {
+			freq[s[start]-'A']--
+			start++
 		}
 
-		if winLen := (right - left + 1); winLen > best {
+		if winLen := (end - start + 1); winLen > best {
 			best = winLen
 		}
 	}
