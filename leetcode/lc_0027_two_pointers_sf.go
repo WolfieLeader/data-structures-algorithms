@@ -1,5 +1,7 @@
 package main
 
+// TODO:
+
 func removeElement(nums []int, val int) int {
 	slow := 0
 	for fast := 0; fast < len(nums); fast++ {

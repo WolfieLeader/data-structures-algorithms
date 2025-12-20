@@ -1,5 +1,7 @@
 package main
 
+// TODO:
+
 func maxProfit(prices []int) int {
 	minPrice := prices[0]
 	maxProfit := 0

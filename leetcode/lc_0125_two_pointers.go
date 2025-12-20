@@ -1,5 +1,7 @@
 package main
 
+// TODO:
+
 func isPalindrome125(s string) bool {
 	left, right := 0, len(s)-1
 

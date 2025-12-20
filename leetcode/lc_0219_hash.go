@@ -1,5 +1,7 @@
 package main
 
+// TODO:
+
 // nums[i] == nums[j] && abs(i - j) <= k
 
 // I: nums = [1,2,3,1],     k = 3  =>  O: true

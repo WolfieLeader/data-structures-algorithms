@@ -1,5 +1,7 @@
 package main
 
+// TODO:
+
 func removeDuplicates(nums []int) int {
 	if len(nums) == 0 {
 		return 0

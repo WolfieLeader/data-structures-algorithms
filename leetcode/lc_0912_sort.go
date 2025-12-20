@@ -1,39 +1,6 @@
 package main
 
-func optimizedSortArray(nums []int) []int {
-	if len(nums) <= 1 {
-		return nums
-	}
-
-	min, max := nums[0], nums[0]
-	for _, num := range nums {
-		if num < min {
-			min = num
-		}
-		if num > max {
-			max = num
-		}
-	}
-	if min == max {
-		return nums
-	}
-
-	count := make([]int, max-min+1)
-	for _, num := range nums {
-		count[num-min]++
-	}
-
-	i := 0
-	for j := 0; j < len(count); j++ {
-		for count[j] > 0 {
-			nums[i] = j + min
-			count[j]--
-			i++
-		}
-	}
-
-	return nums
-}
+// TODO:
 
 func sortArray(nums []int) []int {
 	if len(nums) > 1 {
@@ -70,4 +37,39 @@ func partition3Way(nums []int, lo, hi int) (int, int) {
 	}
 
 	return lt, gt
+}
+
+func optimizedSortArray(nums []int) []int {
+	if len(nums) <= 1 {
+		return nums
+	}
+
+	min, max := nums[0], nums[0]
+	for _, num := range nums {
+		if num < min {
+			min = num
+		}
+		if num > max {
+			max = num
+		}
+	}
+	if min == max {
+		return nums
+	}
+
+	count := make([]int, max-min+1)
+	for _, num := range nums {
+		count[num-min]++
+	}
+
+	i := 0
+	for j := 0; j < len(count); j++ {
+		for count[j] > 0 {
+			nums[i] = j + min
+			count[j]--
+			i++
+		}
+	}
+
+	return nums
 }
