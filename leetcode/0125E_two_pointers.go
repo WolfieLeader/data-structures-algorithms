@@ -8,20 +8,20 @@ func isPalindrome(s string) bool {
 	for left < right {
 		// NOTE: LOOP until left char is alphanumeric (stay in bounds!)
 		for left < right && !isAlphanumeric(s[left]) {
-			left++
+			left++ // Forward
 		}
 
 		// NOTE: LOOP until right char is alphanumeric (stay in bounds!)
 		for left < right && !isAlphanumeric(s[right]) {
-			right--
+			right-- // Backward
 		}
 
 		if toLower(s[left]) != toLower(s[right]) {
 			return false
 		}
 
-		left++
-		right--
+		left++  // Forward
+		right-- // Backward
 	}
 	return true
 }
