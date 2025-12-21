@@ -2,7 +2,7 @@ package main
 
 // HACK: Core Pattern for Frequency
 
-// Core Pattern of Frequency Balance
+// Frequency Balance
 //
 // Pattern
 // Count character frequencies using a fixed size array.

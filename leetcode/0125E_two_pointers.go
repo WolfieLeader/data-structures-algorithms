@@ -2,7 +2,7 @@ package main
 
 // HACK: Basic Pattern of Two Pointer from Both Ends
 
-// Core Pattern of Two Pointers with filtering
+// Two Pointers with filtering
 //
 // Pattern
 // Use two pointers starting from both ends of the string.

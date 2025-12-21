@@ -2,7 +2,7 @@ package main
 
 // HACK: Core Pattern of Slow Fast Pointers in A Linked List
 
-// Core Pattern of Slow and Fast Pointers
+// Slow and Fast Pointers in Linked List
 //
 // Pattern
 // Use two pointers that move at different speeds.

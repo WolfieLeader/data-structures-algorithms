@@ -2,7 +2,7 @@ package main
 
 // HACK: Core Pattern of Prefix Sums Array
 
-// Core Pattern of Prefix Sums Array
+// Prefix Sums Array
 //
 // Pattern
 // Precompute cumulative sums so range queries can be answered in O(1).
