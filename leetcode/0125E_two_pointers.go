@@ -2,13 +2,16 @@ package main
 
 // TODO:
 
-func isPalindrome125(s string) bool {
+func isPalindrome(s string) bool {
 	left, right := 0, len(s)-1
 
 	for left < right {
+		// NOTE: LOOP until left char is alphanumeric (stay in bounds!)
 		for left < right && !isAlphanumeric(s[left]) {
 			left++
 		}
+
+		// NOTE: LOOP until right char is alphanumeric (stay in bounds!)
 		for left < right && !isAlphanumeric(s[right]) {
 			right--
 		}
@@ -24,9 +27,7 @@ func isPalindrome125(s string) bool {
 }
 
 func isAlphanumeric(b byte) bool {
-	return (b >= '0' && b <= '9') ||
-		(b >= 'a' && b <= 'z') ||
-		(b >= 'A' && b <= 'Z')
+	return (b >= '0' && b <= '9') || (b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z')
 }
 
 func toLower(b byte) byte {

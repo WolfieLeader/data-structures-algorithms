@@ -1,6 +1,6 @@
 package main
 
-func isPalindrome(x int) bool {
+func isPalindromeNum(x int) bool {
 	if x == 0 {
 		return true
 	}
@@ -17,7 +17,7 @@ func isPalindrome(x int) bool {
 	return x == reverse
 }
 
-func fasterIsPalindrome(x int) bool {
+func optimizedIsPalindromeNum(x int) bool {
 	if x == 0 {
 		return true
 	}

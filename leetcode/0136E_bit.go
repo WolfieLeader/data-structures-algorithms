@@ -1,7 +1,5 @@
 package main
 
-// TODO:
-
 // XOR (Exclusive OR) properties:
 // x ^ x = 0   (duplicates cancel out)
 // x ^ 0 = x   (zero does nothing)
@@ -9,6 +7,13 @@ package main
 //
 // By XORing all numbers, every duplicated value cancels itself,
 // leaving only the number that appears once.
+//
+// Walk through input: [3,1,5,1,3]
+// 0 ^ 3 = 3
+// 3 ^ 1 = 2
+// 2 ^ 5 = 7
+// 7 ^ 1 = 6
+// 6 ^ 3 = 5
 
 func singleNumber(nums []int) int {
 	result := 0
@@ -17,10 +22,3 @@ func singleNumber(nums []int) int {
 	}
 	return result
 }
-
-// Walk through input: [3,1,5,1,3]
-// 0 ^ 3 = 3
-// 3 ^ 1 = 2
-// 2 ^ 5 = 7
-// 7 ^ 1 = 6
-// 6 ^ 3 = 5
