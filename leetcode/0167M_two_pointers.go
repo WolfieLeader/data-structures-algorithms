@@ -10,9 +10,11 @@ func twoSum167(numbers []int, target int) []int {
 
 	for left < right {
 		sum := numbers[left] + numbers[right]
+
 		if sum == target {
 			return []int{left + 1, right + 1}
 		}
+
 		if sum < target {
 			left++
 		} else {

@@ -7,22 +7,21 @@ package main
 
 func characterReplacement(s string, k int) int {
 	var freq [26]int
-	best, maxFreq := 0, 0
+	best, highestCount := 0, 0
 
-	start := 0
-	for end := 0; end < len(s); end++ {
-		freq[s[end]-'A']++
-		maxFreq = max(maxFreq, freq[s[end]-'A'])
+	left := 0
+	for right := 0; right < len(s); right++ {
+		freq[s[right]-'A']++
+		highestCount = max(highestCount, freq[s[right]-'A'])
 
-		// if replacements needed > k shrink window
-		for (end-start+1)-maxFreq > k {
-			freq[s[start]-'A']--
-			start++
+		// NOTE: LOOP shrink until `replacements <= k`
+		for (right-left+1)-highestCount > k {
+			freq[s[left]-'A']--
+			left++
 		}
 
-		if winLen := (end - start + 1); winLen > best {
-			best = winLen
-		}
+		windowSize := right - left + 1
+		best = max(best, windowSize)
 	}
 
 	return best

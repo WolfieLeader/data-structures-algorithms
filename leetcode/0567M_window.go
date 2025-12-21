@@ -12,17 +12,17 @@ func checkInclusion(s1 string, s2 string) bool {
 		freq[s1[i]-'a']++
 	}
 
-	start := 0
-	for end := 0; end < len(s2); end++ {
-		freq[s2[end]-'a']--
+	left := 0
+	for right := 0; right < len(s2); right++ {
+		freq[s2[right]-'a']--
 
-		// If we found char not in s1 or two many of the char from s1
-		for freq[s2[end]-'a'] < 0 {
-			freq[s2[start]-'a']++
-			start++
+		// NOTE: LOOP shrink if found letter not inside s1 or removed too many
+		for freq[s2[right]-'a'] < 0 {
+			freq[s2[left]-'a']++
+			left++
 		}
 
-		if end-start+1 == len(s1) {
+		if windowSize := (right - left + 1); windowSize == len(s1) {
 			return true
 		}
 	}

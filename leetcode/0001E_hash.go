@@ -1,5 +1,7 @@
 package main
 
+// HACK: Core Pattern of Hash Lookup
+
 // Hash Map (Value -> Index) Lookup
 //
 // Iterate through the array once and store each value with its index.

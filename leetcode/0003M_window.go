@@ -1,5 +1,7 @@
 package main
 
+// HACK: Core Pattern of Dynamic Sliding Window
+
 // Sliding Window with frequency map
 //
 // Pattern

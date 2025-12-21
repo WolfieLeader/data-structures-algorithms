@@ -7,20 +7,24 @@ package main
 // I: target = 11, nums = [1,1,1,1,1,1,1,1]  => O: 0
 
 func minSubArrayLen(target int, nums []int) int {
-	sum, minLen := 0, 100001
-	start := 0
-	for end := 0; end < len(nums); end++ {
-		sum += nums[end]
+	sum := 0
+	best := 100001 // Limit is 10k
+
+	left := 0
+	for right := 0; right < len(nums); right++ {
+		sum += nums[right]
 
 		for sum >= target {
-			minLen = min(minLen, end-start+1)
-			sum = sum - nums[start]
-			start++
+			windowSize := right - left + 1
+			best = min(best, windowSize)
+
+			sum -= nums[left]
+			left++
 		}
 	}
 
-	if minLen == 100001 {
+	if best == 100001 {
 		return 0
 	}
-	return minLen
+	return best
 }
