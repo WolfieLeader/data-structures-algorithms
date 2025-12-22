@@ -1,6 +1,6 @@
 package main
 
-// HACK: Core Pattern of Slow Fast Pointers in Array (aka Read Write Pointers)
+// HACK: Core Pattern of Two Pointers Same Direction in Array
 
 // Two Pointers Same Direction
 //
