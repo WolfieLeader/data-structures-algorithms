@@ -1,7 +1,5 @@
 package main
 
-// Core
-
 // Greedy
 //
 // Keep the farthest index you can reach so far.
