@@ -7,32 +7,27 @@ func levelOrder(root *TreeNode) [][]int {
 		return nil
 	}
 
+	// HACK: IMPORTANT! Add Root
 	queue := []*TreeNode{root}
-	pushFn := func(node *TreeNode) { queue = append(queue, node) }
-	popFn := func() *TreeNode {
-		node := queue[0]
-		queue[0] = nil
-		queue = queue[1:]
-		return node
-	}
 
 	out := make([][]int, 0)
 
 	for len(queue) > 0 {
-		// HACK: IMPORTANT!
+		// HACK: IMPORTANT! Get Size at first
 		levelSize := len(queue)
 		inner := make([]int, 0, levelSize)
 
 		// NOTE: LOOP over each item in the same level
 		for range levelSize {
-			node := popFn()
+			node := queue[0]  // Get first node
+			queue = queue[1:] // Pop
 			inner = append(inner, node.Val)
 
 			if node.Left != nil {
-				pushFn(node.Left)
+				queue = append(queue, node.Left)
 			}
 			if node.Right != nil {
-				pushFn(node.Right)
+				queue = append(queue, node.Right)
 			}
 		}
 
