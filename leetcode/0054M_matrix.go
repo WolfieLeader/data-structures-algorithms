@@ -1,5 +1,7 @@
 package main
 
+// TODO:
+
 func spiralOrder(matrix [][]int) []int {
 	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return nil
@@ -13,22 +15,22 @@ func spiralOrder(matrix [][]int) []int {
 
 	for top <= bottom && left <= right {
 		// NOTE: LOOP the top row
-		for c := left; c <= right; c++ {
-			out = append(out, matrix[top][c])
+		for x := left; x <= right; x++ {
+			out = append(out, matrix[top][x])
 		}
 		top++
 
 		// NOTE: LOOP the right column
-		for r := top; r <= bottom; r++ {
-			out = append(out, matrix[r][right])
+		for y := top; y <= bottom; y++ {
+			out = append(out, matrix[y][right])
 		}
 		right--
 
 		// Edge case single row
 		if top <= bottom {
 			// NOTE: LOOP the bottom row
-			for c := right; c >= left; c-- {
-				out = append(out, matrix[bottom][c])
+			for x := right; x >= left; x-- {
+				out = append(out, matrix[bottom][x])
 			}
 			bottom--
 		}
@@ -36,8 +38,8 @@ func spiralOrder(matrix [][]int) []int {
 		// Edge case single column
 		if left <= right {
 			// NOTE: LOOP the left column
-			for r := bottom; r >= top; r-- {
-				out = append(out, matrix[r][left])
+			for y := bottom; y >= top; y-- {
+				out = append(out, matrix[y][left])
 			}
 			left++
 		}

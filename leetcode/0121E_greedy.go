@@ -36,9 +36,9 @@ package main
 
 func maxProfit(prices []int) int {
 	buy, profit := prices[0], 0
-	for _, p := range prices[1:] {
-		profit = max(profit, p-buy)
-		buy = min(buy, p)
+	for i := 1; i < len(prices); i++ {
+		profit = max(profit, prices[i]-buy)
+		buy = min(buy, prices[i])
 	}
 	return profit
 }
