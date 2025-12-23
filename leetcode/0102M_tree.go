@@ -1,5 +1,7 @@
 package main
 
+// BFS used
+
 func levelOrder(root *TreeNode) [][]int {
 	if root == nil {
 		return nil
