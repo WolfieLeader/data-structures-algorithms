@@ -30,8 +30,8 @@ package main
 // repeat until fast is nil or slow == fast
 
 func hasCycle(head *ListNode) bool {
-	slow, fast := head, head
 
+	slow, fast := head, head
 	for fast != nil && fast.Next != nil {
 		slow = slow.Next
 		fast = fast.Next.Next
@@ -40,6 +40,7 @@ func hasCycle(head *ListNode) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
