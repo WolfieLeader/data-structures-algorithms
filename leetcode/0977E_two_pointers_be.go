@@ -6,6 +6,7 @@ package main
 
 func sortedSquares(nums []int) []int {
 	out := make([]int, len(nums))
+
 	left, right := 0, len(nums)-1
 	for i := len(nums) - 1; i >= 0; i-- {
 		if abs(nums[left]) > abs(nums[right]) {
@@ -16,5 +17,6 @@ func sortedSquares(nums []int) []int {
 			right--
 		}
 	}
+
 	return out
 }
