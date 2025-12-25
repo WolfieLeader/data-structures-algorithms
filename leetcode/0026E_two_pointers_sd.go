@@ -10,12 +10,14 @@ package main
 // For sorted arrays, keep a value only when it differs from the last kept one.
 
 func removeDuplicates(nums []int) int {
-	slow := 0
-	for fast := 1; fast < len(nums); fast++ {
-		if nums[fast] != nums[slow] {
+	slow, fast := 0, 0
+	for fast < len(nums) {
+		if nums[slow] != nums[fast] {
 			slow++
 			nums[slow] = nums[fast]
 		}
+
+		fast++
 	}
 
 	return slow + 1

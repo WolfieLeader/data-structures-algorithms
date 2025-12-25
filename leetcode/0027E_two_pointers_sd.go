@@ -10,12 +10,14 @@ package main
 // Skip elements equal to val and overwrite in place to preserve order.
 
 func removeElement(nums []int, val int) int {
-	slow := 0
-	for fast := 0; fast < len(nums); fast++ {
+	slow, fast := 0, 0
+	for fast < len(nums) {
 		if nums[fast] != val {
 			nums[slow] = nums[fast]
 			slow++
 		}
+
+		fast++
 	}
 	return slow
 }

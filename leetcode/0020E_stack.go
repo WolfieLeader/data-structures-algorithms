@@ -34,19 +34,17 @@ func isValid(s string) bool {
 		currChar := s[i]
 		if currChar == '(' || currChar == '{' || currChar == '[' {
 			stack = append(stack, currChar) // Push
-			continue
-		}
 
-		if openBracket, ok := pairs[currChar]; ok {
+		} else if openBracket, ok := pairs[currChar]; ok {
 			if len(stack) == 0 || stack[len(stack)-1] != openBracket { // Peek
 				return false
 			}
+
 			stack = stack[:len(stack)-1] // Pop
-			continue
+
+		} else {
+			return false // Not a bracket
 		}
-
-		return false // Not a bracket
-
 	}
 
 	return len(stack) == 0

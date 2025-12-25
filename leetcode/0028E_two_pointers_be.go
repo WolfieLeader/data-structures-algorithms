@@ -10,7 +10,8 @@ func strStr(haystack string, needle string) int {
 		return -1
 	}
 
-	for left := 0; left <= len(haystack)-len(needle); left++ {
+	left := 0
+	for left <= len(haystack)-len(needle) {
 		right := 0
 
 		for right < len(needle) && haystack[left+right] == needle[right] {
@@ -20,6 +21,8 @@ func strStr(haystack string, needle string) int {
 		if right == len(needle) {
 			return left
 		}
+
+		left++
 	}
 
 	return -1

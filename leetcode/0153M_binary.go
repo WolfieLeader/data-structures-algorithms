@@ -1,15 +1,17 @@
 package main
 
 func findMin(nums []int) int {
-	left, right := 0, len(nums)
+	l, r := 0, len(nums) // [l, r)
 	last := nums[len(nums)-1]
-	for left < right {
-		mid := left + ((right - left) / 2)
-		if last >= nums[mid] {
-			right = mid
+
+	for l < r {
+		mid := l + ((r - l) / 2)
+
+		if nums[mid] <= last {
+			r = mid
 		} else {
-			left = mid + 1
+			l = mid + 1
 		}
 	}
-	return nums[left]
+	return nums[l]
 }

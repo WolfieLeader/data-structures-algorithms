@@ -9,6 +9,7 @@ func groupAnagrams(strs []string) [][]string {
 		for i := 0; i < len(str); i++ {
 			freq[str[i]-'a']++
 		}
+
 		groups[freq] = append(groups[freq], str)
 	}
 

@@ -11,9 +11,9 @@ func longestCommonPrefix(strs []string) string {
 		currFirstStrChar := strs[0][i]
 
 		// NOTE: LOOP to see that all strs contain the same as the first
-		for j := 1; j < len(strs); j++ {
+		for _, str := range strs[1:] {
 			// Out of bounds or mismatch
-			if len(strs[j]) <= i || strs[j][i] != currFirstStrChar {
+			if len(str) <= i || str[i] != currFirstStrChar {
 				return strs[0][:i]
 			}
 		}

@@ -8,17 +8,17 @@ func searchRange(nums []int, target int) []int {
 	}
 
 	// 1) Find first index >= target (lower bound)
-	left, right := 0, len(nums) // [l, r)
-	for left < right {
-		mid := left + ((right - left) / 2)
+	l, r := 0, len(nums) // [l, r)
+	for l < r {
+		mid := l + ((r - l) / 2)
 
 		if target <= nums[mid] {
-			right = mid
+			r = mid
 		} else {
-			left = mid + 1
+			l = mid + 1
 		}
 	}
-	start := left
+	start := l
 
 	// If target is not present
 	if start == len(nums) || nums[start] != target {
@@ -26,16 +26,16 @@ func searchRange(nums []int, target int) []int {
 	}
 
 	// 2) Find first index > target (upper bound)
-	left, right = 0, len(nums) // [l, r)
-	for left < right {
-		mid := left + ((right - left) / 2)
-		if target < nums[mid] {
-			right = mid
+	l, r = 0, len(nums) // [l, r)
+	for l < r {
+		mid := l + ((r - l) / 2)
+		if target >= nums[mid] {
+			l = mid + 1
 		} else {
-			left = mid + 1
+			r = mid
 		}
 	}
-	end := left - 1
+	end := l - 1
 
 	return []int{start, end}
 }

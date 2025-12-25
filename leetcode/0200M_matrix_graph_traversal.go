@@ -40,8 +40,8 @@ func numIslands(grid [][]byte) int {
 	}
 
 	islands := 0
-	for r := 0; r < n; r++ {
-		for c := 0; c < m; c++ {
+	for r := range n {
+		for c := range m {
 			if grid[r][c] == '1' {
 				bfsFn(r, c)
 				islands++

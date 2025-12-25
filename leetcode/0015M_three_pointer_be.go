@@ -31,12 +31,13 @@ func threeSum(nums []int) [][]int {
 			if sum == target {
 				out = append(out, []int{nums[i], nums[left], nums[right]})
 
-				// Move left and right to the next distinct values
+				// NOTE: LOOP move left and right to the next distinct values
 				left++
 				for left < right && nums[left] == nums[left-1] {
 					left++
 				}
 
+				// NOTE: LOOP move right and right to the next distinct values
 				right--
 				for left < right && nums[right] == nums[right+1] {
 					right--

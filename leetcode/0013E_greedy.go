@@ -9,7 +9,7 @@ func romanToInt(s string) int {
 	for i := 0; i < len(s); i++ {
 		curr := values[s[i]]
 
-		if i+1 < len(s) && curr < values[s[i+1]] {
+		if (i+1 < len(s)) && (curr < values[s[i+1]]) {
 			total -= curr
 		} else {
 			total += curr

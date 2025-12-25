@@ -11,9 +11,10 @@ func minSubArrayLen(target int, nums []int) int {
 	best := 100001 // Limit is 10k
 
 	left := 0
-	for right := 0; right < len(nums); right++ {
-		sum += nums[right]
+	for right, v := range nums {
+		sum += v
 
+		// NOTE: LOOP until sum is less than target
 		for sum >= target {
 			windowSize := right - left + 1
 			best = min(best, windowSize)

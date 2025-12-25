@@ -14,6 +14,7 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 			tail.Next = list2
 			list2 = list2.Next // Advance l2
 		}
+
 		tail = tail.Next // Advance tail
 	}
 
